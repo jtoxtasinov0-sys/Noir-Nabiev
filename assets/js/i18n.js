@@ -5,8 +5,8 @@
 window.I18N = {
   uz: {
     "meta.title": "Amerika bo‘ylab 80 kun | Noir Nabiev",
-    "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Statistika",
-    "nav.s5": "Ssenariy", "nav.s6": "Kanal", "nav.s7": "Bank kartasi", "nav.s8": "Ichimlik", "nav.s9": "Gazak", "nav.s10": "Hamkorlik",
+    "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Kanal",
+    "nav.s5": "Statistika", "nav.s6": "Ssenariy", "nav.s7": "Bank kartasi", "nav.s8": "Ichimlik", "nav.s9": "Gazak", "nav.s10": "Hamkorlik",
     "nav.prev": "Oldingi slayd", "nav.next": "Keyingi slayd",
 
     "b.eyebrow": "Brend integratsiyasi",
@@ -77,8 +77,8 @@ window.I18N = {
 
   ru: {
     "meta.title": "80 дней по Америке | Noir Nabiev",
-    "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Статистика",
-    "nav.s5": "Сценарий", "nav.s6": "Канал", "nav.s7": "Банковская карта", "nav.s8": "Напиток", "nav.s9": "Снеки", "nav.s10": "Партнёрство",
+    "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Канал",
+    "nav.s5": "Статистика", "nav.s6": "Сценарий", "nav.s7": "Банковская карта", "nav.s8": "Напиток", "nav.s9": "Снеки", "nav.s10": "Партнёрство",
     "nav.prev": "Предыдущий слайд", "nav.next": "Следующий слайд",
 
     "b.eyebrow": "Интеграция бренда",
