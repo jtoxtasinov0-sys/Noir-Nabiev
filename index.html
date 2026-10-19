@@ -15,8 +15,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preload" href="assets/video/intro-first.jpg" as="image">
-<link rel="stylesheet" href="assets/css/fonts.css?v=8">
-<link rel="stylesheet" href="assets/css/style.css?v=8">
+<link rel="stylesheet" href="assets/css/fonts.css?v=9">
+<link rel="stylesheet" href="assets/css/style.css?v=9">
 <script>
   (function (h) {
     h.classList.replace('no-js', 'js');
@@ -47,11 +47,12 @@
     <button class="prog__seg" data-go="5"><span class="prog__fill"></span><span class="prog__label" data-i18n="nav.s6"></span></button>
     <button class="prog__seg" data-go="6"><span class="prog__fill"></span><span class="prog__label" data-i18n="nav.s7"></span></button>
     <button class="prog__seg" data-go="7"><span class="prog__fill"></span><span class="prog__label" data-i18n="nav.s8"></span></button>
+    <button class="prog__seg" data-go="8"><span class="prog__fill"></span><span class="prog__label" data-i18n="nav.s9"></span></button>
   </nav>
   <div class="bar__end">
     <div class="dnav" id="dnav">
       <button type="button" class="ibtn ibtn--line" id="prevBtn" data-i18n-aria="nav.prev" aria-label="Oldingi slayd"><svg class="i"><use href="#i-arrow-left"/></svg></button>
-      <span class="dnav__count mono"><b id="curNum">01</b><span>/ 08</span></span>
+      <span class="dnav__count mono"><b id="curNum">01</b><span>/ 09</span></span>
       <button type="button" class="ibtn ibtn--solid" id="nextBtn" data-i18n-aria="nav.next" aria-label="Keyingi slayd"><svg class="i"><use href="#i-arrow-right"/></svg></button>
     </div>
     <div class="lang" id="lang" role="group" aria-label="Til / Язык">
@@ -273,12 +274,65 @@
     </div>
   </section>
 
-  <!-- ============ 5. BREND 1/3 ============ -->
-  <section class="slide sb" id="s5" data-theme="light" aria-labelledby="s5t">
+  <!-- ============ 5. SSENARIY ============ -->
+  <section class="slide s5" id="s5" data-theme="light" aria-labelledby="s5t">
+    <div class="slide__inner s5__grid">
+      <div class="s5__left">
+        <h2 class="h2 rv" id="s5t" data-i18n="s5.title">Bir shahar, ikki xil imkoniyat</h2>
+        <p class="lead rv" data-i18n="s5.lead"></p>
+
+        <div class="roles">
+          <div class="role role--a rv-role">
+            <div class="bankcard" id="bankcard" aria-hidden="true">
+              <div class="bankcard__shine"></div>
+              <div class="bankcard__top"><span class="bankcard__brand">80 KUN <span class="flag" aria-hidden="true"></span></span><span class="bankcard__tier">UNLIMITED</span></div>
+              <div class="bankcard__chip"></div>
+              <div class="bankcard__inf">∞</div>
+              <div class="bankcard__bottom"><span class="bankcard__num">A · 0080 0080 0080</span><svg class="i"><use href="#i-credit-card"/></svg></div>
+            </div>
+            <div class="role__txt">
+              <h3><span class="tag tag--a">A</span><span data-i18n="s5.a.t">Limitsiz karta</span></h3>
+              <p data-i18n="s5.a.d"></p>
+            </div>
+          </div>
+          <div class="role role--b rv-role">
+            <div class="zerocard" aria-hidden="true">
+              <span class="zerocard__amt">$0</span>
+              <span class="zerocard__cut"></span>
+              <svg class="i"><use href="#i-wallet"/></svg>
+            </div>
+            <div class="role__txt">
+              <h3><span class="tag tag--b">B</span><span data-i18n="s5.b.t">0 dollar</span></h3>
+              <p data-i18n="s5.b.d"></p>
+            </div>
+          </div>
+        </div>
+
+        <ul class="rules" id="rules"></ul>
+        <div class="season rv" id="season"></div>
+      </div>
+
+      <div class="s5__right">
+        <div class="board rv">
+          <div class="board__head">
+            <div>
+              <h3 class="board__title" data-i18n="s5.ep">1-qism. Nyu-York</h3>
+              <p class="mono board__meta" data-i18n="s5.epmeta">Pilot · 22 daqiqa</p>
+            </div>
+            <div class="board__img"><img data-src="assets/img/cities/ny-board.jpg" alt="" width="640" height="400"></div>
+          </div>
+          <ol class="beats" id="beats"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 6. BREND 1/3 ============ -->
+  <section class="slide sb" id="s6" data-theme="light" aria-labelledby="s6t">
     <div class="slide__inner sb__grid">
       <div class="sb__copy">
         <p class="eyebrow rv"><span class="flag" aria-hidden="true"></span><span data-i18n="b.eyebrow">Brend integratsiyasi</span></p>
-        <h2 class="h2 rv" id="s5t" data-i18n="b.title">Brendingiz shouda shunday ko‘rinadi</h2>
+        <h2 class="h2 rv" id="s6t" data-i18n="b.title">Brendingiz shouda shunday ko‘rinadi</h2>
         <div class="sb__cat rv">
           <span class="sb__ic"><svg class="i"><use href="#i-credit-card"/></svg></span>
           <div><b data-i18n="b1.cat"></b><small data-i18n="b1.where"></small></div>
@@ -289,7 +343,7 @@
           <li><svg class="i"><use href="#i-check"/></svg><span data-i18n="b1.f2"></span></li>
           <li><svg class="i"><use href="#i-check"/></svg><span data-i18n="b1.f3"></span></li>
         </ul>
-        <nav class="sb__tabs rv" aria-label="Brend misollari"><button type="button" class="sb__tab is-on" data-go="4" aria-current="true"><span class="sb__tabn">01</span><span data-i18n="nav.s5"></span></button><button type="button" class="sb__tab" data-go="5"><span class="sb__tabn">02</span><span data-i18n="nav.s6"></span></button><button type="button" class="sb__tab" data-go="6"><span class="sb__tabn">03</span><span data-i18n="nav.s7"></span></button></nav>
+        <nav class="sb__tabs rv" aria-label="Brend misollari"><button type="button" class="sb__tab is-on" data-go="5" aria-current="true"><span class="sb__tabn">01</span><span data-i18n="nav.s6"></span></button><button type="button" class="sb__tab" data-go="6"><span class="sb__tabn">02</span><span data-i18n="nav.s7"></span></button><button type="button" class="sb__tab" data-go="7"><span class="sb__tabn">03</span><span data-i18n="nav.s8"></span></button></nav>
       </div>
       <figure class="sb__media">
         <div class="sb__gallery"><button type="button" class="sb__frame sb__frame--main" tabindex="-1"><img data-src="assets/img/brand/card.jpg" alt="Restoranda karta bilan to‘lov" width="1408" height="768"></button><button type="button" class="sb__frame" aria-label="Karta bilan to‘lov sahnasi"><img data-src="assets/img/brand/card-2.jpg" alt="Karta bilan to‘lov sahnasi"></button><button type="button" class="sb__frame" aria-label="Shahar bo‘ylab karta bilan xarid"><img data-src="assets/img/brand/card-3.jpg" alt="Shahar bo‘ylab karta bilan xarid"></button></div>
@@ -298,12 +352,12 @@
     </div>
   </section>
 
-  <!-- ============ 6. BREND 2/3 ============ -->
-  <section class="slide sb" id="s6" data-theme="light" aria-labelledby="s6t">
+  <!-- ============ 7. BREND 2/3 ============ -->
+  <section class="slide sb" id="s7" data-theme="light" aria-labelledby="s7t">
     <div class="slide__inner sb__grid">
       <div class="sb__copy">
         <p class="eyebrow rv"><span class="flag" aria-hidden="true"></span><span data-i18n="b.eyebrow">Brend integratsiyasi</span></p>
-        <h2 class="h2 rv" id="s6t" data-i18n="b.title">Brendingiz shouda shunday ko‘rinadi</h2>
+        <h2 class="h2 rv" id="s7t" data-i18n="b.title">Brendingiz shouda shunday ko‘rinadi</h2>
         <div class="sb__cat rv">
           <span class="sb__ic"><svg class="i"><use href="#i-drop"/></svg></span>
           <div><b data-i18n="b2.cat"></b><small data-i18n="b2.where"></small></div>
@@ -314,7 +368,7 @@
           <li><svg class="i"><use href="#i-check"/></svg><span data-i18n="b2.f2"></span></li>
           <li><svg class="i"><use href="#i-check"/></svg><span data-i18n="b2.f3"></span></li>
         </ul>
-        <nav class="sb__tabs rv" aria-label="Brend misollari"><button type="button" class="sb__tab" data-go="4"><span class="sb__tabn">01</span><span data-i18n="nav.s5"></span></button><button type="button" class="sb__tab is-on" data-go="5" aria-current="true"><span class="sb__tabn">02</span><span data-i18n="nav.s6"></span></button><button type="button" class="sb__tab" data-go="6"><span class="sb__tabn">03</span><span data-i18n="nav.s7"></span></button></nav>
+        <nav class="sb__tabs rv" aria-label="Brend misollari"><button type="button" class="sb__tab" data-go="5"><span class="sb__tabn">01</span><span data-i18n="nav.s6"></span></button><button type="button" class="sb__tab is-on" data-go="6" aria-current="true"><span class="sb__tabn">02</span><span data-i18n="nav.s7"></span></button><button type="button" class="sb__tab" data-go="7"><span class="sb__tabn">03</span><span data-i18n="nav.s8"></span></button></nav>
       </div>
       <figure class="sb__media">
         <div class="sb__gallery"><button type="button" class="sb__frame sb__frame--main" tabindex="-1"><img data-src="assets/img/brand/drink.jpg" alt="Plyajda ichimlik" width="1408" height="768"></button><button type="button" class="sb__frame" aria-label="Okean bo‘yida ichimlik"><img data-src="assets/img/brand/drink-2.jpg" alt="Okean bo‘yida ichimlik"></button><button type="button" class="sb__frame" aria-label="Sayohatda ichimlik"><img data-src="assets/img/brand/drink-3.jpg" alt="Sayohatda ichimlik"></button></div>
@@ -323,12 +377,12 @@
     </div>
   </section>
 
-  <!-- ============ 7. BREND 3/3 ============ -->
-  <section class="slide sb" id="s7" data-theme="light" aria-labelledby="s7t">
+  <!-- ============ 8. BREND 3/3 ============ -->
+  <section class="slide sb" id="s8" data-theme="light" aria-labelledby="s8t">
     <div class="slide__inner sb__grid">
       <div class="sb__copy">
         <p class="eyebrow rv"><span class="flag" aria-hidden="true"></span><span data-i18n="b.eyebrow">Brend integratsiyasi</span></p>
-        <h2 class="h2 rv" id="s7t" data-i18n="b.title">Brendingiz shouda shunday ko‘rinadi</h2>
+        <h2 class="h2 rv" id="s8t" data-i18n="b.title">Brendingiz shouda shunday ko‘rinadi</h2>
         <div class="sb__cat rv">
           <span class="sb__ic"><svg class="i"><use href="#i-cookie"/></svg></span>
           <div><b data-i18n="b3.cat"></b><small data-i18n="b3.where"></small></div>
@@ -339,7 +393,7 @@
           <li><svg class="i"><use href="#i-check"/></svg><span data-i18n="b3.f2"></span></li>
           <li><svg class="i"><use href="#i-check"/></svg><span data-i18n="b3.f3"></span></li>
         </ul>
-        <nav class="sb__tabs rv" aria-label="Brend misollari"><button type="button" class="sb__tab" data-go="4"><span class="sb__tabn">01</span><span data-i18n="nav.s5"></span></button><button type="button" class="sb__tab" data-go="5"><span class="sb__tabn">02</span><span data-i18n="nav.s6"></span></button><button type="button" class="sb__tab is-on" data-go="6" aria-current="true"><span class="sb__tabn">03</span><span data-i18n="nav.s7"></span></button></nav>
+        <nav class="sb__tabs rv" aria-label="Brend misollari"><button type="button" class="sb__tab" data-go="5"><span class="sb__tabn">01</span><span data-i18n="nav.s6"></span></button><button type="button" class="sb__tab" data-go="6"><span class="sb__tabn">02</span><span data-i18n="nav.s7"></span></button><button type="button" class="sb__tab is-on" data-go="7" aria-current="true"><span class="sb__tabn">03</span><span data-i18n="nav.s8"></span></button></nav>
       </div>
       <figure class="sb__media">
         <div class="sb__gallery"><button type="button" class="sb__frame sb__frame--main" tabindex="-1"><img data-src="assets/img/brand/snack.jpg" alt="Route 66 yo‘lida gazak" width="1408" height="768"></button><button type="button" class="sb__frame" aria-label="Yo‘lda gazak"><img data-src="assets/img/brand/snack-2.jpg" alt="Yo‘lda gazak"></button><button type="button" class="sb__frame" aria-label="Road-trip paytida gazak"><img data-src="assets/img/brand/snack-3.jpg" alt="Road-trip paytida gazak"></button></div>
@@ -348,12 +402,12 @@
     </div>
   </section>
 
-  <!-- ============ 8. HAMKORLIK ============ -->
-  <section class="slide s6" id="s8" data-theme="light" aria-labelledby="s8t">
+  <!-- ============ 9. HAMKORLIK ============ -->
+  <section class="slide s6" id="s9" data-theme="light" aria-labelledby="s9t">
     <div class="slide__inner s6__grid">
       <div class="s6__left">
         <p class="eyebrow rv"><span class="flag" aria-hidden="true"></span><span data-i18n="s6.eyebrow">Hamkorlik</span></p>
-        <h2 class="h2 s6__title rv" id="s8t" data-i18n="s6.title">Hamkor nimani oladi</h2>
+        <h2 class="h2 s6__title rv" id="s9t" data-i18n="s6.title">Hamkor nimani oladi</h2>
         <p class="lead rv" data-i18n="s6.lead"></p>
         <ul class="gets" id="gets"></ul>
       </div>
@@ -383,9 +437,9 @@
 
 
 <script src="assets/vendor/gsap.min.js?v=8150" defer></script>
-<script src="assets/js/map-data.js?v=8" defer></script>
-<script src="assets/js/i18n.js?v=8" defer></script>
-<script src="assets/js/data.js?v=8" defer></script>
-<script src="assets/js/app.js?v=8" defer></script>
+<script src="assets/js/map-data.js?v=9" defer></script>
+<script src="assets/js/i18n.js?v=9" defer></script>
+<script src="assets/js/data.js?v=9" defer></script>
+<script src="assets/js/app.js?v=9" defer></script>
 </body>
 </html>

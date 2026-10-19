@@ -6,7 +6,7 @@ window.I18N = {
   uz: {
     "meta.title": "Amerika bo‘ylab 80 kun | Noir Nabiev",
     "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Statistika",
-    "nav.s5": "Bank kartasi", "nav.s6": "Ichimlik", "nav.s7": "Gazak", "nav.s8": "Hamkorlik",
+    "nav.s5": "Ssenariy", "nav.s6": "Bank kartasi", "nav.s7": "Ichimlik", "nav.s8": "Gazak", "nav.s9": "Hamkorlik",
     "nav.prev": "Oldingi slayd", "nav.next": "Keyingi slayd",
 
     "b.eyebrow": "Brend integratsiyasi",
@@ -53,6 +53,12 @@ window.I18N = {
     "s4.gender": "Jins", "s4.age": "Yosh", "s4.geo": "Mamlakatlar", "s4.videos": "Eng ko‘p ko‘rilgan videolar",
     "s4.m": "Erkaklar", "s4.f": "Ayollar", "s4.views": "ko‘rish",
 
+    "s5.title": "Bir shahar, ikki xil imkoniyat",
+    "s5.lead": "Har bir qism bir kunni ko‘rsatadi. Qur’a kimga limitsiz karta, kimga 0 dollar tushishini hal qiladi.",
+    "s5.a.t": "Limitsiz karta", "s5.a.d": "Butun shahar uning ixtiyorida: eng yaxshi mehmonxona, restoran va transport.",
+    "s5.b.t": "0 dollar", "s5.b.d": "Ovqat, yo‘l va tunashni o‘zi topadi. Faqat qonuniy yo‘llar bilan.",
+    "s5.ep": "1-qism. Nyu-York", "s5.epmeta": "Pilot · 22 daqiqa",
+
     "s6.eyebrow": "Hamkorlik",
     "s6.title": "Hamkor nimani oladi",
     "s6.lead": "80 kun davomida brend shou bilan birga sayohat qiladi: har bir qismda, har bir Reels’da va har bir shaharda.",
@@ -65,7 +71,7 @@ window.I18N = {
   ru: {
     "meta.title": "80 дней по Америке | Noir Nabiev",
     "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Статистика",
-    "nav.s5": "Банковская карта", "nav.s6": "Напиток", "nav.s7": "Снеки", "nav.s8": "Партнёрство",
+    "nav.s5": "Сценарий", "nav.s6": "Банковская карта", "nav.s7": "Напиток", "nav.s8": "Снеки", "nav.s9": "Партнёрство",
     "nav.prev": "Предыдущий слайд", "nav.next": "Следующий слайд",
 
     "b.eyebrow": "Интеграция бренда",
@@ -111,6 +117,12 @@ window.I18N = {
     "s4.k1": "подписчиков YouTube", "s4.k2": "подписчиков Instagram", "s4.k3": "подписчиков Instagram", "s4.k4": "общая аудитория",
     "s4.gender": "Пол", "s4.age": "Возраст", "s4.geo": "Страны", "s4.videos": "Самые просматриваемые видео",
     "s4.m": "Мужчины", "s4.f": "Женщины", "s4.views": "просмотров",
+
+    "s5.title": "Один город, две реальности",
+    "s5.lead": "Каждая серия показывает один день. Жребий решает, кому достанется безлимитная карта, а кому ноль долларов.",
+    "s5.a.t": "Безлимитная карта", "s5.a.d": "Весь город в его распоряжении: лучшие отели, рестораны и транспорт.",
+    "s5.b.t": "Ноль долларов", "s5.b.d": "Еду, дорогу и ночлег добывает сам. Только законными способами.",
+    "s5.ep": "Серия 1. Нью-Йорк", "s5.epmeta": "Пилот · 22 минуты",
 
     "s6.eyebrow": "Партнёрство",
     "s6.title": "Что получает партнёр",
