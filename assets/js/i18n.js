@@ -5,7 +5,7 @@
 window.I18N = {
   uz: {
     "meta.title": "Amerika bo‘ylab 80 kun | Noir Nabiev",
-    "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Statistika", "nav.s5": "Ssenariy", "nav.s6": "Narx",
+    "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Statistika", "nav.s5": "Ssenariy", "nav.s6": "Hamkorlik",
     "nav.prev": "Oldingi slayd", "nav.next": "Keyingi slayd", "bar.fs": "To‘liq ekran",
 
     "s1.eyebrow": "YouTube realiti-shou",
@@ -46,18 +46,18 @@ window.I18N = {
     "s5.both": "Ikkalasi",
 
     "s6.eyebrow": "Hamkorlik",
-    "s6.title": "Loyiha budjeti",
-    "s6.caption": "Taxminiy smeta: 15 qism, 80 kun, 5 kishilik jamoa.",
-    "s6.budget": "Budjet taqsimoti",
-    "s6.get": "Hamkor nimani oladi",
+    "s6.title": "Hamkor nimani oladi",
+    "s6.lead": "80 kun davomida brend shou bilan birga sayohat qiladi: har bir qismda, har bir Reels’da va har bir shaharda.",
+    "s6.scope": "Loyiha nimalarni qamraydi",
     "s6.final": "Keling, buni amalga oshiramiz!",
+    "s6.avia": "Biletlarni Aviasales.uz’dan xarid qilishingiz mumkin",
     "s6.stamp": "TASDIQLANDI · 80 KUN · TASDIQLANDI · 80 KUN · ",
-    "s6.note": "Narxlar taxminiy. Yakuniy smeta kelishuv asosida tuziladi."
+    "s6.note": "Narx va hamkorlik shartlari alohida kelishiladi."
   },
 
   ru: {
     "meta.title": "80 дней по Америке | Noir Nabiev",
-    "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Статистика", "nav.s5": "Сценарий", "nav.s6": "Стоимость",
+    "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Статистика", "nav.s5": "Сценарий", "nav.s6": "Партнёрство",
     "nav.prev": "Предыдущий слайд", "nav.next": "Следующий слайд", "bar.fs": "Полный экран",
 
     "s1.eyebrow": "YouTube реалити-шоу",
@@ -98,12 +98,12 @@ window.I18N = {
     "s5.both": "Оба",
 
     "s6.eyebrow": "Партнёрство",
-    "s6.title": "Бюджет проекта",
-    "s6.caption": "Ориентировочная смета: 15 серий, 80 дней, команда из 5 человек.",
-    "s6.budget": "Распределение бюджета",
-    "s6.get": "Что получает партнёр",
+    "s6.title": "Что получает партнёр",
+    "s6.lead": "80 дней бренд путешествует вместе с шоу: в каждой серии, в каждом Reels и в каждом городе.",
+    "s6.scope": "Что входит в проект",
     "s6.final": "Давайте сделаем это!",
+    "s6.avia": "Билеты можно купить на Aviasales.uz",
     "s6.stamp": "ОДОБРЕНО · 80 ДНЕЙ · ОДОБРЕНО · 80 ДНЕЙ · ",
-    "s6.note": "Цены ориентировочные. Итоговая смета составляется по договорённости."
+    "s6.note": "Стоимость и условия партнёрства обсуждаются отдельно."
   }
 };

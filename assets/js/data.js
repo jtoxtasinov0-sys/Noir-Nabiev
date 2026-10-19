@@ -184,26 +184,23 @@ window.DATA = {
     { v: "4K", l: { uz: "kino sifati", ru: "кинокачество" } }
   ],
 
-  /* ---------- 6-slayd: narx (taxminiy, USD) ---------- */
-  price: {
-    currency: "$",
-    total: 180000,
-    budget: [
-      { v: 42000, l: { uz: "Suratga olish jamoasi", ru: "Съёмочная группа" } },
-      { v: 34000, l: { uz: "Aviachiptalar va transport", ru: "Авиабилеты и транспорт" } },
-      { v: 30000, l: { uz: "Turar joy, 80 kecha", ru: "Проживание, 80 ночей" } },
-      { v: 28000, l: { uz: "Challenge fondi (limitsiz karta)", ru: "Фонд челленджей (безлимитная карта)" } },
-      { v: 26000, l: { uz: "Montaj va post-prodakshn", ru: "Монтаж и постпродакшн" } },
-      { v: 12000, l: { uz: "Texnika, vizalar, sug‘urta", ru: "Техника, визы, страховка" } },
-      { v: 8000,  l: { uz: "Marketing va promo", ru: "Маркетинг и промо" } }
-    ],
+  /* ---------- 6-slayd: hamkorlik ---------- */
+  partner: {
     deliverables: [
       { icon: "film-slate", t: { uz: "15 qismli YouTube shou, har biri 20-25 daqiqa", ru: "YouTube-шоу из 15 серий по 20-25 минут" } },
-      { icon: "credit-card", t: { uz: "Limitsiz karta: har qismda hamkor kartasi", ru: "Безлимитная карта партнёра в каждой серии" } },
       { icon: "stamp", t: { uz: "Brend shou nomida va introda", ru: "Бренд в названии и интро шоу" } },
       { icon: "video-camera", t: { uz: "45+ Reels va Shorts", ru: "45+ Reels и Shorts" } },
       { icon: "users-three", t: { uz: "1,7 mln+ obunachiga ega auditoriya", ru: "Аудитория 1,7 млн+ подписчиков" } },
       { icon: "chart-line-up", t: { uz: "Prognoz: 50 mln+ ko‘rish", ru: "Прогноз: 50 млн+ просмотров" } }
+    ],
+    scope: [
+      { icon: "video-camera", l: { uz: "Suratga olish jamoasi", ru: "Съёмочная группа" } },
+      { icon: "airplane-tilt", l: { uz: "Aviachiptalar va transport", ru: "Авиабилеты и транспорт" } },
+      { icon: "bed", l: { uz: "Turar joy, 80 kecha", ru: "Проживание, 80 ночей" } },
+      { icon: "trophy", l: { uz: "Challenge fondi", ru: "Фонд челленджей" } },
+      { icon: "film-slate", l: { uz: "Montaj va post-prodakshn", ru: "Монтаж и постпродакшн" } },
+      { icon: "shield-check", l: { uz: "Texnika, vizalar, sug‘urta", ru: "Техника, визы, страховка" } },
+      { icon: "megaphone", l: { uz: "Marketing va promo", ru: "Маркетинг и промо" } }
     ]
   }
 };

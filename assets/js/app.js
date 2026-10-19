@@ -85,12 +85,48 @@
     });
   }
 
+  /* smooth text: every word rises out of a soft blur */
+  const TEXTY = '.s1__title, .h2, .lead, .s1__lead, .eyebrow, .finale__txt';
+  function splitWords(el) {
+    if (el.querySelector('.wd')) return $$('.wd', el);
+    const walk = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walk.nextNode()) nodes.push(walk.currentNode);
+    nodes.forEach(n => {
+      if (!n.nodeValue.trim()) return;
+      const frag = document.createDocumentFragment();
+      n.nodeValue.split(/(\s+)/).forEach(part => {
+        if (!part) return;
+        if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+        const w = document.createElement('span'); w.className = 'wd'; w.textContent = part; frag.appendChild(w);
+      });
+      n.parentNode.replaceChild(frag, n);
+    });
+    return $$('.wd', el);
+  }
+  function textIn(el, delay = 0, big = false) {
+    if (!el) return null;
+    if (!MOTION) { el.style.opacity = 1; return null; }
+    const words = splitWords(el);
+    G.set(el, { opacity: 1, y: 0 });
+    return G.fromTo(words,
+      { opacity: 0, yPercent: big ? 40 : 32, filter: `blur(${big ? 16 : 9}px)` },
+      { opacity: 1, yPercent: 0, filter: 'blur(0px)', duration: big ? 1.7 : 1.25, ease: 'power3.out', delay,
+        stagger: big ? .11 : Math.min(.06, 1 / words.length), clearProps: 'filter,transform' });
+  }
+
   function reveal(els, delay = 0, opts = {}) {
     els = els instanceof Element ? [els] : Array.from(els || []);
     if (!els.length) return null;
     if (!MOTION) { els.forEach(e => { e.style.opacity = 1; }); return null; }
-    return G.fromTo(els, { opacity: 0, y: opts.y != null ? opts.y : 30 },
-      { opacity: 1, y: 0, duration: opts.dur || 1.05, ease: 'expo.out', stagger: opts.stagger != null ? opts.stagger : .08, delay, overwrite: 'auto', clearProps: opts.keep ? '' : 'transform' });
+    const st = opts.stagger != null ? opts.stagger : .1;
+    els.forEach((e, i) => {
+      const d = delay + i * st;
+      if (e.matches(TEXTY)) textIn(e, d);
+      else G.fromTo(e, { opacity: 0, y: opts.y != null ? opts.y : 36 },
+        { opacity: 1, y: 0, duration: opts.dur || 1.35, ease: 'power3.out', delay: d, overwrite: 'auto', clearProps: opts.keep ? '' : 'transform' });
+    });
+    return null;
   }
 
   const seen = new Map();
@@ -197,10 +233,11 @@
       this.tl = tl;
     },
     revealCopy() {
-      if (!MOTION) { html.classList.add('s1-shown'); return; }
+      html.classList.add('s1-shown');
+      if (!MOTION) return;
       const slide = $('#s1');
-      G.fromTo($$('.s1__title .l > span', slide), { yPercent: 108 }, { yPercent: 0, y: 0, duration: 1.15, ease: 'expo.out', stagger: .12, onComplete: () => html.classList.add('s1-shown') });
-      reveal($$('.rv', slide), .2, { stagger: .1 });
+      textIn($('.s1__title', slide), .05, true);
+      reveal($$('.rv', slide), .35, { stagger: .14 });
     },
     enter() {
       if (this.played) return;
@@ -783,51 +820,40 @@
   };
 
   /* =========================================================
-     SLIDE 6 · price + finale
+     SLIDE 6 · partnership + finale
      ========================================================= */
   const S6 = {
     played: false, built: false,
     build() {
-      const P = D.price, max = Math.max(...P.budget.map(b => b.v));
-      $('#budget').innerHTML = P.budget.map(b => `
-        <li><span class="budget__l" data-i18n="${key(b.l)}">${L(b.l)}</span><span class="budget__v">${P.currency}${nf(b.v, 0)}</span>
-        <span class="budget__bar" style="width:${(b.v / max * 100).toFixed(1)}%"></span></li>`).join('');
-      $('#gets').innerHTML = P.deliverables.map(g => `<li><svg class="i"><use href="#i-${g.icon}"/></svg>${T(g.t)}</li>`).join('');
-      $('#priceNum').dataset.to = P.total;
+      const P = D.partner;
+      $('#gets').innerHTML = P.deliverables.map(g => `<li><span class="gets__ic"><svg class="i"><use href="#i-${g.icon}"/></svg></span>${T(g.t)}</li>`).join('');
+      $('#scope').innerHTML = P.scope.map((it, i) => `<li><span class="scope__n">${pad(i + 1)}</span><svg class="i"><use href="#i-${it.icon}"/></svg>${T(it.l)}</li>`).join('');
       this.built = true;
-    },
-    splitFinale() {
-      const el = $('#finaleTxt');
-      el.innerHTML = tr('s6.final').split(' ').map(w => `<span class="w"><span>${w}</span></span>`).join(' ');
     },
     enter() {
       if (!this.built) this.build();
       const s = $('#s6');
       if (this.played) return;
       this.played = true;
-      revealWhen($$('.s6__left > .rv', s), .1, { stagger: .08 });
-      when($('#priceNum'), () => countUp($('#priceNum'), .35, 2.4), 0);
-      revealWhen($$('#gets li', s), .9, { stagger: .06, y: 14 });
+      revealWhen($$('.s6__left > .rv', s), .1, { stagger: .14 });
+      revealWhen($$('#gets li', s), .75, { stagger: .09, y: 20 });
       const right = $('.s6__right', s);
-      when(right, () => {
-        reveal(right, 0, { y: 40 });
-        if (MOTION) G.fromTo($$('.budget__bar', s), { scaleX: 0 }, { scaleX: 1, duration: 1.3, ease: 'expo.out', stagger: .08, delay: .35 });
-      }, .45);
+      when(right, () => { reveal(right, 0, { y: 40 }); reveal($$('#scope li', s), .3, { stagger: .07, y: 14 }); }, .45);
 
       const fin = $('.finale', s);
       when(fin, () => {
-        this.splitFinale();
-        if (!MOTION) { $('#finaleTxt').style.opacity = 1; $('#stamp').style.opacity = 1; return; }
-        const tl = G.timeline({ delay: mode === 'deck' ? 1.6 : .2 });
-        G.set('#finaleTxt', { opacity: 1 });
+        const txt = $('#finaleTxt'), avia = $('#avia'), stamp = $('#stamp');
+        if (!MOTION) { [txt, avia, stamp].forEach(e => { e.style.opacity = 1; }); return; }
+        const tl = G.timeline({ delay: mode === 'deck' ? 1.5 : .2 });
         tl.fromTo('.finale__trail', { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'power2.inOut' })
-          .fromTo($$('#finaleTxt .w > span'), { yPercent: 110 }, { yPercent: 0, duration: 1, ease: 'expo.out', stagger: .08 }, .2)
-          .fromTo('#stamp', { scale: 2.8, opacity: 0, rotate: -40 }, { scale: 1, opacity: 1, rotate: -14, duration: .55, ease: 'power4.in' }, .95)
-          .fromTo(fin, { x: 0 }, { keyframes: [{ x: -7 }, { x: 6 }, { x: -4 }, { x: 2 }, { x: 0 }], duration: .35, ease: 'none' }, 1.5);
+          .add(() => textIn(txt, 0, true), .15)
+          .fromTo(stamp, { scale: 2.8, opacity: 0, rotate: -40 }, { scale: 1, opacity: 1, rotate: -14, duration: .55, ease: 'power4.in' }, 1.2)
+          .fromTo(fin, { x: 0 }, { keyframes: [{ x: -7 }, { x: 6 }, { x: -4 }, { x: 2 }, { x: 0 }], duration: .35, ease: 'none' }, 1.75)
+          .fromTo(avia, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' }, 1.6);
       }, 0);
     },
     leave() { },
-    refresh() { if (this.played) this.splitFinale(); }
+    refresh() { }
   };
 
   const MODS = [S1, S2, S3, S4, S5, S6];
