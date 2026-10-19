@@ -85,6 +85,29 @@
     });
   }
 
+  /* waving US flag: 12 slices of one flag image, each bobbing with a phase offset */
+  function flags(root = document) {
+    $$('.flag', root).forEach(f => {
+      if (f.children.length) return;
+      for (let k = 0; k < 12; k++) { const i = document.createElement('i'); i.style.setProperty('--k', k); f.appendChild(i); }
+    });
+  }
+  /* big faint stars in the corners of every slide */
+  const STAR = (() => {
+    let d = '';
+    for (let i = 0; i < 10; i++) {
+      const a = (-90 + i * 36) * Math.PI / 180, r = i % 2 ? 18.4 : 48;
+      d += (i ? 'L' : 'M') + (50 + r * Math.cos(a)).toFixed(2) + ' ' + (50 + r * Math.sin(a)).toFixed(2);
+    }
+    return d + 'Z';
+  })();
+  function decorate() {
+    $$('.slide__inner').forEach(inner => {
+      if (inner.querySelector('.deco')) return;
+      inner.insertAdjacentHTML('afterbegin', `<div class="deco" aria-hidden="true"><svg class="deco__star deco__star--a" viewBox="0 0 100 100"><path d="${STAR}"/></svg><svg class="deco__star deco__star--b" viewBox="0 0 100 100"><path d="${STAR}"/></svg></div>`);
+    });
+  }
+
   /* smooth text: every word rises out of a soft blur */
   const TEXTY = '.s1__title, .h2, .lead, .s1__lead, .eyebrow, .finale__txt';
   function splitWords(el) {
@@ -109,6 +132,8 @@
     if (!MOTION) { el.style.opacity = 1; return null; }
     const words = splitWords(el);
     G.set(el, { opacity: 1, y: 0 });
+    const fl = el.querySelector('.flag');
+    if (fl) G.fromTo(fl, { opacity: 0, scale: .3, rotate: -25 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.1, ease: 'back.out(2)', delay, transformOrigin: '0% 100%' });
     return G.fromTo(words,
       { opacity: 0, yPercent: big ? 40 : 32, filter: `blur(${big ? 16 : 9}px)` },
       { opacity: 1, yPercent: 0, filter: 'blur(0px)', duration: big ? 1.7 : 1.25, ease: 'power3.out', delay,
@@ -856,7 +881,32 @@
     refresh() { }
   };
 
-  const MODS = [S1, S2, S3, S4, S5, S6];
+  /* =========================================================
+     SLIDE 7 · show × Aviasales end card
+     ========================================================= */
+  const S7 = {
+    played: false,
+    enter() {
+      if (this.played) return;
+      this.played = true;
+      const s = $('#s7');
+      const show = $('.cobrand__show', s), x = $('.cobrand__x', s), logo = $('.cobrand__logo', s), yt = $('.yt', s);
+      if (!MOTION) { [show, x, logo, yt].forEach(e => { e.style.opacity = 1; }); return; }
+      when($('.cobrand', s), () => {
+        const tl = G.timeline({ delay: mode === 'deck' ? .3 : .1 });
+        tl.add(() => textIn(show, 0, true), 0)
+          .fromTo(x, { opacity: 0, scale: .3, rotate: -90 }, { opacity: .7, scale: 1, rotate: 0, duration: 1.1, ease: 'back.out(2)' }, .55)
+          .fromTo(logo, { opacity: 0, x: 40, filter: 'blur(14px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.5, ease: 'power3.out', clearProps: 'filter,transform' }, .8)
+          .fromTo(yt, { opacity: 0, y: 34, scale: .8 }, { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: 'back.out(1.8)' }, 1.4)
+          .fromTo($('.yt__pole', s), { scaleY: 0 }, { scaleY: 1, duration: .6, ease: 'power3.out' }, 1.9)
+          .fromTo($('.flag--yt', s), { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 1.1, ease: 'elastic.out(1, .55)' }, 2.2);
+      });
+    },
+    leave() { },
+    refresh() { }
+  };
+
+  const MODS = [S1, S2, S3, S4, S5, S6, S7];
 
   /* =========================================================
      DECK ENGINE
@@ -904,7 +954,7 @@
 
   function initDeck() {
     /* starting slide from hash */
-    const m = /^#s([1-6])$/.exec(location.hash);
+    const m = /^#s([1-7])$/.exec(location.hash);
     cur = m ? +m[1] - 1 : 0;
     S1.allowIntro = cur === 0;
     slides.forEach((s, i) => s.classList.toggle('is-active', i === cur));
@@ -949,7 +999,7 @@
       go(cur + (Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 1 : -1) : (dy < 0 ? 1 : -1)));
     }, { passive: true });
 
-    addEventListener('hashchange', () => { const mm = /^#s([1-6])$/.exec(location.hash); if (mm) go(+mm[1] - 1); });
+    addEventListener('hashchange', () => { const mm = /^#s([1-7])$/.exec(location.hash); if (mm) go(+mm[1] - 1); });
   }
 
   function initScroll() {
@@ -967,7 +1017,7 @@
       if (e.isIntersecting) html.dataset.tone = e.target.dataset.theme || 'light';
     }), { rootMargin: '0px 0px -96% 0px' });
     slides.forEach(s => toneIO.observe(s));
-    const m = /^#s([1-6])$/.exec(location.hash);
+    const m = /^#s([1-7])$/.exec(location.hash);
     if (m) setTimeout(() => slides[+m[1] - 1].scrollIntoView(), 50);
   }
 
@@ -1033,6 +1083,7 @@
       if (use) use.setAttribute('href', document.fullscreenElement ? '#i-corners-in' : '#i-corners-out');
     });
 
+    flags(); decorate();
     S1.init();
     if (mode === 'deck') initDeck(); else initScroll();
     if (mode === 'deck' && cur !== 0) idleHydrate();
