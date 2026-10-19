@@ -1,0 +1,6 @@
+{
+  "headers": [
+    { "source": "/assets/(fonts|img|video)/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800, stale-while-revalidate=86400" }] },
+    { "source": "/assets/(css|js|vendor)/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" }] }
+  ]
+}
