@@ -6,7 +6,7 @@ window.I18N = {
   uz: {
     "meta.title": "Amerika bo‘ylab 80 kun | Noir Nabiev",
     "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Statistika",
-    "nav.s5": "Ssenariy", "nav.s6": "Bank kartasi", "nav.s7": "Ichimlik", "nav.s8": "Gazak", "nav.s9": "Hamkorlik",
+    "nav.s5": "Ssenariy", "nav.s6": "Kanal", "nav.s7": "Bank kartasi", "nav.s8": "Ichimlik", "nav.s9": "Gazak", "nav.s10": "Hamkorlik",
     "nav.prev": "Oldingi slayd", "nav.next": "Keyingi slayd",
 
     "b.eyebrow": "Brend integratsiyasi",
@@ -24,14 +24,14 @@ window.I18N = {
 
     "s1.eyebrow": "YouTube realiti-shou",
     "s1.title": "<span class=\"l\"><span>Amerika bo‘ylab</span></span><span class=\"l l--xl\"><span><em>80</em> kun</span></span>",
-    "s1.lead": "Ikki bloger AQShning 15 ta mashhur manzili bo‘ylab 80 kunlik sarguzashtga chiqadi. Har shaharda yangi shartlar va kutilmagan challenge’lar.",
+    "s1.lead": "Ikki bloger AQShning 15 ta mashhur shtati bo‘ylab 80 kunlik sarguzashtga chiqadi. Har shaharda yangi shartlar va kutilmagan challenge’lar.",
     "s1.cta": "Marshrutni ko‘rish",
     "s1.sound": "Ovoz bilan ko‘rish", "s1.replay": "Qayta ko‘rish",
     "pass.label": "Bortga chiqish taloni", "pass.from": "Toshkent", "pass.to": "Nyu-York",
-    "pass.pax": "Yo‘lovchilar", "pass.dur": "Davomiyligi", "pass.durv": "80 kun", "pass.stops": "Manzillar", "pass.season": "Mavsum",
+    "pass.pax": "Yo‘lovchilar", "pass.dur": "Davomiyligi", "pass.durv": "80 kun", "pass.stops": "Shtatlar", "pass.season": "Mavsum",
 
     "s2.country": "Amerika Qo‘shma Shtatlari",
-    "s2.title": "15 manzil. 80 kun. Bitta katta yo‘l.",
+    "s2.title": "15 shtat. 80 kun. Bitta katta yo‘l.",
     "s2.lead": "Nyu-Yorkdan Gavayigacha taxminan 16 000 km: megapolislar, kanyonlar, tog‘lar va okean.",
     "s2.days": "{a}-{b} kun", "s2.d1": "1-kun", "s2.d80": "80-kun",
     "s2.replay": "Marshrutni qayta chizish", "s2.alaska": "ALYASKA", "s2.hawaii": "GAVAYI",
@@ -57,7 +57,14 @@ window.I18N = {
     "s5.lead": "Har bir qism bir kunni ko‘rsatadi. Qur’a kimga limitsiz karta, kimga 0 dollar tushishini hal qiladi.",
     "s5.a.t": "Limitsiz karta", "s5.a.d": "Butun shahar uning ixtiyorida: eng yaxshi mehmonxona, restoran va transport.",
     "s5.b.t": "0 dollar", "s5.b.d": "Ovqat, yo‘l va tunashni o‘zi topadi. Faqat qonuniy yo‘llar bilan.",
-    "s5.ep": "1-qism. Nyu-York", "s5.epmeta": "Pilot · 22 daqiqa",
+
+    "sy.eyebrow": "Qayerda ko‘rish mumkin",
+    "sy.title": "Shou Noir Nabievning <em>YouTube</em> kanalida chiqadi",
+    "sy.lead": "Barcha 15 qism Noir Nabievning YouTube kanalida premyera bo‘ladi. Reels va Shorts esa ikki blogerning Instagram’dagi auditoriyasini to‘g‘ridan-to‘g‘ri kanalga olib keladi.",
+    "sy.k1": "obunachi", "sy.k2": "ko‘rish", "sy.k3": "o‘rtacha ko‘rish vaqti",
+    "sy.cta": "Kanalga o‘tish", "sy.sub": "Obuna bo‘lish", "sy.soon": "Tez kunda · Premyera",
+    "sy.ep": "Amerika bo‘ylab 80 kun · 1-qism. Nyu-York",
+    "sy.season": "1-mavsum pleylisti", "sy.count": "15 qism",
 
     "s6.eyebrow": "Hamkorlik",
     "s6.title": "Hamkor nimani oladi",
@@ -71,7 +78,7 @@ window.I18N = {
   ru: {
     "meta.title": "80 дней по Америке | Noir Nabiev",
     "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Статистика",
-    "nav.s5": "Сценарий", "nav.s6": "Банковская карта", "nav.s7": "Напиток", "nav.s8": "Снеки", "nav.s9": "Партнёрство",
+    "nav.s5": "Сценарий", "nav.s6": "Канал", "nav.s7": "Банковская карта", "nav.s8": "Напиток", "nav.s9": "Снеки", "nav.s10": "Партнёрство",
     "nav.prev": "Предыдущий слайд", "nav.next": "Следующий слайд",
 
     "b.eyebrow": "Интеграция бренда",
@@ -89,14 +96,14 @@ window.I18N = {
 
     "s1.eyebrow": "YouTube реалити-шоу",
     "s1.title": "<span class=\"l l--xl\"><span><em>80</em> дней</span></span><span class=\"l\"><span>по Америке</span></span>",
-    "s1.lead": "Два блогера отправляются в 80-дневное путешествие по 15 известным локациям США. В каждом городе новые условия и неожиданные челленджи.",
+    "s1.lead": "Два блогера отправляются в 80-дневное путешествие по 15 известным штатам США. В каждом городе новые условия и неожиданные челленджи.",
     "s1.cta": "Смотреть маршрут",
     "s1.sound": "Смотреть со звуком", "s1.replay": "Смотреть снова",
     "pass.label": "Посадочный талон", "pass.from": "Ташкент", "pass.to": "Нью-Йорк",
-    "pass.pax": "Пассажиры", "pass.dur": "Длительность", "pass.durv": "80 дней", "pass.stops": "Локации", "pass.season": "Сезон",
+    "pass.pax": "Пассажиры", "pass.dur": "Длительность", "pass.durv": "80 дней", "pass.stops": "Штаты", "pass.season": "Сезон",
 
     "s2.country": "Соединённые Штаты Америки",
-    "s2.title": "15 локаций. 80 дней. Одна большая дорога.",
+    "s2.title": "15 штатов. 80 дней. Одна большая дорога.",
     "s2.lead": "Около 16 000 км от Нью-Йорка до Гавайев: мегаполисы, каньоны, горы и океан.",
     "s2.days": "Дни {a}-{b}", "s2.d1": "День 1", "s2.d80": "День 80",
     "s2.replay": "Повторить маршрут", "s2.alaska": "АЛЯСКА", "s2.hawaii": "ГАВАЙИ",
@@ -122,7 +129,14 @@ window.I18N = {
     "s5.lead": "Каждая серия показывает один день. Жребий решает, кому достанется безлимитная карта, а кому ноль долларов.",
     "s5.a.t": "Безлимитная карта", "s5.a.d": "Весь город в его распоряжении: лучшие отели, рестораны и транспорт.",
     "s5.b.t": "Ноль долларов", "s5.b.d": "Еду, дорогу и ночлег добывает сам. Только законными способами.",
-    "s5.ep": "Серия 1. Нью-Йорк", "s5.epmeta": "Пилот · 22 минуты",
+
+    "sy.eyebrow": "Где смотреть",
+    "sy.title": "Шоу выходит на <em>YouTube-канале</em> Noir Nabiev",
+    "sy.lead": "Все 15 серий выходят премьерой на YouTube-канале Noir Nabiev. А Reels и Shorts приводят Instagram-аудиторию обоих блогеров прямо на канал.",
+    "sy.k1": "подписчиков", "sy.k2": "просмотров", "sy.k3": "среднее время просмотра",
+    "sy.cta": "Перейти на канал", "sy.sub": "Подписаться", "sy.soon": "Скоро · Премьера",
+    "sy.ep": "80 дней по Америке · Серия 1. Нью-Йорк",
+    "sy.season": "Плейлист 1 сезона", "sy.count": "15 серий",
 
     "s6.eyebrow": "Партнёрство",
     "s6.title": "Что получает партнёр",

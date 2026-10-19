@@ -280,7 +280,8 @@ html.is-scroll[data-tone="dark"] .bar { background: rgba(14, 22, 48, .96); borde
 .hcard__body { display: contents; }
 .hcard__id { align-self: center; min-width: 0; }
 .hcard__stats { grid-column: 1 / -1; }
-.hcard__name { font-family: var(--f-display); font-weight: 700; font-size: 1.35rem; line-height: 1.1; }
+/* scales with the phone width so "Shermuxammatov" never runs past the card edge */
+.hcard__name { font-family: var(--f-display); font-weight: 700; font-size: clamp(.95rem, 12.3vw - 1.9rem, 1.35rem); line-height: 1.1; overflow-wrap: anywhere; }
 .hcard__handle { display: inline-flex; align-items: center; gap: .3rem; margin-top: .35rem; text-decoration: none; color: var(--muted); text-transform: none; letter-spacing: .01em; font-size: .78rem; }
 .hcard__handle:hover { color: var(--ink); }
 .i--verified { color: var(--sky); width: 1rem; height: 1rem; }
@@ -575,11 +576,23 @@ html[data-tone="dark"] .dnav__count, html[data-tone="dark"] .dnav__count b { col
    5 · scenario: one city, two realities
    Phones: the A/B cards stay side by side (that face-off is the
    point), everything under them reads as one tidy column.
+   Desktop: the two cards meet in the middle around a "vs" badge.
    ========================================================= */
-.s5__grid { display: flex; flex-direction: column; gap: 2.4rem; }
-.s5__left { display: flex; flex-direction: column; min-width: 0; }
+.s5__grid { display: flex; flex-direction: column; }
 
-.roles { display: grid; grid-template-columns: 1fr 1fr; gap: .9rem; margin-top: 1.6rem; }
+.roles { --rgap: 1.5rem; position: relative; display: grid; grid-template-columns: 1fr 1fr; gap: var(--rgap); margin-top: 1.6rem; container-type: inline-size; }
+/* sits on the seam between the two cards, at card mid-height (cards are 1.586 : 1) */
+.duel {
+  position: absolute; z-index: 3; left: 50%; top: calc((50cqi - var(--rgap) / 2) / 3.172);
+  width: 2.5rem; height: 2.5rem; margin: -1.25rem 0 0 -1.25rem; border-radius: 50%;
+  display: grid; place-items: center; padding-bottom: .15em;
+  background: var(--ink); color: var(--card); box-shadow: 0 0 0 .22rem var(--paper), var(--shadow);
+  font-family: var(--f-display); font-style: italic; font-weight: 800; font-size: 1.1rem; line-height: 1;
+}
+.duel::before { content: ""; position: absolute; inset: -.5rem; border-radius: 50%; border: 1.5px dashed var(--accent); opacity: .55; animation: spin 24s linear infinite; }
+.js:not(.is-static) .duel { opacity: 0; }
+.is-static .duel { opacity: 1 !important; }
+.is-scroll .bankcard > .bankcard__inf { right: .9em; }
 .role { display: flex; flex-direction: column; gap: .9rem; min-width: 0; container-type: inline-size; }
 .role__txt h3 { display: flex; align-items: flex-start; gap: .5rem; font-size: 1rem; font-weight: 800; line-height: 1.2; }
 .role__txt h3 .tag { margin-top: -.15rem; }
@@ -632,29 +645,8 @@ html[data-tone="dark"] .dnav__count, html[data-tone="dark"] .dnav__count b { col
 .season b { display: block; font-family: var(--f-display); font-weight: 700; font-size: 1.9rem; line-height: 1; font-variant-numeric: lining-nums; white-space: nowrap; }
 .season small { display: block; font-size: .8rem; color: var(--muted); font-weight: 600; line-height: 1.3; margin-top: .35rem; }
 
-/* pilot episode run-sheet; on phones the timecode sits above each beat */
-.board { background: var(--card); border-radius: var(--r-card); padding: 1.2rem 1.15rem 1.35rem; box-shadow: var(--shadow); display: flex; flex-direction: column; }
-.board__head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
-.board__title { font-family: var(--f-display); font-weight: 700; font-size: 1.45rem; line-height: 1.1; text-wrap: balance; }
-.board__meta { color: var(--accent); margin-top: .35rem; }
-.board__img { width: 7rem; aspect-ratio: 16 / 7; border-radius: .55rem; overflow: hidden; flex: none; background: var(--paper-2); }
-.board__img img { width: 100%; height: 100%; object-fit: cover; }
-.beats { --bgap: 1.2rem; display: flex; flex-direction: column; gap: var(--bgap); padding-top: 1.2rem; }
-.beat { --dc: .46rem; position: relative; display: grid; grid-template-columns: .72rem 1fr; grid-template-areas: "dot tc" ". body"; column-gap: .9rem; align-items: start; }
-.beat__tc { grid-area: tc; font-family: var(--f-mono); font-size: .7rem; letter-spacing: .04em; line-height: 1.2; color: var(--accent); }
-.beat__dot { grid-area: dot; width: .72rem; height: .72rem; border-radius: 50%; background: var(--card); border: 2px solid var(--ink); margin-top: .1rem; position: relative; z-index: 1; }
-.beat__ln { position: absolute; left: calc(.36rem - .5px); top: var(--dc); bottom: calc(-1 * (var(--bgap) + var(--dc))); width: 1px; background: var(--line-strong); transform-origin: top; }
-.beat__body { grid-area: body; min-width: 0; margin-top: .25rem; }
-.beat__head { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
-.beat__t { font-weight: 800; font-size: 1rem; line-height: 1.3; }
-.beat__who { display: flex; gap: .2rem; }
-.beat__who .tag { width: 1.15rem; height: 1.15rem; font-size: .58rem; }
-.beat__d { font-size: .88rem; line-height: 1.5; color: var(--ink-2); margin-top: .2rem; text-wrap: pretty; }
-.js:not(.is-static) .beat { opacity: 0; }
-.is-static .beat { opacity: 1 !important; }
-
 @media (max-width: 380px) {
-  .roles { gap: .7rem; }
+  .roles { --rgap: 1.2rem; }
   .role__txt p { font-size: .84rem; }
 }
 @media (min-width: 600px) and (max-width: 999px) {
@@ -662,34 +654,124 @@ html[data-tone="dark"] .dnav__count, html[data-tone="dark"] .dnav__count b { col
   .season { grid-template-columns: repeat(4, 1fr); }
 }
 
-.is-deck .s5__grid { display: grid; grid-template-columns: 40rem 1fr; gap: 3.6rem; height: 100%; padding: 6.2rem 4.2rem 3.4rem 4.6rem; }
-.is-deck .s5 .lead { font-size: 1rem; }
-.is-deck .roles { gap: 1.2rem; margin-top: 2.2rem; }
-.is-deck .role { gap: .8rem; }
-.is-deck .bankcard, .is-deck .zerocard { font-size: 1rem; }
-.is-deck .role__txt h3 { font-size: .98rem; }
-.is-deck .role__txt p { font-size: .82rem; line-height: 1.45; margin-top: .35rem; }
-.is-deck .rules { grid-template-columns: 1fr 1fr; gap: 1rem 1.2rem; margin-top: 2.4rem; border-top: 0; }
-.is-deck .rules li { gap: .65rem; padding: 0; border-bottom: 0; font-size: .84rem; }
-.is-deck .rules .i { width: 2.3rem; height: 2.3rem; padding: .55rem; }
-.is-deck .season { grid-template-columns: repeat(4, 1fr); gap: .6rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--line); }
-.is-deck .season b { font-size: 1.45rem; line-height: 1.05; }
-.is-deck .season small { font-size: .7rem; line-height: 1.25; margin-top: .2rem; }
-.is-deck .s5__right { min-height: 0; }
-.is-deck .board { height: 100%; padding: 1.5rem 1.8rem; }
-.is-deck .board__title { font-size: 1.7rem; }
-.is-deck .board__img { width: 10rem; }
-.is-deck .beats { --bgap: 0rem; flex: 1; padding-top: 1.1rem; }
-.is-deck .beat { --dc: .66rem; flex: 1 1 0; grid-template-columns: 3.2rem 1.5rem 1fr; grid-template-areas: "tc dot body"; column-gap: .6rem; }
-.is-deck .beat__tc { font-size: .72rem; color: var(--muted); padding-top: .1rem; }
-.is-deck .beat__dot { margin: .3rem auto 0; }
-.is-deck .beat__ln { left: calc(4.55rem - .5px); }
-.is-deck .beat__body { margin-top: 0; }
-.is-deck .beat__t { font-size: .95rem; }
-.is-deck .beat__d { font-size: .82rem; line-height: 1.45; }
+.is-deck .s5__grid { display: grid; grid-template-rows: auto 1fr auto auto; height: 100%; padding: 6.4rem 5rem 3.6rem; }
+.is-deck .s5 .lead { font-size: 1rem; max-width: 64ch; }
+.is-deck .roles { --rgap: 0rem; grid-template-columns: 1fr 7rem 1fr; align-items: center; align-self: center; margin-top: 0; container-type: normal; }
+.is-deck .duel { position: relative; left: auto; top: auto; margin: 0 auto; width: 4.4rem; height: 4.4rem; font-size: 1.75rem; box-shadow: 0 0 0 .35rem var(--paper), var(--shadow); }
+.is-deck .duel::before { inset: -.9rem; }
+.is-deck .role { flex-direction: row; align-items: center; gap: 1.8rem; container-type: normal; }
+.is-deck .role--a { flex-direction: row-reverse; }
+.is-deck .bankcard, .is-deck .zerocard { flex: none; width: 27rem; font-size: 1.39rem; }
+.is-deck .role__txt { flex: 1; min-width: 0; }
+.is-deck .role__txt h3 { font-size: 1.12rem; }
+.is-deck .role__txt p { font-size: .92rem; line-height: 1.5; margin-top: .5rem; }
+.is-deck .rules { grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 0; padding: 1.4rem 0; border-top: 1px solid var(--line); }
+.is-deck .rules li { gap: .7rem; padding: 0; border-bottom: 0; font-size: .86rem; }
+.is-deck .rules .i { width: 2.4rem; height: 2.4rem; padding: .58rem; }
+.is-deck .season { grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 0; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+.is-deck .season b { font-size: 1.7rem; line-height: 1.05; }
+.is-deck .season small { font-size: .74rem; line-height: 1.25; margin-top: .25rem; }
 
 /* =========================================================
-   6-8 · brand integration examples
+   6 · where the show airs: Noir Nabiev's YouTube channel
+   A watch-page window: premiere player, channel row and the
+   15-episode season playlist drifting by underneath.
+   ========================================================= */
+.sy__grid { display: flex; flex-direction: column; gap: 2.4rem; }
+.sy__copy { display: flex; flex-direction: column; min-width: 0; }
+.sy .eyebrow { color: var(--yt); }
+.sy__mark { width: 1.5rem; height: 1.5rem; }
+.sy .h2 em { font-style: italic; color: var(--accent); }
+.sy__stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--line); }
+.sy__stat { min-width: 0; }
+.sy__stat b { display: block; font-family: var(--f-display); font-weight: 700; font-size: 1.32rem; line-height: 1.05; white-space: nowrap; font-variant-numeric: lining-nums tabular-nums; }
+.sy__stat small { display: block; font-size: .74rem; color: var(--muted); font-weight: 600; line-height: 1.3; margin-top: .3rem; }
+.sy__cta { margin-top: 1.8rem; }
+.btn--yt { background: var(--yt); color: #fff; text-decoration: none; box-shadow: 0 .8rem 1.6rem -.8rem rgba(230, 33, 23, .7); }
+.btn--yt:hover { background: var(--ink); }
+.btn--yt .i:last-child { transition: transform .35s var(--ease); }
+.btn--yt:hover .i:last-child { transform: translate(.15rem, -.15rem); }
+
+.sy__stage { position: relative; min-width: 0; }
+/* a red card peeking out from behind the window */
+.sy__stage::before { content: ""; position: absolute; inset: 1.2rem -.5rem -.7rem 1.2rem; border-radius: var(--r-card); background: var(--accent); transform: rotate(2.6deg); opacity: .9; }
+.ytw { position: relative; background: var(--card); border-radius: var(--r-card); box-shadow: var(--shadow-lg); padding: .6rem; display: flex; flex-direction: column; min-width: 0; }
+.ytw__player { position: relative; display: block; aspect-ratio: 16 / 9; border-radius: .8rem; overflow: hidden; background: var(--navy); }
+.ytw__player img { width: 100%; height: 100%; object-fit: cover; }
+.ytw__player::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9, 13, 30, .42) 0%, rgba(9, 13, 30, 0) 26%, rgba(9, 13, 30, 0) 74%, rgba(9, 13, 30, .5) 100%); }
+.ytw__badge, .ytw__ep { position: absolute; z-index: 2; top: .7rem; display: inline-flex; align-items: center; gap: .45rem; height: 1.75rem; padding: 0 .7rem; border-radius: 999px; background: rgba(9, 13, 30, .74); color: #FBF7EC; font-size: .6rem; }
+.ytw__badge { left: .7rem; }
+.ytw__ep { right: .7rem; }
+.ytw__dot { width: .45rem; height: .45rem; border-radius: 50%; background: var(--yt); box-shadow: 0 0 0 .2rem rgba(230, 33, 23, .3); animation: blink 1.2s ease-in-out infinite alternate; }
+@keyframes blink { from { opacity: 1; } to { opacity: .35; } }
+.ytw__play { position: absolute; z-index: 2; left: 50%; top: 50%; width: 4rem; height: 2.8rem; margin: -1.4rem 0 0 -2rem; border-radius: .8rem; background: var(--yt); color: #fff; display: grid; place-items: center; box-shadow: 0 .8rem 1.8rem -.5rem rgba(9, 13, 30, .55); transition: transform .35s var(--ease); }
+.ytw__play .i { width: 1.25rem; height: 1.25rem; }
+.ytw__play::before { content: ""; position: absolute; inset: 0; border-radius: inherit; border: 2px solid var(--yt); animation: ytpulse 2.2s var(--ease) infinite; }
+@keyframes ytpulse { from { transform: scale(1); opacity: .8; } to { transform: scale(1.55, 1.75); opacity: 0; } }
+.ytw__player:hover .ytw__play { transform: scale(1.08); }
+.ytw__prog { position: absolute; z-index: 2; left: 0; right: 0; bottom: 0; height: 4px; background: rgba(251, 247, 236, .3); }
+.ytw__prog i { position: relative; display: block; width: 34%; height: 100%; background: var(--yt); }
+.ytw__prog i::after { content: ""; position: absolute; right: -.4rem; top: 50%; width: .8rem; height: .8rem; margin-top: -.4rem; border-radius: 50%; background: var(--yt); }
+
+.ytw__info { display: flex; flex-direction: column; gap: .75rem; padding: .85rem .35rem .1rem; }
+.ytw__title { font-weight: 800; font-size: 1rem; line-height: 1.3; text-wrap: balance; }
+.ytw__row { display: flex; align-items: center; gap: .7rem; }
+.ytw__ava { width: 2.5rem; height: 2.5rem; border-radius: 50%; object-fit: cover; flex: none; background: var(--paper-2); }
+.ytw__ch { flex: 1; min-width: 0; }
+.ytw__ch b { display: flex; align-items: center; gap: .3rem; font-weight: 800; font-size: .9rem; line-height: 1.2; }
+.ytw__ch small { display: block; font-size: .74rem; color: var(--muted); font-weight: 600; margin-top: .1rem; white-space: nowrap; }
+.ytw__sub { flex: none; display: inline-flex; align-items: center; height: 2.3rem; padding: 0 1.1rem; border-radius: 999px; background: var(--ink); color: var(--card); font-weight: 800; font-size: .8rem; text-decoration: none; white-space: nowrap; transition: background .3s var(--ease); }
+.ytw__sub:hover { background: var(--yt); }
+
+.ytw__list { margin-top: .85rem; padding: .8rem .35rem .25rem; border-top: 1px solid var(--line); min-width: 0; }
+.ytw__lt { display: flex; justify-content: space-between; gap: 1rem; color: var(--muted); font-size: .6rem; margin-bottom: .65rem; }
+.ytw__view { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+.ytw__track { display: flex; width: max-content; animation: marquee 64s linear infinite; }
+.ytw__view:hover .ytw__track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+.ep { flex: none; width: 8.2rem; margin-right: .7rem; }
+.ep__img { display: block; aspect-ratio: 16 / 9; border-radius: .45rem; overflow: hidden; background: var(--paper-2); }
+.ep__img img { width: 100%; height: 100%; object-fit: cover; }
+.ep__cap { display: block; margin-top: .4rem; font-size: .74rem; font-weight: 800; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ep__n { color: var(--accent); font-size: .58rem; margin-right: .4rem; }
+
+/* a vertical short leaning on the window: Reels and Shorts feed the channel */
+.sy__short { display: none; }
+.js:not(.is-static) .ytw, .js:not(.is-static) .sy__short { opacity: 0; }
+.is-static .ytw, .is-static .sy__short { opacity: 1 !important; }
+@media (max-width: 380px) {
+  .sy__stats { gap: .7rem; }
+  .sy__stat b { font-size: 1.12rem; }
+}
+@media (max-width: 340px) {
+  .sy__stats { grid-template-columns: 1fr 1fr; row-gap: 1rem; }
+}
+
+.is-deck .sy__grid { display: grid; grid-template-columns: 33rem 1fr; gap: 5.4rem; align-items: center; height: 100%; padding: 6.4rem 4.6rem 3.6rem 5rem; }
+.is-deck .sy .h2 { font-size: 2.95rem; }
+.is-deck .sy .lead { font-size: 1.02rem; }
+.is-deck .sy__stats { margin-top: 2.2rem; padding-top: 1.4rem; }
+.is-deck .sy__stat b { font-size: 1.75rem; }
+.is-deck .sy__cta { margin-top: 2.2rem; }
+.is-deck .sy__stage { width: 100%; max-width: 50rem; justify-self: end; }
+.is-deck .ytw { padding: .75rem; }
+.is-deck .ytw__badge, .is-deck .ytw__ep { top: 1rem; height: 2rem; font-size: .64rem; }
+.is-deck .ytw__badge { left: 1rem; }
+.is-deck .ytw__ep { right: 1rem; }
+.is-deck .ytw__play { width: 5.2rem; height: 3.6rem; margin: -1.8rem 0 0 -2.6rem; border-radius: 1rem; }
+.is-deck .ytw__play .i { width: 1.6rem; height: 1.6rem; }
+.is-deck .ytw__title { font-size: 1.1rem; }
+.is-deck .ytw__info { padding: 1rem .45rem .1rem; }
+.is-deck .ep { width: 8.6rem; margin-right: .8rem; }
+.is-deck .sy__short {
+  display: block; position: absolute; z-index: 3; left: -4.9rem; top: 8.6rem; width: 7.4rem; aspect-ratio: 9 / 16;
+  border-radius: .9rem; overflow: hidden; background: var(--paper-2); border: .3rem solid var(--card); box-shadow: var(--shadow-lg); transform: rotate(-6deg);
+}
+.sy__short img { width: 100%; height: 100%; object-fit: cover; }
+.sy__shorttag { position: absolute; left: .4rem; right: .4rem; bottom: .45rem; padding: .3rem .4rem; border-radius: .4rem; background: rgba(9, 13, 30, .74); color: #FBF7EC; font-size: .5rem; text-align: center; white-space: nowrap; }
+
+/* =========================================================
+   7-9 · brand integration examples
    ========================================================= */
 .sb__grid { display: flex; flex-direction: column; gap: 2rem; }
 .sb__copy { display: flex; flex-direction: column; }
@@ -728,7 +810,7 @@ html[data-tone="dark"] .dnav__count, html[data-tone="dark"] .dnav__count b { col
 .is-deck .sb__frame, .is-deck .sb__frame--main { aspect-ratio: auto; height: 100%; }
 
 /* =========================================================
-   9 · partnership (cream) + show × Aviasales band
+   10 · partnership (cream) + show × Aviasales band
    ========================================================= */
 .gets__ic { width: 2.6rem; height: 2.6rem; border-radius: 50%; display: grid; place-items: center; flex: none; background: rgba(200, 67, 44, .1); color: var(--accent); }
 .gets__ic .i { width: 1.2rem; height: 1.2rem; }
@@ -777,6 +859,10 @@ html[data-tone="dark"] .dnav__count, html[data-tone="dark"] .dnav__count b { col
 .slide:not(.is-live) .flag i::after,
 .slide:not(.is-live) .deco__star,
 .slide:not(.is-live) .vs__ring,
+.slide:not(.is-live) .duel::before,
+.slide:not(.is-live) .ytw__track,
+.slide:not(.is-live) .ytw__dot,
+.slide:not(.is-live) .ytw__play::before,
 .slide:not(.is-live) .map .pin .pin-ring { animation-play-state: paused; }
 .is-scroll .deco__star { animation: none; }
 .is-scroll .cf-card { transition: transform .95s var(--ease), opacity .7s var(--ease); }
