@@ -784,68 +784,53 @@
   };
 
   /* =========================================================
-     SLIDE 5 · scenario
+     SLIDES 5-7 · how a brand looks in the show
      ========================================================= */
-  const S5 = {
-    played: false, built: false,
-    build() {
-      $('#rules').innerHTML = D.rules.map(r => `<li class="rv"><svg class="i"><use href="#i-${r.icon}"/></svg>${T(r.t)}</li>`).join('');
-      $('#season').innerHTML = D.season.map(s => `<div><b>${s.v}</b>${T(s.l, 'small')}</div>`).join('');
-      const who = () => '<span class="tag tag--a">A</span><span class="tag tag--b">B</span>';
-      $('#beats').innerHTML = D.beats.map(b => `
-        <li class="beat">
-          <span class="beat__tc">${b.tc}</span>
-          <span class="beat__dot"></span>
-          <div><div class="beat__head">${T(b.t, 'span', 'beat__t')}<span class="beat__who">${who(b.who)}</span></div>${T(b.d, 'p', 'beat__d')}</div>
-        </li>`).join('');
-
-      /* bank card tilt */
-      const card = $('#bankcard');
-      if (MOTION && matchMedia('(hover: hover)').matches) {
-        const role = card.parentElement;
-        role.addEventListener('pointermove', e => {
-          const r = card.getBoundingClientRect();
-          const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
-          G.to(card, { rotateY: px * 14, rotateX: -py * 14, transformPerspective: 700, duration: .5, ease: 'power2.out' });
+  const brandSlide = id => ({
+    played: false,
+    bind(s) {
+      if (this.bound) return;
+      this.bound = true;
+      const main = $('.sb__frame--main img', s);
+      $$('.sb__frame:not(.sb__frame--main)', s).forEach(f => f.addEventListener('click', () => {
+        const img = $('img', f);
+        const a = main.getAttribute('src'), b = img.getAttribute('src'), aAlt = main.alt, bAlt = img.alt;
+        if (!a || !b) return;
+        const swap = () => { main.src = b; img.src = a; main.alt = bAlt; img.alt = aAlt; f.setAttribute('aria-label', aAlt); };
+        if (!MOTION) { swap(); return; }
+        G.to([main, img], {
+          opacity: 0, duration: .22, ease: 'power1.in', onComplete: () => {
+            swap();
+            G.fromTo(main, { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: .9, ease: 'power3.out', clearProps: 'transform' });
+            G.to(img, { opacity: 1, duration: .5 });
+          }
         });
-        role.addEventListener('pointerleave', () => G.to(card, { rotateY: 0, rotateX: 0, duration: .8, ease: 'expo.out' }));
-      }
-      this.built = true;
+      }));
     },
     enter() {
-      if (!this.built) this.build();
-      const s = $('#s5');
+      const s = $(id);
       hydrate(s);
+      this.bind(s);
       if (this.played) return;
       this.played = true;
-      revealWhen($$('.s5__left > .h2, .s5__left > .lead', s), .1);
-      const roles = $$('.rv-role', s);
-      when(roles[0], () => {
-        if (!MOTION) { roles.forEach(r => { r.style.opacity = 1; }); return; }
-        G.fromTo(roles[0], { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out' });
-        G.fromTo('#bankcard', { rotateY: -70, rotateX: 12, transformPerspective: 800, x: -30 }, { rotateY: 0, rotateX: 0, x: 0, duration: 1.6, ease: 'expo.out' });
-        G.fromTo('.bankcard__shine', { xPercent: -120 }, { xPercent: 140, duration: 1.4, ease: 'power2.inOut', delay: .8 });
-        G.fromTo(roles[1], { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', delay: .18 });
-        G.fromTo('.zerocard__amt', { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 1, duration: .9, ease: 'back.out(2)', delay: .5 });
-        G.fromTo('.zerocard__cut', { scaleX: 0 }, { scaleX: 1, duration: .6, ease: 'power3.inOut', delay: 1.05 });
-      }, .3);
-      revealWhen($$('#rules li', s), .7, { stagger: .07, y: 18 });
-      revealWhen([$('#season')], 1);
-
-      const board = $('.board', s), beats = $$('.beat', s), list = $('#beats');
-      when(board, () => {
-        reveal(board, 0, { y: 50 });
-        if (!MOTION) return;
-        G.fromTo(list, { '--tl': 0 }, { '--tl': 1, duration: 2.6, ease: 'power1.inOut', delay: .35 });
-        G.fromTo(beats, { opacity: 0, x: 18 }, { opacity: 1, x: 0, duration: .8, ease: 'expo.out', stagger: .26, delay: .4, clearProps: 'transform' });
-        G.fromTo($$('.beat__dot', s), { scale: 0 }, { scale: 1, duration: .5, ease: 'back.out(3)', stagger: .26, delay: .45 });
-      }, .25);
+      revealWhen($$('.sb__copy > .rv', s), .1, { stagger: .1 });
+      const media = $('.sb__media', s);
+      when(media, () => {
+        if (!MOTION) { media.style.opacity = 1; return; }
+        G.set(media, { opacity: 1 });
+        const frames = $$('.sb__frame', s);
+        G.fromTo(frames, { clipPath: 'inset(0% 0% 0% 100% round 1.2rem)' }, { clipPath: 'inset(0% 0% 0% 0% round 1.2rem)', duration: 1.4, ease: 'expo.inOut', stagger: .16 });
+        G.fromTo($$('.sb__frame img', s), { scale: 1.22 }, { scale: 1, duration: 2.4, ease: 'power3.out', stagger: .16 });
+        G.fromTo($$('.sb__cap', s), { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .9, ease: 'power3.out', delay: 1 });
+      }, .15);
     },
-    leave() { }
-  };
+    leave() { },
+    refresh() { }
+  });
+  const B1 = brandSlide('#s5'), B2 = brandSlide('#s6'), B3 = brandSlide('#s7');
 
   /* =========================================================
-     SLIDE 6 · partnership + finale
+     SLIDE 8 · partnership + show × Aviasales band
      ========================================================= */
   const S6 = {
     played: false, built: false,
@@ -857,7 +842,7 @@
     },
     enter() {
       if (!this.built) this.build();
-      const s = $('#s6');
+      const s = $('#s8');
       if (this.played) return;
       this.played = true;
       revealWhen($$('.s6__left > .rv', s), .1, { stagger: .14 });
@@ -865,48 +850,25 @@
       const right = $('.s6__right', s);
       when(right, () => { reveal(right, 0, { y: 40 }); reveal($$('#scope li', s), .3, { stagger: .07, y: 14 }); }, .45);
 
-      const fin = $('.finale', s);
-      when(fin, () => {
-        const txt = $('#finaleTxt'), avia = $('#avia'), stamp = $('#stamp');
-        if (!MOTION) { [txt, avia, stamp].forEach(e => { e.style.opacity = 1; }); return; }
-        const tl = G.timeline({ delay: mode === 'deck' ? 1.5 : .2 });
-        tl.fromTo('.finale__trail', { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'power2.inOut' })
-          .add(() => textIn(txt, 0, true), .15)
-          .fromTo(stamp, { scale: 2.8, opacity: 0, rotate: -40 }, { scale: 1, opacity: 1, rotate: -14, duration: .55, ease: 'power4.in' }, 1.2)
-          .fromTo(fin, { x: 0 }, { keyframes: [{ x: -7 }, { x: 6 }, { x: -4 }, { x: 2 }, { x: 0 }], duration: .35, ease: 'none' }, 1.75)
-          .fromTo(avia, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 1.1, ease: 'power3.out' }, 1.6);
+      const band = $('.coband', s);
+      const show = $('.cobrand__show', s), x = $('.cobrand__x', s), logo = $('.cobrand__logo', s), yt = $('.yt', s);
+      when(band, () => {
+        if (!MOTION) { [show, x, logo, yt].forEach(e => { e.style.opacity = 1; }); return; }
+        const tl = G.timeline({ delay: mode === 'deck' ? 1.3 : .15 });
+        tl.fromTo('.coband__trail', { clipPath: 'inset(0% 100% 0% 0%)' }, { clipPath: 'inset(0% 0% 0% 0%)', duration: 1.3, ease: 'power2.inOut' })
+          .add(() => textIn(show, 0, true), .2)
+          .fromTo(x, { opacity: 0, scale: .3, rotate: -90 }, { opacity: .6, scale: 1, rotate: 0, duration: 1.1, ease: 'back.out(2)' }, .7)
+          .fromTo(logo, { opacity: 0, x: 40, filter: 'blur(14px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.5, ease: 'power3.out', clearProps: 'filter,transform' }, .9)
+          .fromTo(yt, { opacity: 0, y: 30, scale: .8 }, { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: 'back.out(1.8)' }, 1.3)
+          .fromTo($('.yt__pole', s), { scaleY: 0 }, { scaleY: 1, duration: .6, ease: 'power3.out' }, 1.8)
+          .fromTo($('.flag--yt', s), { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 1.1, ease: 'elastic.out(1, .55)' }, 2.1);
       }, 0);
     },
     leave() { },
     refresh() { }
   };
 
-  /* =========================================================
-     SLIDE 7 · show × Aviasales end card
-     ========================================================= */
-  const S7 = {
-    played: false,
-    enter() {
-      if (this.played) return;
-      this.played = true;
-      const s = $('#s7');
-      const show = $('.cobrand__show', s), x = $('.cobrand__x', s), logo = $('.cobrand__logo', s), yt = $('.yt', s);
-      if (!MOTION) { [show, x, logo, yt].forEach(e => { e.style.opacity = 1; }); return; }
-      when($('.cobrand', s), () => {
-        const tl = G.timeline({ delay: mode === 'deck' ? .3 : .1 });
-        tl.add(() => textIn(show, 0, true), 0)
-          .fromTo(x, { opacity: 0, scale: .3, rotate: -90 }, { opacity: .7, scale: 1, rotate: 0, duration: 1.1, ease: 'back.out(2)' }, .55)
-          .fromTo(logo, { opacity: 0, x: 40, filter: 'blur(14px)' }, { opacity: 1, x: 0, filter: 'blur(0px)', duration: 1.5, ease: 'power3.out', clearProps: 'filter,transform' }, .8)
-          .fromTo(yt, { opacity: 0, y: 34, scale: .8 }, { opacity: 1, y: 0, scale: 1, duration: 1.1, ease: 'back.out(1.8)' }, 1.4)
-          .fromTo($('.yt__pole', s), { scaleY: 0 }, { scaleY: 1, duration: .6, ease: 'power3.out' }, 1.9)
-          .fromTo($('.flag--yt', s), { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 1.1, ease: 'elastic.out(1, .55)' }, 2.2);
-      });
-    },
-    leave() { },
-    refresh() { }
-  };
-
-  const MODS = [S1, S2, S3, S4, S5, S6, S7];
+  const MODS = [S1, S2, S3, S4, B1, B2, B3, S6];
 
   /* =========================================================
      DECK ENGINE
@@ -954,7 +916,7 @@
 
   function initDeck() {
     /* starting slide from hash */
-    const m = /^#s([1-7])$/.exec(location.hash);
+    const m = /^#s([1-8])$/.exec(location.hash);
     cur = m ? +m[1] - 1 : 0;
     S1.allowIntro = cur === 0;
     slides.forEach((s, i) => s.classList.toggle('is-active', i === cur));
@@ -999,7 +961,7 @@
       go(cur + (Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 1 : -1) : (dy < 0 ? 1 : -1)));
     }, { passive: true });
 
-    addEventListener('hashchange', () => { const mm = /^#s([1-7])$/.exec(location.hash); if (mm) go(+mm[1] - 1); });
+    addEventListener('hashchange', () => { const mm = /^#s([1-8])$/.exec(location.hash); if (mm) go(+mm[1] - 1); });
   }
 
   function initScroll() {
@@ -1017,7 +979,7 @@
       if (e.isIntersecting) html.dataset.tone = e.target.dataset.theme || 'light';
     }), { rootMargin: '0px 0px -96% 0px' });
     slides.forEach(s => toneIO.observe(s));
-    const m = /^#s([1-7])$/.exec(location.hash);
+    const m = /^#s([1-8])$/.exec(location.hash);
     if (m) setTimeout(() => slides[+m[1] - 1].scrollIntoView(), 50);
   }
 

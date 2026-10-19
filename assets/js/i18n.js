@@ -5,8 +5,22 @@
 window.I18N = {
   uz: {
     "meta.title": "Amerika bo‘ylab 80 kun | Noir Nabiev",
-    "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Statistika", "nav.s5": "Ssenariy", "nav.s6": "Hamkorlik", "nav.s7": "Aviasales",
-    "nav.prev": "Oldingi slayd", "nav.next": "Keyingi slayd", "bar.fs": "To‘liq ekran",
+    "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Statistika",
+    "nav.s5": "Bank kartasi", "nav.s6": "Ichimlik", "nav.s7": "Gazak", "nav.s8": "Hamkorlik",
+    "nav.prev": "Oldingi slayd", "nav.next": "Keyingi slayd",
+
+    "b.eyebrow": "Brend integratsiyasi",
+    "b.title": "Brendingiz shouda shunday ko‘rinadi",
+    "b1.cat": "Bank va to‘lov kartalari", "b1.where": "Chikago · osmono‘par tomidagi restoran",
+    "b1.text": "Kechki ovqat hisobi aynan sizning kartangiz bilan to‘lanadi. Karta kadrda aniq ko‘rinadi, qahramon esa uning qulayligini o‘z tajribasida ko‘rsatadi.",
+    "b1.f1": "To‘lov sahnasi kadrda", "b1.f2": "Logotip yaqin rejada", "b1.f3": "Reels’da alohida eslatma", "b1.cap": "CHICAGO, IL",
+    "b2.cat": "Ichimliklar", "b2.where": "Mayami · okean bo‘yidagi plyaj",
+    "b2.text": "Issiq kunda qahramon qo‘lida aynan sizning ichimligingiz. Tabiiy sahna: reklama emas, sayohatning bir qismi.",
+    "b2.f1": "Mahsulot qahramon qo‘lida", "b2.f2": "Tabiiy, jonli kadr", "b2.f3": "Shorts va Reels", "b2.cap": "MIAMI, FL",
+    "b3.cat": "Gazaklar va FMCG", "b3.where": "Route 66 · Arizona",
+    "b3.text": "Uzoq yo‘lda sevimli gazak. Mahsulot road-trip ruhiga tabiiy kirib boradi va tomoshabin uni bir necha qismda ko‘radi.",
+    "b3.f1": "Yo‘ldagi sahna", "b3.f2": "Qadoq kadrda", "b3.f3": "Bir necha qismda", "b3.cap": "ROUTE 66, ARIZONA",
+    "bar.fs": "To‘liq ekran",
 
     "s1.eyebrow": "YouTube realiti-shou",
     "s1.title": "<span class=\"l\"><span>Amerika bo‘ylab</span></span><span class=\"l l--xl\"><span><em>80</em> kun</span></span>",
@@ -39,20 +53,10 @@ window.I18N = {
     "s4.gender": "Jins", "s4.age": "Yosh", "s4.geo": "Mamlakatlar", "s4.videos": "Eng ko‘p ko‘rilgan videolar",
     "s4.m": "Erkaklar", "s4.f": "Ayollar", "s4.views": "ko‘rish",
 
-    "s5.title": "Bir shahar, ikki xil imkoniyat",
-    "s5.lead": "Har bir qism bir kunni ko‘rsatadi. Qur’a kimga limitsiz karta, kimga 0 dollar tushishini hal qiladi.",
-    "s5.a.t": "Limitsiz karta", "s5.a.d": "Butun shahar uning ixtiyorida: eng yaxshi mehmonxona, restoran va transport.",
-    "s5.b.t": "0 dollar", "s5.b.d": "Ovqat, yo‘l va tunashni o‘zi topadi. Faqat qonuniy yo‘llar bilan.",
-    "s5.ep": "1-qism. Nyu-York", "s5.epmeta": "Pilot · 22 daqiqa",
-    "s5.both": "Ikkalasi",
-
     "s6.eyebrow": "Hamkorlik",
     "s6.title": "Hamkor nimani oladi",
     "s6.lead": "80 kun davomida brend shou bilan birga sayohat qiladi: har bir qismda, har bir Reels’da va har bir shaharda.",
     "s6.scope": "Loyiha nimalarni qamraydi",
-    "s6.final": "Keling, buni amalga oshiramiz!",
-    "s6.avia": "Biletlarni Aviasales.uz’dan xarid qilishingiz mumkin",
-    "s6.stamp": "TASDIQLANDI · 80 KUN · TASDIQLANDI · 80 KUN · ",
     "s6.note": "Narx va hamkorlik shartlari alohida kelishiladi.",
 
     "s7.show": "Amerika bo‘ylab 80 kun"
@@ -60,8 +64,22 @@ window.I18N = {
 
   ru: {
     "meta.title": "80 дней по Америке | Noir Nabiev",
-    "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Статистика", "nav.s5": "Сценарий", "nav.s6": "Партнёрство", "nav.s7": "Aviasales",
-    "nav.prev": "Предыдущий слайд", "nav.next": "Следующий слайд", "bar.fs": "Полный экран",
+    "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Статистика",
+    "nav.s5": "Банковская карта", "nav.s6": "Напиток", "nav.s7": "Снеки", "nav.s8": "Партнёрство",
+    "nav.prev": "Предыдущий слайд", "nav.next": "Следующий слайд",
+
+    "b.eyebrow": "Интеграция бренда",
+    "b.title": "Так ваш бренд выглядит в шоу",
+    "b1.cat": "Банки и платёжные карты", "b1.where": "Чикаго · ресторан на крыше небоскрёба",
+    "b1.text": "Счёт за ужин оплачивается именно вашей картой. Карта чётко видна в кадре, а герой показывает её удобство на собственном опыте.",
+    "b1.f1": "Сцена оплаты в кадре", "b1.f2": "Логотип крупным планом", "b1.f3": "Отдельное упоминание в Reels", "b1.cap": "CHICAGO, IL",
+    "b2.cat": "Напитки", "b2.where": "Майами · пляж у океана",
+    "b2.text": "В жаркий день в руках героя именно ваш напиток. Естественная сцена: не реклама, а часть путешествия.",
+    "b2.f1": "Продукт в руках героя", "b2.f2": "Живой, естественный кадр", "b2.f3": "Shorts и Reels", "b2.cap": "MIAMI, FL",
+    "b3.cat": "Снеки и FMCG", "b3.where": "Route 66 · Аризона",
+    "b3.text": "Любимый снек в долгой дороге. Продукт естественно вписывается в дух роуд-трипа, и зрители видят его в нескольких сериях.",
+    "b3.f1": "Сцена в дороге", "b3.f2": "Упаковка в кадре", "b3.f3": "В нескольких сериях", "b3.cap": "ROUTE 66, ARIZONA",
+    "bar.fs": "Полный экран",
 
     "s1.eyebrow": "YouTube реалити-шоу",
     "s1.title": "<span class=\"l l--xl\"><span><em>80</em> дней</span></span><span class=\"l\"><span>по Америке</span></span>",
@@ -94,20 +112,10 @@ window.I18N = {
     "s4.gender": "Пол", "s4.age": "Возраст", "s4.geo": "Страны", "s4.videos": "Самые просматриваемые видео",
     "s4.m": "Мужчины", "s4.f": "Женщины", "s4.views": "просмотров",
 
-    "s5.title": "Один город, две реальности",
-    "s5.lead": "Каждая серия показывает один день. Жребий решает, кому достанется безлимитная карта, а кому ноль долларов.",
-    "s5.a.t": "Безлимитная карта", "s5.a.d": "Весь город в его распоряжении: лучшие отели, рестораны и транспорт.",
-    "s5.b.t": "Ноль долларов", "s5.b.d": "Еду, дорогу и ночлег добывает сам. Только законными способами.",
-    "s5.ep": "Серия 1. Нью-Йорк", "s5.epmeta": "Пилот · 22 минуты",
-    "s5.both": "Оба",
-
     "s6.eyebrow": "Партнёрство",
     "s6.title": "Что получает партнёр",
     "s6.lead": "80 дней бренд путешествует вместе с шоу: в каждой серии, в каждом Reels и в каждом городе.",
     "s6.scope": "Что входит в проект",
-    "s6.final": "Давайте сделаем это!",
-    "s6.avia": "Билеты можно купить на Aviasales.uz",
-    "s6.stamp": "ОДОБРЕНО · 80 ДНЕЙ · ОДОБРЕНО · 80 ДНЕЙ · ",
     "s6.note": "Стоимость и условия партнёрства обсуждаются отдельно.",
 
     "s7.show": "80 дней по Америке"
