@@ -144,47 +144,7 @@ window.DATA = {
     }
   ],
 
-  /* ---------- 5-slayd: ssenariy (pilot qism) ---------- */
-  beats: [
-    { tc: "00:00", who: "AB",
-      t: { uz: "Sovuq ochilish", ru: "Холодный старт" },
-      d: { uz: "Tungi Times Square. Biri limuzinda, ikkinchisi metroda. 80 kun, 15 manzil va bitta qoida: taslim bo‘lmaslik.", ru: "Ночной Таймс-сквер. Один в лимузине, другой в метро. 80 дней, 15 локаций и одно правило: не сдаваться." } },
-    { tc: "02:00", who: "AB",
-      t: { uz: "Qur’a", ru: "Жеребьёвка" },
-      d: { uz: "Bruklin ko‘prigida ikki konvert. Kimga limitsiz karta, kimga 0 dollar tushadi? Qoidalar e’lon qilinadi.", ru: "Два конверта на Бруклинском мосту. Кому безлимитная карта, а кому ноль долларов? Объявляются правила." } },
-    { tc: "04:30", who: "A|B",
-      t: { uz: "Tong", ru: "Утро" },
-      d: { uz: "A: Manhetten tomida nonushta va 5-avenyu. B: birinchi dollarini Bruklindagi o‘zbek kafesida ishlab topadi.", ru: "A: завтрак на крыше Манхэттена и Пятая авеню. B: зарабатывает первый доллар в узбекском кафе Бруклина." } },
-    { tc: "09:00", who: "A|B",
-      t: { uz: "1-challenge", ru: "Челлендж №1" },
-      d: { uz: "Kun botguncha Ozodlik haykaliga yetib borish. A vertolyotda, B piyoda va bepul paromda.", ru: "До заката добраться до Статуи Свободы. A на вертолёте, B пешком и на бесплатном пароме." } },
-    { tc: "13:30", who: "A|B",
-      t: { uz: "Kontrastlar kuni", ru: "День контрастов" },
-      d: { uz: "A Michelin yulduzli restoranda tushlik qiladi. B Central Parkda ko‘cha artistlari bilan pul ishlaydi.", ru: "A обедает в ресторане со звездой Мишлен. B зарабатывает в Центральном парке с уличными артистами." } },
-    { tc: "17:00", who: "AB",
-      t: { uz: "2-challenge", ru: "Челлендж №2" },
-      d: { uz: "Nyu-yorkliklarni o‘zbek palovi bilan mehmon qilish va 10 ta «wow» reaksiya yig‘ish.", ru: "Угостить ньюйоркцев узбекским пловом и собрать 10 реакций «вау»." } },
-    { tc: "19:30", who: "AB",
-      t: { uz: "Kechki uchrashuv", ru: "Вечерняя встреча" },
-      d: { uz: "Times Square. Xarajatlar, his-tuyg‘ular va asosiy savol: pul baxt keltiradimi?", ru: "Таймс-сквер. Расходы, эмоции и главный вопрос: делают ли деньги счастливее?" } },
-    { tc: "21:30", who: "AB",
-      t: { uz: "Final", ru: "Финал" },
-      d: { uz: "Tomoshabinlar ovozi, kun g‘olibi va keyingi shahar: Vashington. Rollar almashadi.", ru: "Голосование зрителей, победитель дня и следующий город: Вашингтон. Роли меняются." } }
-  ],
-  rules: [
-    { icon: "arrows-clockwise", t: { uz: "Rollar har shaharda almashadi", ru: "Роли меняются в каждом городе" } },
-    { icon: "shield-check", t: { uz: "Pul faqat qonuniy yo‘l bilan topiladi", ru: "Деньги только законным путём" } },
-    { icon: "timer", t: { uz: "Har bir sinov 24 soat davom etadi", ru: "Каждое испытание длится 24 часа" } },
-    { icon: "trophy", t: { uz: "G‘olibni tomoshabinlar tanlaydi", ru: "Победителя выбирают зрители" } }
-  ],
-  season: [
-    { v: "15", l: { uz: "qism", ru: "серий" } },
-    { v: "20-25", l: { uz: "daqiqa har biri", ru: "минут каждая" } },
-    { v: "45+", l: { uz: "Reels va Shorts", ru: "Reels и Shorts" } },
-    { v: "4K", l: { uz: "kino sifati", ru: "кинокачество" } }
-  ],
-
-  /* ---------- 6-slayd: hamkorlik ---------- */
+  /* ---------- 8-slayd: hamkorlik ---------- */
   partner: {
     deliverables: [
       { icon: "film-slate", t: { uz: "15 qismli YouTube shou, har biri 20-25 daqiqa", ru: "YouTube-шоу из 15 серий по 20-25 минут" } },
