@@ -5,7 +5,7 @@
 window.I18N = {
   uz: {
     "meta.title": "Amerika bo‘ylab 80 kun | Noir Nabiev",
-    "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Statistika", "nav.s5": "Ssenariy", "nav.s6": "Hamkorlik",
+    "nav.s1": "Shou", "nav.s2": "Marshrut", "nav.s3": "Blogerlar", "nav.s4": "Statistika", "nav.s5": "Ssenariy", "nav.s6": "Hamkorlik", "nav.s7": "Aviasales",
     "nav.prev": "Oldingi slayd", "nav.next": "Keyingi slayd", "bar.fs": "To‘liq ekran",
 
     "s1.eyebrow": "YouTube realiti-shou",
@@ -16,6 +16,7 @@ window.I18N = {
     "pass.label": "Bortga chiqish taloni", "pass.from": "Toshkent", "pass.to": "Nyu-York",
     "pass.pax": "Yo‘lovchilar", "pass.dur": "Davomiyligi", "pass.durv": "80 kun", "pass.stops": "Manzillar", "pass.season": "Mavsum",
 
+    "s2.country": "Amerika Qo‘shma Shtatlari",
     "s2.title": "15 manzil. 80 kun. Bitta katta yo‘l.",
     "s2.lead": "Nyu-Yorkdan Gavayigacha taxminan 16 000 km: megapolislar, kanyonlar, tog‘lar va okean.",
     "s2.days": "{a}-{b} kun", "s2.d1": "1-kun", "s2.d80": "80-kun",
@@ -52,12 +53,14 @@ window.I18N = {
     "s6.final": "Keling, buni amalga oshiramiz!",
     "s6.avia": "Biletlarni Aviasales.uz’dan xarid qilishingiz mumkin",
     "s6.stamp": "TASDIQLANDI · 80 KUN · TASDIQLANDI · 80 KUN · ",
-    "s6.note": "Narx va hamkorlik shartlari alohida kelishiladi."
+    "s6.note": "Narx va hamkorlik shartlari alohida kelishiladi.",
+
+    "s7.show": "Amerika bo‘ylab 80 kun"
   },
 
   ru: {
     "meta.title": "80 дней по Америке | Noir Nabiev",
-    "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Статистика", "nav.s5": "Сценарий", "nav.s6": "Партнёрство",
+    "nav.s1": "Шоу", "nav.s2": "Маршрут", "nav.s3": "Блогеры", "nav.s4": "Статистика", "nav.s5": "Сценарий", "nav.s6": "Партнёрство", "nav.s7": "Aviasales",
     "nav.prev": "Предыдущий слайд", "nav.next": "Следующий слайд", "bar.fs": "Полный экран",
 
     "s1.eyebrow": "YouTube реалити-шоу",
@@ -68,6 +71,7 @@ window.I18N = {
     "pass.label": "Посадочный талон", "pass.from": "Ташкент", "pass.to": "Нью-Йорк",
     "pass.pax": "Пассажиры", "pass.dur": "Длительность", "pass.durv": "80 дней", "pass.stops": "Локации", "pass.season": "Сезон",
 
+    "s2.country": "Соединённые Штаты Америки",
     "s2.title": "15 локаций. 80 дней. Одна большая дорога.",
     "s2.lead": "Около 16 000 км от Нью-Йорка до Гавайев: мегаполисы, каньоны, горы и океан.",
     "s2.days": "Дни {a}-{b}", "s2.d1": "День 1", "s2.d80": "День 80",
@@ -104,6 +108,8 @@ window.I18N = {
     "s6.final": "Давайте сделаем это!",
     "s6.avia": "Билеты можно купить на Aviasales.uz",
     "s6.stamp": "ОДОБРЕНО · 80 ДНЕЙ · ОДОБРЕНО · 80 ДНЕЙ · ",
-    "s6.note": "Стоимость и условия партнёрства обсуждаются отдельно."
+    "s6.note": "Стоимость и условия партнёрства обсуждаются отдельно.",
+
+    "s7.show": "80 дней по Америке"
   }
 };

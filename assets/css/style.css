@@ -654,3 +654,81 @@ html[data-tone="dark"] .dnav__count, html[data-tone="dark"] .dnav__count b { col
 .is-static .rv, .is-static .rv-role, .is-static .hcard, .is-static .pass { opacity: 1 !important; }
 .is-static .s1__title { opacity: 1 !important; }
 .is-static .finale__txt, .is-static .stamp, .is-static .avia { opacity: 1 !important; }
+
+/* =========================================================
+   AMERICA ACCENTS · waving flag, corner stars, card stripes
+   ========================================================= */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+.flag { --w: 1.7rem; --h: calc(var(--w) * .5263); position: relative; display: inline-flex; flex: none; width: var(--w); height: var(--h); vertical-align: -.1em; filter: drop-shadow(0 .12rem .18rem rgba(19, 27, 53, .22)); }
+.flag i {
+  display: block; flex: none; width: calc(var(--w) / 12 + .4px); margin-right: -.4px; height: 100%;
+  background: url("../img/us-flag.svg") no-repeat; background-size: var(--w) var(--h);
+  background-position: calc(var(--k) * var(--w) / -12) 0;
+  animation: flagwave 1.9s ease-in-out infinite alternate; animation-delay: calc(var(--k) * -.15s);
+}
+.flag i:first-child { border-radius: 1.5px 0 0 1.5px; }
+.flag i:last-child { border-radius: 0 1.5px 1.5px 0; }
+@keyframes flagwave { from { transform: translateY(-6%); filter: brightness(1.07); } to { transform: translateY(6%); filter: brightness(.82); } }
+.flag--sm { --w: 1.25rem; }
+.eyebrow { display: flex; align-items: center; gap: .65rem; }
+.eyebrow .flag { --w: 1.6rem; }
+.eyebrow--flag { color: var(--ink-2); margin-bottom: .9rem; }
+.pass__pt b { display: flex; align-items: center; gap: .4rem; }
+.pass__pt--r b { justify-content: flex-end; }
+.pass__pt b .flag { --w: 1.45rem; }
+.hcard__role { display: flex; align-items: center; gap: .45rem; flex-wrap: wrap; }
+.bankcard__brand { display: inline-flex; align-items: center; gap: .4rem; }
+.bankcard__brand .flag { --w: 1.15rem; filter: none; }
+
+/* stars & stripes on the unlimited card */
+.bankcard::after {
+  content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 46%; pointer-events: none;
+  background: repeating-linear-gradient(180deg, rgba(200, 67, 44, .34) 0 7.69%, rgba(242, 236, 217, .08) 7.69% 15.38%);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 70%); mask-image: linear-gradient(90deg, transparent, #000 70%);
+}
+.bankcard > * { position: relative; z-index: 1; }
+.bankcard > .bankcard__shine { position: absolute; z-index: 2; }
+.bankcard > .bankcard__inf { position: absolute; }
+
+/* faint corner stars, behind the content */
+.slide { isolation: isolate; }
+.deco { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: visible; }
+.deco__star { position: absolute; fill: var(--ink); opacity: .045; animation: spin 140s linear infinite; }
+.deco__star--a { width: 15rem; height: 15rem; right: -5rem; top: -4rem; }
+.deco__star--b { width: 19rem; height: 19rem; left: -7rem; bottom: -7rem; animation-direction: reverse; }
+.is-deck .deco__star--a { width: 22rem; height: 22rem; right: -7rem; top: -6rem; }
+.is-deck .deco__star--b { width: 27rem; height: 27rem; left: -10rem; bottom: -11rem; }
+.s6 .deco__star, .s7 .deco__star { fill: var(--paper); opacity: .06; }
+
+/* =========================================================
+   7 · show × Aviasales end card
+   ========================================================= */
+.s7 { --bg: #05070C; color: #F6F2E7; }
+.s7__grid { min-height: 78svh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4.2rem; text-align: center; }
+.is-deck .s7__grid { height: 100%; padding: 6rem 4rem 4rem; gap: 7.5rem; }
+.s7 .deco__star { opacity: .13; }
+.is-deck .s7 .deco__star--a { width: 30rem; height: 30rem; right: -9rem; top: -7rem; }
+.is-deck .s7 .deco__star--b { width: 30rem; height: 30rem; left: -11rem; bottom: -12rem; }
+.cobrand { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.cobrand__show { font-family: var(--f-sans); font-weight: 600; font-size: 1.75rem; letter-spacing: .015em; line-height: 1.2; }
+.cobrand__x { font-family: var(--f-sans); font-weight: 300; font-size: 1.7rem; line-height: 1; opacity: .7; }
+.cobrand__logo { display: block; width: 11rem; color: #FFFFFF; transition: opacity .3s; }
+.cobrand__logo:hover { opacity: .8; }
+.cobrand__svg { display: block; width: 100%; height: auto; }
+.is-deck .cobrand { flex-direction: row; gap: 2.2rem; }
+.is-deck .cobrand__show { font-size: 2.55rem; }
+.is-deck .cobrand__x { font-size: 2.4rem; }
+.is-deck .cobrand__logo { width: 15.5rem; margin-top: .2rem; }
+.yt { position: relative; width: 5.6rem; height: 5.6rem; }
+.yt__icon { display: block; width: 100%; height: 100%; color: #FFFFFF; }
+.yt__pole { position: absolute; left: 80%; top: -1.15rem; width: 2px; height: 2.3rem; border-radius: 2px; background: #E7E1D2; transform-origin: bottom; }
+.flag--yt { position: absolute; left: calc(80% + 2px); top: -1.15rem; --w: 2.5rem; filter: drop-shadow(0 .2rem .4rem rgba(0, 0, 0, .5)); }
+.is-deck .yt { position: absolute; width: 7.2rem; height: 7.2rem; left: calc(50% - 3.6rem); bottom: 6.2rem; }
+.is-deck .yt__pole { top: -1.7rem; height: 3.2rem; }
+.is-deck .flag--yt { --w: 3.8rem; top: -1.7rem; }
+.js:not(.is-static) .cobrand__show,
+.js:not(.is-static) .cobrand__x,
+.js:not(.is-static) .cobrand__logo,
+.js:not(.is-static) .yt { opacity: 0; }
+.is-static .cobrand__show, .is-static .cobrand__x, .is-static .cobrand__logo, .is-static .yt { opacity: 1 !important; }
