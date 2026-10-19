@@ -650,7 +650,7 @@
     played: false, cur: 0, built: false,
     build() {
       const tabs = $('#tabs'), wrap = $('#panels');
-      const ava = { noir: 'assets/img/noir/avatar.jpg', javokhir: 'assets/img/javokhir/avatar.jpg' };
+      const ava = { noir: 'assets/img/noir/avatar.jpg', javokhir: 'assets/img/javokhir/avatar-red.jpg' };
       tabs.innerHTML = D.panels.map((p, i) => `
         <button type="button" class="tab" role="tab" id="tab-${p.id}" aria-controls="panel-${p.id}" aria-selected="${i === 0}" data-i="${i}">
           <img data-src="${ava[p.who]}" alt="">${T(p.tab)}<svg class="i"><use href="#i-${p.platform === 'youtube' ? 'youtube-logo' : 'instagram-logo'}"/></svg>
@@ -832,13 +832,6 @@
     build() {
       $('#rules').innerHTML = D.rules.map(r => `<li class="rv"><svg class="i"><use href="#i-${r.icon}"/></svg>${T(r.t)}</li>`).join('');
       $('#season').innerHTML = D.season.map(x => `<div><b>${x.v}</b>${T(x.l, 'small')}</div>`).join('');
-      const who = '<span class="tag tag--a">A</span><span class="tag tag--b">B</span>';
-      $('#beats').innerHTML = D.beats.map((b, i) => `
-        <li class="beat">
-          <span class="beat__tc">${b.tc}</span>
-          <span class="beat__dot"></span>${i < D.beats.length - 1 ? '<span class="beat__ln"></span>' : ''}
-          <div class="beat__body"><div class="beat__head">${T(b.t, 'span', 'beat__t')}<span class="beat__who">${who}</span></div>${T(b.d, 'p', 'beat__d')}</div>
-        </li>`).join('');
 
       /* bank card tilt, mouse only */
       const card = $('#bankcard');
@@ -853,23 +846,18 @@
       }
       this.built = true;
     },
-    beat(b, delay) {
-      G.fromTo(b, { opacity: 0, x: 18 }, { opacity: 1, x: 0, duration: .8, ease: 'expo.out', delay, clearProps: 'transform' });
-      G.fromTo($('.beat__dot', b), { scale: 0 }, { scale: 1, duration: .5, ease: 'back.out(3)', delay: delay + .05 });
-      const ln = $('.beat__ln', b);
-      if (ln) G.fromTo(ln, { scaleY: 0 }, { scaleY: 1, duration: .5, ease: 'power1.inOut', delay: delay + .2 });
-    },
     enter() {
       if (!this.built) this.build();
       const s = $('#s5');
       hydrate(s);
       if (this.played) return;
       this.played = true;
-      revealWhen($$('.s5__left > .h2, .s5__left > .lead', s), .1);
-      const roles = $$('.rv-role', s);
+      revealWhen($$('.s5__head .rv', s), .1);
+      const roles = $$('.rv-role', s), duel = $('.duel', s);
       when(roles[0], () => {
-        if (!MOTION) { roles.forEach(r => { r.style.opacity = 1; }); return; }
+        if (!MOTION) { roles.forEach(r => { r.style.opacity = 1; }); duel.style.opacity = 1; return; }
         G.fromTo(roles[0], { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', clearProps: 'transform' });
+        G.fromTo(duel, { opacity: 0, scale: 0, rotate: -120 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.1, ease: 'back.out(1.8)', delay: .45 });
         G.fromTo('#bankcard', { rotateY: -70, rotateX: 12, transformPerspective: 800, x: -30 }, { rotateY: 0, rotateX: 0, x: 0, duration: 1.6, ease: 'expo.out' });
         G.fromTo('.bankcard__shine', { xPercent: -120 }, { xPercent: 140, duration: 1.4, ease: 'power2.inOut', delay: .8 });
         G.fromTo(roles[1], { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', delay: .18, clearProps: 'transform' });
@@ -878,21 +866,55 @@
       }, .3);
       revealWhen($$('#rules li', s), .7, { stagger: .07, y: 18 });
       revealWhen([$('#season')], 1);
-
-      /* run-sheet: one stagger on desktop, each beat as it scrolls in on phones */
-      const board = $('.board', s), beats = $$('.beat', s);
-      when(board, () => {
-        reveal(board, 0, { y: 50 });
-        if (!MOTION) { beats.forEach(b => { b.style.opacity = 1; }); return; }
-        if (mode === 'deck') beats.forEach((b, i) => this.beat(b, .4 + i * .26));
-      }, .25);
-      if (MOTION && mode !== 'deck') beats.forEach(b => when(b, () => this.beat(b, .05)));
     },
     leave() { }
   };
 
   /* =========================================================
-     SLIDES 6-8 · how a brand looks in the show
+     SLIDE 6 · where the show airs: Noir Nabiev's YouTube channel
+     ========================================================= */
+  const SY = {
+    played: false, built: false,
+    build() {
+      $$('[data-channel]').forEach(a => { a.href = D.channel.url; });
+      /* season playlist: one episode per stop, drawn twice so the marquee loops seamlessly */
+      const eps = D.cities.map((c, i) => `
+        <div class="ep">
+          <span class="ep__img"><img data-src="assets/img/eps/${c.id}.jpg" alt=""></span>
+          <span class="ep__cap"><span class="ep__n mono">${pad(i + 1)}</span>${T(c.name, 'span', 'ep__t')}</span>
+        </div>`).join('');
+      $('#syTrack').innerHTML = eps + eps.replace(/class="ep"/g, 'class="ep" aria-hidden="true"');
+      this.built = true;
+    },
+    enter() {
+      if (!this.built) this.build();
+      const s = $('#s6');
+      hydrate(s);
+      if (this.played) return;
+      this.played = true;
+      const stats = $('.sy__stats', s);
+      revealWhen($$('.sy__copy > .rv', s).filter(e => e !== stats), .1, { stagger: .12 });
+      when(stats, () => { reveal(stats); $$('.count', stats).forEach((c, i) => countUp(c, .2 + i * .14, 2)); }, .45);
+
+      const win = $('.ytw', s), short = $('.sy__short', s);
+      when(win, () => {
+        if (!MOTION) { win.style.opacity = 1; short.style.opacity = 1; return; }
+        const tl = G.timeline({ delay: mode === 'deck' ? .3 : .05 });
+        tl.fromTo(win, { opacity: 0, y: 60, rotateX: 10, transformPerspective: 1400 }, { opacity: 1, y: 0, rotateX: 0, duration: 1.4, ease: 'expo.out', clearProps: 'transform' }, 0)
+          .fromTo($('.ytw__player img', s), { scale: 1.2 }, { scale: 1, duration: 2.2, ease: 'power3.out', clearProps: 'transform' }, 0)
+          .fromTo($('.ytw__play', s), { opacity: 0, scale: 0 }, { opacity: 1, scale: 1, duration: .9, ease: 'back.out(2.4)', clearProps: 'transform' }, .55)
+          .fromTo($$('.ytw__badge, .ytw__ep', s), { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: .7, ease: 'power3.out', stagger: .1 }, .75)
+          .fromTo($('.ytw__prog i', s), { width: '0%' }, { width: '34%', duration: 2.6, ease: 'power2.inOut' }, .9)
+          .fromTo($$('.ytw__info > *, .ytw__lt', s), { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .8, ease: 'expo.out', stagger: .1 }, .65)
+          .fromTo($$('.ep', s).slice(0, 6), { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: .9, ease: 'expo.out', stagger: .07, clearProps: 'transform' }, .9)
+          .fromTo(short, { opacity: 0, y: 50, rotate: 4 }, { opacity: 1, y: 0, rotate: -6, duration: 1.3, ease: 'back.out(1.6)' }, 1.1);
+      }, 0);
+    },
+    leave() { }
+  };
+
+  /* =========================================================
+     SLIDES 7-9 · how a brand looks in the show
      ========================================================= */
   const brandSlide = id => ({
     played: false,
@@ -935,10 +957,10 @@
     leave() { },
     refresh() { }
   });
-  const B1 = brandSlide('#s6'), B2 = brandSlide('#s7'), B3 = brandSlide('#s8');
+  const B1 = brandSlide('#s7'), B2 = brandSlide('#s8'), B3 = brandSlide('#s9');
 
   /* =========================================================
-     SLIDE 9 · partnership + show × Aviasales band
+     SLIDE 10 · partnership + show × Aviasales band
      ========================================================= */
   const S6 = {
     played: false, built: false,
@@ -950,7 +972,7 @@
     },
     enter() {
       if (!this.built) this.build();
-      const s = $('#s9');
+      const s = $('#s10');
       if (this.played) return;
       this.played = true;
       revealWhen($$('.s6__left > .rv', s), .1, { stagger: .14 });
@@ -976,7 +998,7 @@
     refresh() { }
   };
 
-  const MODS = [S1, S2, S3, S4, S5, B1, B2, B3, S6];
+  const MODS = [S1, S2, S3, S4, S5, SY, B1, B2, B3, S6];
 
   /* =========================================================
      DECK ENGINE
@@ -1024,7 +1046,7 @@
 
   function initDeck() {
     /* starting slide from hash */
-    const m = /^#s([1-9])$/.exec(location.hash);
+    const m = /^#s(10|[1-9])$/.exec(location.hash);
     cur = m ? +m[1] - 1 : 0;
     S1.allowIntro = cur === 0;
     slides.forEach((s, i) => { s.classList.toggle('is-active', i === cur); s.classList.toggle('is-live', i === cur); });
@@ -1069,7 +1091,7 @@
       go(cur + (Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 1 : -1) : (dy < 0 ? 1 : -1)));
     }, { passive: true });
 
-    addEventListener('hashchange', () => { const mm = /^#s([1-9])$/.exec(location.hash); if (mm) go(+mm[1] - 1); });
+    addEventListener('hashchange', () => { const mm = /^#s(10|[1-9])$/.exec(location.hash); if (mm) go(+mm[1] - 1); });
   }
 
   function initScroll() {
@@ -1095,7 +1117,7 @@
       if (e.isIntersecting) html.dataset.tone = e.target.dataset.theme || 'light';
     }), { rootMargin: '0px 0px -96% 0px' });
     slides.forEach(s => toneIO.observe(s));
-    const m = /^#s([1-9])$/.exec(location.hash);
+    const m = /^#s(10|[1-9])$/.exec(location.hash);
     if (m) setTimeout(() => slides[+m[1] - 1].scrollIntoView(), 50);
   }
 
