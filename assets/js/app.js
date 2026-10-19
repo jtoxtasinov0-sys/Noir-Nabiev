@@ -85,6 +85,13 @@
     });
   }
 
+  function lazy(img) {
+    if (!img || !img.dataset.lazy) return;
+    img.decoding = 'async';
+    img.src = img.dataset.lazy;
+    img.removeAttribute('data-lazy');
+  }
+
   /* waving US flag: 12 slices of one flag image, each bobbing with a phase offset */
   function flags(root = document) {
     $$('.flag', root).forEach(f => {
@@ -134,10 +141,12 @@
     G.set(el, { opacity: 1, y: 0 });
     const fl = el.querySelector('.flag');
     if (fl) G.fromTo(fl, { opacity: 0, scale: .3, rotate: -25 }, { opacity: 1, scale: 1, rotate: 0, duration: 1.1, ease: 'back.out(2)', delay, transformOrigin: '0% 100%' });
-    return G.fromTo(words,
-      { opacity: 0, yPercent: big ? 40 : 32, filter: `blur(${big ? 16 : 9}px)` },
-      { opacity: 1, yPercent: 0, filter: 'blur(0px)', duration: big ? 1.7 : 1.25, ease: 'power3.out', delay,
-        stagger: big ? .11 : Math.min(.06, 1 / words.length), clearProps: 'filter,transform' });
+    /* per-word blur repaints every frame, so phones get the rise and fade without it */
+    const from = { opacity: 0, yPercent: big ? 40 : 32 };
+    const to = { opacity: 1, yPercent: 0, duration: big ? 1.7 : 1.25, ease: 'power3.out', delay,
+      stagger: big ? .11 : Math.min(.06, 1 / words.length), clearProps: 'filter,transform' };
+    if (mode === 'deck') { from.filter = `blur(${big ? 16 : 9}px)`; to.filter = 'blur(0px)'; }
+    return G.fromTo(words, from, to);
   }
 
   function reveal(els, delay = 0, opts = {}) {
@@ -291,18 +300,40 @@
       const C = D.cities, svg = $('#map'), P = C.map(c => MAP.pts[c.id]);
       this.P = P;
 
-      /* dot matrix inside the US outline */
-      let dots = '';
+      /* dot matrix inside the US outline. Land, borders and the ~7000 dots are painted once
+         into bitmaps; as vectors they were re-stroked on every frame of the route animation */
+      const pts = [];
+      let base = '', dotsBmp = '';
       try {
         const ctx = document.createElement('canvas').getContext('2d');
         const shape = new Path2D(MAP.nation);
         const step = 7.4, rowH = step * .866;
         for (let y = 3, row = 0; y < MAP.h; y += rowH, row++) {
           for (let x = (row % 2 ? step / 2 : 0) + 2; x < MAP.w; x += step) {
-            if (ctx.isPointInPath(shape, x, y)) dots += `M${x.toFixed(1)} ${y.toFixed(1)}h0`;
+            if (ctx.isPointInPath(shape, x, y)) pts.push(x, y);
           }
         }
-      } catch (e) { dots = ''; }
+        const k = clamp(Math.ceil((window.devicePixelRatio || 1) * (svg.getBoundingClientRect().width || MAP.w) / MAP.w * 4) / 4, 1, 2.5);
+        const paint = draw => {
+          const c = document.createElement('canvas');
+          c.width = Math.round(MAP.w * k); c.height = Math.round(MAP.h * k);
+          const g = c.getContext('2d');
+          g.scale(k, k); draw(g);
+          return c.toDataURL('image/png');
+        };
+        base = paint(g => {
+          g.fillStyle = 'rgba(19, 27, 53, .035)'; g.fill(shape);
+          g.strokeStyle = 'rgba(19, 27, 53, .13)'; g.lineWidth = .7; g.stroke(new Path2D(MAP.borders));
+        });
+        dotsBmp = paint(g => {
+          g.fillStyle = 'rgba(19, 27, 53, .3)'; g.beginPath();
+          for (let i = 0; i < pts.length; i += 2) { g.moveTo(pts[i] + 1.25, pts[i + 1]); g.arc(pts[i], pts[i + 1], 1.25, 0, Math.PI * 2); }
+          g.fill();
+        });
+      } catch (e) { base = dotsBmp = ''; }
+      let dots = '';
+      if (!dotsBmp) for (let i = 0; i < pts.length; i += 2) dots += `M${pts[i].toFixed(1)} ${pts[i + 1].toFixed(1)}h0`;
+      const bmp = (cls, href, id) => `<image class="m-bmp ${cls}"${id ? ` id="${id}"` : ''} href="${href}" x="0" y="0" width="${MAP.w}" height="${MAP.h}"/>`;
 
       /* route: gentle arcs between stops */
       const bow = { alaska: 'w', hawaii: 's' };
@@ -340,9 +371,8 @@
             <circle id="dotReveal" cx="${P[0][0]}" cy="${P[0][1]}" r="1300" fill="#fff"/>
           </mask>
         </defs>
-        <path class="m-land" d="${MAP.nation}"/>
-        <path class="m-dots" d="${dots}" mask="url(#dotMask)"/>
-        <path class="m-borders" d="${MAP.borders}"/>
+        ${base ? bmp('m-land', base) : `<path class="m-land" d="${MAP.nation}"/><path class="m-borders" d="${MAP.borders}"/>`}
+        ${dotsBmp ? bmp('m-dots', dotsBmp, 'mDots') : `<path class="m-dots" id="mDots" d="${dots}"/>`}
         <text class="m-inset" x="14" y="476" data-i18n="s2.alaska">${tr('s2.alaska')}</text>
         <text class="m-inset" x="232" y="600" data-i18n="s2.hawaii">${tr('s2.hawaii')}</text>
         <path class="r-plan" d="${route}"/>
@@ -384,7 +414,7 @@
       const stage = $('#cfStage');
       stage.innerHTML = C.map((c, i) => `
         <button type="button" class="cf-card" data-i="${i}" aria-label="${L(c.name)}">
-          <img data-src="assets/img/cities/${c.id}.jpg" alt="" draggable="false">
+          <img data-lazy="assets/img/cities/${c.id}.jpg" alt="" draggable="false">
           <span class="cf-card__shade"></span>
           <span class="cf-card__txt">
             <span class="cf-card__num mono">${pad(i + 1)} / 15</span>
@@ -437,11 +467,17 @@
       if (MOTION) G.fromTo(this.pins[i].querySelector('.pin-dot'), { attr: { r: 14 } }, { attr: { r: 8.5 }, duration: .7, ease: 'back.out(3)' });
     },
 
+    /* city photos are 900x1200: fetch and decode only the cards around the active one */
+    loadNear(i) {
+      this.cards.forEach((el, k) => { if (Math.abs(k - i) <= 2) lazy($('img', el)); });
+    },
+
     /* move bubble, coverflow, caption and rail to stop i */
     layout(i, instant) {
       i = clamp(i, 0, D.cities.length - 1);
       const changed = i !== this.active || instant;
       this.active = i;
+      this.loadNear(i);
       const c = D.cities[i], [x, y] = this.P[i];
 
       this.pins.forEach((p, k) => p.classList.toggle('is-active', k === i));
@@ -512,6 +548,8 @@
         this.prog = this.L; this.draw();
         this.pins.forEach((p, k) => { p.classList.add('is-visited'); this.stops[k].classList.add('is-visited'); });
         G.set('#dotReveal', { attr: { r: 1300 } });
+        G.set('#mDots, .map .m-land, .map .m-borders', { opacity: 1 });
+        $('#mDots').removeAttribute('mask');
         if (MOTION) G.to(this.plane, { opacity: 0, duration: .4 }); else this.plane.style.opacity = 0;
       }
     },
@@ -527,9 +565,13 @@
       }
       this.prog = 0; this.draw();
       G.set(this.plane, { opacity: 0 });
-      const tl = G.timeline();
-      tl.fromTo('#dotReveal', { attr: { r: 0 } }, { attr: { r: 1300 }, duration: 2.4, ease: 'power2.inOut' }, 0)
-        .fromTo('.map .m-borders, .map .m-land', { opacity: 0 }, { opacity: 1, duration: 1.6 }, .3)
+      const tl = G.timeline(), mDots = $('#mDots');
+      /* the masked ripple only runs on desktop, and the mask is dropped as soon as it is done */
+      if (mode === 'deck') {
+        mDots.setAttribute('mask', 'url(#dotMask)');
+        tl.fromTo('#dotReveal', { attr: { r: 0 } }, { attr: { r: 1300 }, duration: 2.4, ease: 'power2.inOut', onComplete: () => mDots.removeAttribute('mask') }, 0);
+      } else tl.fromTo(mDots, { opacity: 0 }, { opacity: 1, duration: 1.4 }, 0);
+      tl.fromTo('.map .m-borders, .map .m-land', { opacity: 0 }, { opacity: 1, duration: 1.6 }, .3)
         .call(() => { this.visit(0); this.layout(0); this.bubble.style.opacity = 1; }, null, .7)
         .to(this.plane, { opacity: 1, duration: .3 }, 1.1);
       let t = 1.25;
@@ -548,7 +590,6 @@
 
     enter() {
       if (!this.built) this.build();
-      hydrate($('#s2'));
       const slide = $('#s2');
       if (this.played) return;
       revealWhen($$('.rv', slide), .15, { stagger: .09 });
@@ -784,7 +825,74 @@
   };
 
   /* =========================================================
-     SLIDES 5-7 · how a brand looks in the show
+     SLIDE 5 · scenario: one city, two realities
+     ========================================================= */
+  const S5 = {
+    played: false, built: false,
+    build() {
+      $('#rules').innerHTML = D.rules.map(r => `<li class="rv"><svg class="i"><use href="#i-${r.icon}"/></svg>${T(r.t)}</li>`).join('');
+      $('#season').innerHTML = D.season.map(x => `<div><b>${x.v}</b>${T(x.l, 'small')}</div>`).join('');
+      const who = '<span class="tag tag--a">A</span><span class="tag tag--b">B</span>';
+      $('#beats').innerHTML = D.beats.map((b, i) => `
+        <li class="beat">
+          <span class="beat__tc">${b.tc}</span>
+          <span class="beat__dot"></span>${i < D.beats.length - 1 ? '<span class="beat__ln"></span>' : ''}
+          <div class="beat__body"><div class="beat__head">${T(b.t, 'span', 'beat__t')}<span class="beat__who">${who}</span></div>${T(b.d, 'p', 'beat__d')}</div>
+        </li>`).join('');
+
+      /* bank card tilt, mouse only */
+      const card = $('#bankcard');
+      if (MOTION && matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        const role = card.parentElement;
+        role.addEventListener('pointermove', e => {
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - .5, py = (e.clientY - r.top) / r.height - .5;
+          G.to(card, { rotateY: px * 14, rotateX: -py * 14, transformPerspective: 700, duration: .5, ease: 'power2.out' });
+        });
+        role.addEventListener('pointerleave', () => G.to(card, { rotateY: 0, rotateX: 0, duration: .8, ease: 'expo.out' }));
+      }
+      this.built = true;
+    },
+    beat(b, delay) {
+      G.fromTo(b, { opacity: 0, x: 18 }, { opacity: 1, x: 0, duration: .8, ease: 'expo.out', delay, clearProps: 'transform' });
+      G.fromTo($('.beat__dot', b), { scale: 0 }, { scale: 1, duration: .5, ease: 'back.out(3)', delay: delay + .05 });
+      const ln = $('.beat__ln', b);
+      if (ln) G.fromTo(ln, { scaleY: 0 }, { scaleY: 1, duration: .5, ease: 'power1.inOut', delay: delay + .2 });
+    },
+    enter() {
+      if (!this.built) this.build();
+      const s = $('#s5');
+      hydrate(s);
+      if (this.played) return;
+      this.played = true;
+      revealWhen($$('.s5__left > .h2, .s5__left > .lead', s), .1);
+      const roles = $$('.rv-role', s);
+      when(roles[0], () => {
+        if (!MOTION) { roles.forEach(r => { r.style.opacity = 1; }); return; }
+        G.fromTo(roles[0], { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', clearProps: 'transform' });
+        G.fromTo('#bankcard', { rotateY: -70, rotateX: 12, transformPerspective: 800, x: -30 }, { rotateY: 0, rotateX: 0, x: 0, duration: 1.6, ease: 'expo.out' });
+        G.fromTo('.bankcard__shine', { xPercent: -120 }, { xPercent: 140, duration: 1.4, ease: 'power2.inOut', delay: .8 });
+        G.fromTo(roles[1], { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1, ease: 'expo.out', delay: .18, clearProps: 'transform' });
+        G.fromTo('.zerocard__amt', { scale: 1.6, opacity: 0 }, { scale: 1, opacity: 1, duration: .9, ease: 'back.out(2)', delay: .5 });
+        G.fromTo('.zerocard__cut', { scaleX: 0 }, { scaleX: 1, duration: .6, ease: 'power3.inOut', delay: 1.05 });
+      }, .3);
+      revealWhen($$('#rules li', s), .7, { stagger: .07, y: 18 });
+      revealWhen([$('#season')], 1);
+
+      /* run-sheet: one stagger on desktop, each beat as it scrolls in on phones */
+      const board = $('.board', s), beats = $$('.beat', s);
+      when(board, () => {
+        reveal(board, 0, { y: 50 });
+        if (!MOTION) { beats.forEach(b => { b.style.opacity = 1; }); return; }
+        if (mode === 'deck') beats.forEach((b, i) => this.beat(b, .4 + i * .26));
+      }, .25);
+      if (MOTION && mode !== 'deck') beats.forEach(b => when(b, () => this.beat(b, .05)));
+    },
+    leave() { }
+  };
+
+  /* =========================================================
+     SLIDES 6-8 · how a brand looks in the show
      ========================================================= */
   const brandSlide = id => ({
     played: false,
@@ -827,10 +935,10 @@
     leave() { },
     refresh() { }
   });
-  const B1 = brandSlide('#s5'), B2 = brandSlide('#s6'), B3 = brandSlide('#s7');
+  const B1 = brandSlide('#s6'), B2 = brandSlide('#s7'), B3 = brandSlide('#s8');
 
   /* =========================================================
-     SLIDE 8 · partnership + show × Aviasales band
+     SLIDE 9 · partnership + show × Aviasales band
      ========================================================= */
   const S6 = {
     played: false, built: false,
@@ -842,7 +950,7 @@
     },
     enter() {
       if (!this.built) this.build();
-      const s = $('#s8');
+      const s = $('#s9');
       if (this.played) return;
       this.played = true;
       revealWhen($$('.s6__left > .rv', s), .1, { stagger: .14 });
@@ -868,7 +976,7 @@
     refresh() { }
   };
 
-  const MODS = [S1, S2, S3, S4, B1, B2, B3, S6];
+  const MODS = [S1, S2, S3, S4, S5, B1, B2, B3, S6];
 
   /* =========================================================
      DECK ENGINE
@@ -896,14 +1004,14 @@
     const from = cur, dir = to > from ? 1 : -1, a = slides[from], b = slides[to];
     busy = true; cur = to; updateUI(); setHash(to);
     hydrate(b);
-    b.classList.add('is-active');
+    b.classList.add('is-active', 'is-live');
     MODS[from].leave();
-    if (!MOTION) { a.classList.remove('is-active'); busy = false; enter(to); return; }
+    if (!MOTION) { a.classList.remove('is-active', 'is-live'); busy = false; enter(to); return; }
     G.set(a, { zIndex: 1 }); G.set(b, { zIndex: 2 });
     G.timeline({
       defaults: { duration: 1.05, ease: 'expo.inOut' },
       onComplete: () => {
-        a.classList.remove('is-active');
+        a.classList.remove('is-active', 'is-live');
         G.set([a, b, a.firstElementChild, b.firstElementChild], { clearProps: 'zIndex,clipPath,transform,opacity' });
         busy = false;
       }
@@ -916,10 +1024,10 @@
 
   function initDeck() {
     /* starting slide from hash */
-    const m = /^#s([1-8])$/.exec(location.hash);
+    const m = /^#s([1-9])$/.exec(location.hash);
     cur = m ? +m[1] - 1 : 0;
     S1.allowIntro = cur === 0;
-    slides.forEach((s, i) => s.classList.toggle('is-active', i === cur));
+    slides.forEach((s, i) => { s.classList.toggle('is-active', i === cur); s.classList.toggle('is-live', i === cur); });
     updateUI();
     enter(cur);
 
@@ -961,12 +1069,20 @@
       go(cur + (Math.abs(dx) > Math.abs(dy) ? (dx < 0 ? 1 : -1) : (dy < 0 ? 1 : -1)));
     }, { passive: true });
 
-    addEventListener('hashchange', () => { const mm = /^#s([1-8])$/.exec(location.hash); if (mm) go(+mm[1] - 1); });
+    addEventListener('hashchange', () => { const mm = /^#s([1-9])$/.exec(location.hash); if (mm) go(+mm[1] - 1); });
   }
 
   function initScroll() {
     $$('[data-go]').forEach(el => el.addEventListener('click', e => { e.preventDefault(); go(+el.dataset.go); }));
-    if (!io) { slides.forEach((s, i) => enter(i)); return; }
+    if (!io) { slides.forEach((s, i) => { s.classList.add('is-live'); enter(i); }); return; }
+    /* images: fetch each slide a screen and a bit before it scrolls in */
+    const preIO = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { preIO.unobserve(e.target); hydrate(e.target); }
+    }), { rootMargin: '0px 0px 120% 0px' });
+    slides.forEach(s => preIO.observe(s));
+    /* looping decoration (flags, map pulse, vs ring) only runs while its slide is on screen */
+    const liveIO = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('is-live', e.isIntersecting)));
+    slides.forEach(s => liveIO.observe(s));
     const enterIO = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { enterIO.unobserve(e.target); enter(slides.indexOf(e.target)); }
     }), { rootMargin: '0px 0px -15% 0px' });
@@ -979,7 +1095,7 @@
       if (e.isIntersecting) html.dataset.tone = e.target.dataset.theme || 'light';
     }), { rootMargin: '0px 0px -96% 0px' });
     slides.forEach(s => toneIO.observe(s));
-    const m = /^#s([1-8])$/.exec(location.hash);
+    const m = /^#s([1-9])$/.exec(location.hash);
     if (m) setTimeout(() => slides[+m[1] - 1].scrollIntoView(), 50);
   }
 
@@ -998,14 +1114,18 @@
       $$('.cf-card').forEach((c, i) => c.setAttribute('aria-label', L(D.cities[i].name)));
     };
     const scope = mode === 'deck' ? [slides[cur], $('#bar')] : [document.body];
-    const els = scope.flatMap(r => $$('[data-i18n]', r)).filter(el => el.getClientRects().length && parseFloat(getComputedStyle(el).opacity) > .5);
+    const onScreen = el => { const r = el.getBoundingClientRect(); return r.width > 0 && r.bottom > 0 && r.top < innerHeight; };
+    const pick = () => scope.flatMap(r => $$('[data-i18n]', r)).filter(onScreen);
+    const els = pick().filter(el => parseFloat(getComputedStyle(el).opacity) > .5);
     if (!MOTION || !els.length || !els[0].animate) { swap(); return; }
-    els.forEach(el => el.animate([{ opacity: 1, filter: 'blur(0px)' }, { opacity: 0, filter: 'blur(3px)' }], { duration: 170, easing: 'ease-in', fill: 'forwards' }));
+    const blur = mode === 'deck';
+    const kf = (a, b) => [a, b].map(o => (blur ? { opacity: o, filter: `blur(${3 - o * 3}px)` } : { opacity: o }));
+    els.forEach(el => el.animate(kf(1, 0), { duration: 170, easing: 'ease-in', fill: 'forwards' }));
     setTimeout(() => {
       swap();
-      const fresh = scope.flatMap(r => $$('[data-i18n]', r)).filter(el => el.getClientRects().length);
+      const fresh = pick();
       els.forEach(el => el.getAnimations().forEach(a => a.cancel()));
-      fresh.forEach(el => el.animate([{ opacity: 0, filter: 'blur(3px)' }, { opacity: 1, filter: 'blur(0px)' }], { duration: 320, easing: 'cubic-bezier(.16,1,.3,1)' }));
+      fresh.forEach(el => el.animate(kf(0, 1), { duration: 320, easing: 'cubic-bezier(.16,1,.3,1)' }));
     }, 180);
   }
 
@@ -1019,10 +1139,12 @@
   function idleHydrate() {
     if (hydrated) return; hydrated = true;
     const run = () => {
-      [2, 3, 4, 5, 6].forEach((n, k) => setTimeout(() => hydrate($('#s' + n)), k * 350));
-      D.cities.forEach(c => { const im = new Image(); im.src = `assets/img/thumbs/${c.id}.jpg`; });
       if (!S2.built) S2.build();
-      hydrate($('#s2'));
+      D.cities.forEach(c => { const im = new Image(); im.src = `assets/img/thumbs/${c.id}.jpg`; });
+      /* desktop warms every slide in the background; phones load each slide just before it scrolls in */
+      if (mode !== 'deck') return;
+      slides.slice(1).forEach((s, k) => setTimeout(() => hydrate(s), k * 350));
+      setTimeout(() => $$('img[data-lazy]').forEach(lazy), slides.length * 350);
     };
     if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 1500 }); else setTimeout(run, 600);
   }
