@@ -627,7 +627,7 @@
   };
 
   /* =========================================================
-     SLIDE 4 · stats dashboard
+     SLIDE 5 · stats dashboard
      ========================================================= */
   function noirSeries() {
     const spikes = [[122, 102], [136, 78], [178, 151], [222, 116], [280, 102], [382, 141], [478, 127], [516, 108], [596, 59], [671, 66], [702, 97], [731, 59], [792, 71], [831, 149], [902, 257], [918, 146], [960, 113], [982, 125], [1044, 354], [1152, 125], [1182, 198], [1224, 87], [1502, 189], [1540, 42]]
@@ -806,7 +806,7 @@
 
     enter() {
       if (!this.built) this.build();
-      const s = $('#s4');
+      const s = $('#s5');
       hydrate(s);
       if (this.played) return;
       this.played = true;
@@ -825,7 +825,7 @@
   };
 
   /* =========================================================
-     SLIDE 5 · scenario: one city, two realities
+     SLIDE 6 · scenario: one city, two realities
      ========================================================= */
   const S5 = {
     played: false, built: false,
@@ -848,7 +848,7 @@
     },
     enter() {
       if (!this.built) this.build();
-      const s = $('#s5');
+      const s = $('#s6');
       hydrate(s);
       if (this.played) return;
       this.played = true;
@@ -871,7 +871,7 @@
   };
 
   /* =========================================================
-     SLIDE 6 · where the show airs: Noir Nabiev's YouTube channel
+     SLIDE 4 · where the show airs: Noir Nabiev's YouTube channel
      ========================================================= */
   const SY = {
     played: false, built: false,
@@ -888,7 +888,7 @@
     },
     enter() {
       if (!this.built) this.build();
-      const s = $('#s6');
+      const s = $('#s4');
       hydrate(s);
       if (this.played) return;
       this.played = true;
@@ -998,7 +998,7 @@
     refresh() { }
   };
 
-  const MODS = [S1, S2, S3, S4, S5, SY, B1, B2, B3, S6];
+  const MODS = [S1, S2, S3, SY, S4, S5, B1, B2, B3, S6];
 
   /* =========================================================
      DECK ENGINE

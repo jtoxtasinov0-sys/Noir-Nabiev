@@ -54,7 +54,7 @@ window.DATA = {
       tag:  { uz: "Final: okean, vulqonlar va mavsum g‘olibi.", ru: "Финал: океан, вулканы и победитель сезона." } }
   ],
 
-  /* ---------- 4-slayd: statistika (YouTube Studio + Instagram Insights) ---------- */
+  /* ---------- 5-slayd: statistika (YouTube Studio + Instagram Insights) ---------- */
   months: {
     uz: ["yan", "fev", "mar", "apr", "may", "iyn", "iyl", "avg", "sen", "okt", "noy", "dek"],
     ru: ["янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"]
@@ -144,7 +144,7 @@ window.DATA = {
     }
   ],
 
-  /* ---------- 5-slayd: ssenariy ---------- */
+  /* ---------- 6-slayd: ssenariy ---------- */
   rules: [
     { icon: "arrows-clockwise", t: { uz: "Rollar har shaharda almashadi", ru: "Роли меняются в каждом городе" } },
     { icon: "shield-check", t: { uz: "Pul faqat qonuniy yo‘l bilan topiladi", ru: "Деньги только законным путём" } },
@@ -158,7 +158,7 @@ window.DATA = {
     { v: "4K", l: { uz: "kino sifati", ru: "кинокачество" } }
   ],
 
-  /* ---------- 6-slayd: shou chiqadigan YouTube kanal ---------- */
+  /* ---------- 4-slayd: shou chiqadigan YouTube kanal ---------- */
   channel: { url: "https://www.youtube.com/@noirnabiev" },
 
   /* ---------- 10-slayd: hamkorlik ---------- */
