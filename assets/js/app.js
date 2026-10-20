@@ -993,17 +993,23 @@
           .fromTo($('.yt__pole', s), { scaleY: 0 }, { scaleY: 1, duration: .6, ease: 'power3.out' }, 1.8)
           .fromTo($('.flag--yt', s), { scaleX: 0, transformOrigin: '0% 50%' }, { scaleX: 1, duration: 1.1, ease: 'elastic.out(1, .55)' }, 2.1);
       }, 0);
+
+      /* Aviasales copy: the partner logo alone under the columns */
+      const mark = $('.s6__mark', s);
+      when(mark, () => reveal(mark, 0, { y: 24, dur: 1.5 }), mode === 'deck' ? 1.1 : .2);
     },
     leave() { },
     refresh() { }
   };
 
-  const MODS = [S1, S2, S3, SY, S4, S5, B1, B2, B3, S6];
+  /* modules by slide id, so a copy of the deck can leave slides out */
+  const MOD_BY_ID = { s1: S1, s2: S2, s3: S3, s4: SY, s5: S4, s6: S5, s7: B1, s8: B2, s9: B3, s10: S6 };
 
   /* =========================================================
      DECK ENGINE
      ========================================================= */
   const slides = $$('.slide');
+  const MODS = slides.map(s => MOD_BY_ID[s.id]);
   let cur = 0, busy = false;
 
   function updateUI() {
@@ -1047,7 +1053,7 @@
   function initDeck() {
     /* starting slide from hash */
     const m = /^#s(10|[1-9])$/.exec(location.hash);
-    cur = m ? +m[1] - 1 : 0;
+    cur = m ? clamp(+m[1] - 1, 0, slides.length - 1) : 0;
     S1.allowIntro = cur === 0;
     slides.forEach((s, i) => { s.classList.toggle('is-active', i === cur); s.classList.toggle('is-live', i === cur); });
     updateUI();
@@ -1118,7 +1124,7 @@
     }), { rootMargin: '0px 0px -96% 0px' });
     slides.forEach(s => toneIO.observe(s));
     const m = /^#s(10|[1-9])$/.exec(location.hash);
-    if (m) setTimeout(() => slides[+m[1] - 1].scrollIntoView(), 50);
+    if (m) setTimeout(() => slides[clamp(+m[1] - 1, 0, slides.length - 1)].scrollIntoView(), 50);
   }
 
   /* =========================================================
