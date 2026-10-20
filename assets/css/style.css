@@ -506,6 +506,8 @@ html[data-tone="dark"] .dnav__count, html[data-tone="dark"] .dnav__count b { col
 .is-deck .s6__grid { display: grid; grid-template-columns: 1fr 36rem; grid-template-rows: 1fr auto; column-gap: 5rem; height: 100%; padding: 6.4rem 5rem 3.8rem 5.2rem; }
 .is-deck .s6__title { font-size: 3.6rem; }
 .is-deck .s6__left { align-self: start; }
+/* without the show × Aviasales band the columns sit in the middle; putting the band back restores the layout above */
+.is-deck .s6__grid:not(:has(.coband)) { grid-template-rows: auto; align-content: center; }
 .is-deck .gets { margin-top: 2rem; gap: .95rem; }
 
 /* ---------- small phones ---------- */
