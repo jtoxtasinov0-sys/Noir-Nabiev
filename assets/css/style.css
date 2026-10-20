@@ -853,6 +853,14 @@ html[data-tone="dark"] .dnav__count, html[data-tone="dark"] .dnav__count b { col
 .js:not(.is-static) .yt { opacity: 0; }
 .is-static .cobrand__show, .is-static .cobrand__x, .is-static .cobrand__logo, .is-static .yt { opacity: 1 !important; }
 
+/* Aviasales copy (aviasales.html): the partner logo alone, centred under the columns */
+.s6__mark { display: flex; justify-content: center; margin-top: 2.8rem; color: var(--ink); }
+.s6__logo { display: block; width: 11.5rem; height: auto; }
+.is-deck .s6__mark { grid-column: 1 / -1; margin-top: 4.4rem; }
+.is-deck .s6__logo { width: 18rem; }
+.js:not(.is-static) .s6__mark { opacity: 0; }
+.is-static .s6__mark { opacity: 1 !important; }
+
 /* =========================================================
    PERFORMANCE · looping decoration runs only on the slide in
    view (.is-live is set by app.js); phones skip the slowest bits
