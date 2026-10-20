@@ -28,6 +28,7 @@
   --f-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   --ease: cubic-bezier(.16, 1, .3, 1);
+  --glide: cubic-bezier(.3, .1, .2, 1);
   --shadow-sm: 0 .1rem .2rem rgba(19, 27, 53, .05), 0 .6rem 1.4rem -.6rem rgba(19, 27, 53, .16);
   --shadow: 0 .2rem .4rem rgba(19, 27, 53, .05), 0 1.4rem 3rem -1.2rem rgba(19, 27, 53, .3);
   --shadow-lg: 0 .4rem .8rem rgba(19, 27, 53, .06), 0 2.4rem 4.6rem -1.6rem rgba(19, 27, 53, .42);
@@ -240,8 +241,8 @@ html.is-scroll[data-tone="dark"] .bar { background: rgba(14, 22, 48, .96); borde
   position: absolute; left: 50%; top: 0; width: 13.5rem; height: 18rem; margin-left: -6.75rem;
   border-radius: 1rem; overflow: hidden; background: var(--paper-2);
   box-shadow: 0 1.4rem 2.4rem -1.2rem rgba(19, 27, 53, .55);
-  transition: transform .95s var(--ease), opacity .7s var(--ease), filter .7s var(--ease);
-  will-change: transform;
+  transition: transform 1.1s var(--glide), opacity .9s var(--glide);
+  will-change: transform, opacity; -webkit-backface-visibility: hidden; backface-visibility: hidden;
 }
 .cf-card img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
 .cf-card__shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(9, 13, 30, 0) 42%, rgba(9, 13, 30, .82) 100%); }
@@ -249,7 +250,11 @@ html.is-scroll[data-tone="dark"] .bar { background: rgba(14, 22, 48, .96); borde
 .cf-card__num { font-size: .66rem; opacity: .85; }
 .cf-card__name { font-family: var(--f-display); font-weight: 700; font-size: 1.5rem; line-height: 1.08; }
 .cf-card__en { font-size: .6rem; opacity: .72; }
-.cf-card:not(.is-active) { filter: saturate(.75) brightness(.92); }
+/* side cards dim with a fading veil: a filter re-painted the whole photo on every switch */
+.cf-card::after { content: ""; position: absolute; inset: 0; background: rgba(19, 27, 53, .16); opacity: 0; transition: opacity .9s var(--glide); pointer-events: none; }
+.cf-card:not(.is-active)::after { opacity: 1; }
+.cflow.is-dragging .cf-card { transition: none; }
+.cflow.is-flung .cf-card { transition-duration: .85s, .7s; transition-timing-function: cubic-bezier(.2, .7, .25, 1); }
 
 .cap { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .9rem; margin-top: 1.3rem; }
 .cap__body { min-height: 4.2rem; text-align: center; }
@@ -259,7 +264,7 @@ html.is-scroll[data-tone="dark"] .bar { background: rgba(14, 22, 48, .96); borde
 
 .rail { position: relative; height: 3.4rem; margin-top: .4rem; }
 .rail__line { position: absolute; left: 0; right: 0; top: 1.55rem; height: 1px; background: var(--line-strong); }
-.rail__fill { position: absolute; left: 0; top: calc(1.55rem - 1px); height: 3px; width: 0; border-radius: 3px; background: var(--accent); transition: width .9s var(--ease); }
+.rail__fill { position: absolute; left: 0; top: calc(1.55rem - 1px); height: 3px; width: 100%; border-radius: 3px; background: var(--accent); transform: scaleX(0); transform-origin: 0 50%; transition: transform 1.1s var(--glide); }
 .rail__stop { position: absolute; top: .9rem; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: .35rem; padding: 0 .15rem; }
 .rail__dot { width: .72rem; height: .72rem; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); margin-top: .28rem; transition: background .4s, border-color .4s, transform .5s var(--ease), box-shadow .5s; }
 .rail__num { font-size: .6rem; color: var(--muted); letter-spacing: .02em; transition: color .3s; display: none; }
@@ -875,5 +880,4 @@ html[data-tone="dark"] .dnav__count, html[data-tone="dark"] .dnav__count b { col
 .slide:not(.is-live) .ytw__play::before,
 .slide:not(.is-live) .map .pin .pin-ring { animation-play-state: paused; }
 .is-scroll .deco__star { animation: none; }
-.is-scroll .cf-card { transition: transform .95s var(--ease), opacity .7s var(--ease); }
 .is-scroll .map .pin.is-active .pin-ring { animation-iteration-count: 3; }
