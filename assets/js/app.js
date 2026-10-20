@@ -294,6 +294,8 @@
   /* =========================================================
      SLIDE 2 · route map + coverflow + 80-day rail
      ========================================================= */
+  /* coverflow poses 0-3 steps from the centre: x (card widths), z, rotateY, scale, opacity */
+  const CF_POSE = [[0, 0, 0, 1, 1], [.56, -90, -38, .84, .95], [.88, -180, -48, .66, .6], [1.02, -260, -55, .5, 0]];
   const S2 = {
     active: 0, prog: 0, played: false, built: false,
     build() {
@@ -427,15 +429,42 @@
       $('#cfPrev').addEventListener('click', () => this.select(this.active - 1));
       $('#cfNext').addEventListener('click', () => this.select(this.active + 1));
 
-      /* drag / swipe on coverflow */
+      /* drag / swipe on coverflow: the cards follow the finger, then glide to a city */
       const cf = $('#cflow');
-      let sx = null;
-      cf.addEventListener('pointerdown', e => { sx = e.clientX; this.dragged = false; });
-      addEventListener('pointerup', e => {
+      let sx = null, dx = 0, drag = false, raf = 0;
+      const follow = () => {
+        raf = 0;
+        const cw = this.cards[0].offsetWidth || 230;
+        const at = clamp(this.active - dx / (cw * .56), -.35, D.cities.length - .65);
+        this.cards.forEach((el, k) => this.pose(el, k - at, cw));
+      };
+      cf.addEventListener('pointerdown', e => { if (e.button > 0) return; sx = e.clientX; dx = 0; drag = false; this.dragged = false; });
+      addEventListener('pointermove', e => {
         if (sx == null) return;
-        const dx = e.clientX - sx; sx = null;
-        if (Math.abs(dx) > 40) { this.dragged = true; this.select(this.active + (dx < 0 ? 1 : -1)); setTimeout(() => { this.dragged = false; }, 60); }
+        dx = e.clientX - sx;
+        if (!drag) {
+          if (Math.abs(dx) < 8) return;
+          drag = true; this.stopTour(); cf.classList.add('is-dragging');
+        }
+        if (!raf) raf = requestAnimationFrame(follow);
       });
+      const release = e => {
+        if (sx == null) return;
+        sx = null;
+        if (!drag) return;
+        drag = false;
+        if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        /* after a drag the cards keep the finger's momentum: ease-out instead of the soft start */
+        cf.classList.remove('is-dragging'); cf.classList.add('is-flung');
+        clearTimeout(this.flung); this.flung = setTimeout(() => cf.classList.remove('is-flung'), 900);
+        this.dragged = true; setTimeout(() => { this.dragged = false; }, 60);
+        /* a 40px flick moves one city, a longer drag lands on the card nearest the centre */
+        const steps = -dx / ((this.cards[0].offsetWidth || 230) * .56);
+        const by = e.type === 'pointercancel' || Math.abs(dx) <= 40 ? 0 : Math.sign(steps) * Math.max(1, Math.round(Math.abs(steps)));
+        this.select(this.active + by);
+      };
+      addEventListener('pointerup', release);
+      addEventListener('pointercancel', release);
 
       /* 80-day rail */
       const pos = c => ((c.days[0] - 1) / 79) * 100;
@@ -467,9 +496,24 @@
       if (MOTION) G.fromTo(this.pins[i].querySelector('.pin-dot'), { attr: { r: 14 } }, { attr: { r: 8.5 }, duration: .7, ease: 'back.out(3)' });
     },
 
-    /* city photos are 900x1200: fetch and decode only the cards around the active one */
+    /* city photos are 900x1200: fetch and decode only the cards around the active one,
+       one card further than is visible so a photo is ready before it slides in */
     loadNear(i) {
-      this.cards.forEach((el, k) => { if (Math.abs(k - i) <= 2) lazy($('img', el)); });
+      this.cards.forEach((el, k) => {
+        const img = $('img', el);
+        if (Math.abs(k - i) > 3 || !img.dataset.lazy) return;
+        lazy(img);
+        if (img.decode) img.decode().catch(() => {});
+      });
+    },
+
+    /* coverflow pose of a card d steps from the centre; d is fractional while dragging */
+    pose(el, d, cw) {
+      const a = Math.min(Math.abs(d), 3), s = Math.sign(d);
+      const n = Math.min(Math.floor(a), 2), f = a - n, A = CF_POSE[n], B = CF_POSE[n + 1];
+      const [tx, tz, ry, sc, op] = A.map((v, j) => v + (B[j] - v) * f);
+      el.style.transform = `translateX(${(s * tx * cw).toFixed(1)}px) translateZ(${tz.toFixed(1)}px) rotateY(${(s * ry).toFixed(2)}deg) scale(${sc.toFixed(3)})`;
+      el.style.opacity = op.toFixed(3);
     },
 
     /* move bubble, coverflow, caption and rail to stop i */
@@ -482,7 +526,7 @@
 
       this.pins.forEach((p, k) => p.classList.toggle('is-active', k === i));
       this.stops.forEach((s, k) => s.classList.toggle('is-active', k === i));
-      $('#railFill').style.width = this.pos(c) + '%';
+      $('#railFill').style.transform = `scaleX(${(this.pos(c) / 100).toFixed(4)})`;
 
       /* bubble */
       const below = y < 120;
@@ -506,13 +550,8 @@
       /* coverflow */
       const cw = this.cards[0].offsetWidth || 230;
       this.cards.forEach((el, k) => {
-        const d = k - i, a = Math.abs(d), s = Math.sign(d);
-        let tx = 0, tz = 0, ry = 0, sc = 1, op = 1;
-        if (a === 1) { tx = .56 * cw; tz = -90; ry = -38; sc = .84; op = .95; }
-        else if (a === 2) { tx = .88 * cw; tz = -180; ry = -48; sc = .66; op = .6; }
-        else if (a > 2) { tx = 1.02 * cw; tz = -260; ry = -55; sc = .5; op = 0; }
-        el.style.transform = `translateX(${(s * tx).toFixed(1)}px) translateZ(${tz}px) rotateY(${s * ry}deg) scale(${sc})`;
-        el.style.opacity = op;
+        const a = Math.abs(k - i);
+        this.pose(el, k - i, cw);
         el.style.zIndex = 20 - a;
         el.style.pointerEvents = a > 2 ? 'none' : '';
         el.tabIndex = a > 2 ? -1 : 0;
