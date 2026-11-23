@@ -31,23 +31,31 @@ STYLE = ("Keep both hosts' faces, hairstyles and glasses exactly like in the ref
          "Realistic documentary travel-show photo, natural daylight, candid moment, 35mm lens, "
          "warm natural colours, casual modern clothes. No text, no captions, no logos, no watermarks.")
 SHOTS = {
-    "interview-1": ("1:1", f"{WHO['noir'].capitalize()} holds a handheld microphone and interviews a smiling "
-                    "Central Asian female student in her early twenties on a university campus in New York City, "
-                    f"brick buildings and autumn trees behind them. {WHO['mavluda'].capitalize()} stands next to him "
-                    "and listens. " + STYLE),
-    "interview-2": ("3:4", f"{WHO['mavluda'].capitalize()} holds a handheld microphone and talks with two Central Asian "
-                    "university students, a young man and a young woman, sitting on stone steps in downtown Chicago "
-                    "with skyscrapers behind them. " + STYLE),
-    "interview-3": ("3:4", f"{WHO['noir'].capitalize()} and {WHO['mavluda']} laugh together with three Central Asian "
+    "interview-1": ("3:4", ["noir", "mavluda"], "Three people stand on a university campus in New York City, brick "
+                    "buildings and autumn trees behind them. On the left: the young man with short black hair and round "
+                    "black glasses from the reference photos, holding a plain black handheld microphone. In the middle, "
+                    "next to him: the young woman with long dark brown hair from the reference photos, a host, listening "
+                    "and smiling. On the right: the interviewed student, a Central Asian young woman with a short "
+                    "shoulder-length bob haircut, a denim jacket and a backpack, clearly different from the host woman. "
+                    + STYLE),
+    "interview-2": ("3:4", ["mavluda"], "The young woman with long dark brown hair from the reference photos stands on "
+                    "the right side of the frame and holds a plain black handheld microphone towards two Central Asian "
+                    "university students sitting on stone steps on the left: a young man without glasses in a navy "
+                    "hoodie, and a young woman with a short bob haircut, round face and a beige scarf. Downtown Chicago "
+                    "skyscrapers behind them. Only the host has long hair; the students look clearly different from her. Keep her face and "
+                    "hair exactly like in the reference photos. Realistic documentary travel-show photo, natural "
+                    "daylight, candid moment, 35mm lens, warm natural colours. No text, no captions, no logos, "
+                    "no watermarks."),
+    "interview-3": ("3:4", ["noir", "mavluda"], f"{WHO['noir'].capitalize()} and {WHO['mavluda']} laugh together with three Central Asian "
                     "university students on a sunny palm-lined university campus in Los Angeles; he holds a "
                     "handheld microphone. " + STYLE),
 }
 
 
-def ref_parts():
+def ref_parts(who):
     parts = []
-    for files in REFS.values():
-        for f in files:
+    for key in who:
+        for f in REFS[key]:
             im = Image.open(os.path.join(ROOT, f)).convert("RGB")
             im.thumbnail((768, 768))
             buf = io.BytesIO()
@@ -81,9 +89,8 @@ def generate(name, aspect, prompt, refs):
 if __name__ == "__main__":
     os.makedirs(OUT, exist_ok=True)
     only = sys.argv[1:]
-    refs = ref_parts()
-    for name, (aspect, prompt) in SHOTS.items():
+    for name, (aspect, who, prompt) in SHOTS.items():
         if only and name not in only:
             continue
-        print("ok", generate(name, aspect, prompt, refs))
+        print("ok", generate(name, aspect, prompt, ref_parts(who)))
     print("Endi PDF'ni qayta yig'ing: node embassy/build.js")
