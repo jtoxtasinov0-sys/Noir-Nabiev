@@ -91,8 +91,8 @@
   .hosts { margin-top: 3.5mm; display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
   .host { border: .25mm solid var(--line2); border-radius: 3mm; padding: 4mm; display: flex; flex-direction: column; gap: 3.2mm; }
   .host__top { display: grid; grid-template-columns: 28mm 1fr; gap: 3.6mm; }
-  .host__photo { aspect-ratio: 4 / 5; border-radius: 2mm; overflow: hidden; background: var(--cream2); }
-  .host__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+  .host__photo { align-self: start; aspect-ratio: 1; border-radius: 50%; padding: .55mm; background: linear-gradient(45deg, #F9CE34, #EE2A7B 55%, #6228D7); }
+  .host__photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: .7mm solid #fff; }
   .host__name { font: 800 13pt/1.05 var(--f-display); }
   .host__handle { margin-top: 1.2mm; display: flex; align-items: center; gap: 1mm; font: 500 7pt/1 var(--f-mono); color: var(--muted); }
   .host__handle .i { width: 3.2mm; height: 3.2mm; color: #3897F0; }
@@ -105,7 +105,7 @@
   .hstat small { font-size: 6.6pt; color: var(--muted); }
   .host__hook { margin: 0; font-size: 7.9pt; line-height: 1.45; color: #2F3650; }
   .host__thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6mm; }
-  .host__thumbs img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 1.4mm; background: var(--cream2); }
+  .host__thumbs img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; object-position: 50% 22%; border-radius: 1.4mm; background: var(--cream2); }
 
   .kband { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.6mm; }
   .ktile { padding: 3mm 3.2mm; border-radius: 2mm; background: var(--cream); display: flex; flex-direction: column; gap: .8mm; }
@@ -340,18 +340,18 @@
   /* ---------- page 2 ---------- */
   var p2 = t.p2;
   var hosts = [
-    { name: 'Noir Nabiev', handle: '@noir_nabiev', photo: '../assets/img/noir/portrait.jpg',
+    { name: 'Noir Nabiev', handle: '@noir_nabiev', photo: '../assets/img/noir/avatar.jpg',
       role: { en: 'Blogger, YouTuber · Tashkent', uz: 'Bloger, YouTuber · Toshkent' },
       stats: [['instagram-logo', 'ig', { en: '557K+', uz: '557 ming+' }, 'Instagram'], ['youtube-logo', 'ytc', { en: '168K+', uz: '168 ming+' }, 'YouTube']],
       hook: { en: 'Author of the shows «ENG QIMMAT YOKI ENG ARZON» (The most expensive or the cheapest) and «NOIR OSHXONASI» (Noir’s kitchen). His audience already loves the contrast format this show is built on.',
               uz: '«ENG QIMMAT YOKI ENG ARZON» va «NOIR OSHXONASI» shoularining muallifi. Shou asoslangan kontrastlar formatini uning auditoriyasi allaqachon sevadi.' },
-      thumbs: ['noir/post-1', 'noir/post-2', 'noir/post-4', 'noir/post-3'] },
-    { name: 'Mavluda Hikmatova', handle: '@mavluda__hikmatova', photo: '../assets/img/mavluda/post-3.jpg',
+      thumbs: ['noir/photo-2', 'noir/photo-4', 'noir/photo-3', 'noir/photo-1'] },
+    { name: 'Mavluda Hikmatova', handle: '@mavluda__hikmatova', photo: '../assets/img/mavluda/avatar-hq.jpg',
       role: { en: 'Actress, blogger · Uzbekistan', uz: 'Aktrisa, bloger · O‘zbekiston' },
       stats: [['instagram-logo', 'ig', { en: '785K', uz: '785 ming' }, 'Instagram'], ['film-slate', 'mu', { en: '577', uz: '577' }, { en: 'publications', uz: 'nashr' }]],
       hook: { en: 'Actress and Instagram blogger. She shares travel content from Azerbaijan, the UAE, China, Egypt and Issyk-Kul with an audience of 785,000 followers.',
               uz: 'Aktrisa va Instagram-bloger. Ozarbayjon, BAA, Xitoy, Misr va Issiqko‘ldan sayohat kontentini 785 ming obunachisi bilan baham ko‘radi.' },
-      thumbs: ['mavluda/post-2', 'mavluda/post-5', 'mavluda/post-6', 'mavluda/post-4'] }
+      thumbs: ['mavluda/photo-1', 'mavluda/photo-2', 'mavluda/photo-3', 'mavluda/photo-4'] }
   ];
   var hostHtml = hosts.map(function (h) {
     return '<article class="host"><div class="host__top"><div class="host__photo"><img src="' + h.photo + '" alt="' + h.name + '"></div>' +
@@ -395,7 +395,7 @@
       '<dl class="kv"><dt>' + lab.foll + '</dt><dd>' + (U ? '557 ming+' : '557K+') + '</dd><dt>' + lab.best + '</dt><dd>' + (U ? '4,7 mln' : '4.7M') + '</dd><dt>' + lab.uzlang + '</dt><dd>' + nf(75.3) + '%</dd><dt>' + lab.uzb + '</dt><dd>' + nf(84.2) + '%</dd></dl>' +
       '<div><div class="sub">' + lab.age + '</div>' + ages([4.7, 20.8, 49.8, 19.2, 3.7, 1.1, 0.8]) + '</div>' +
       '<div><div class="sub">' + lab.gender + '</div>' + split(82.4, 17.6) + '</div></div>' +
-    '<div class="panel"><div class="panel__h"><img src="../assets/img/mavluda/avatar.jpg" alt="">Mavluda · Instagram<span style="color:var(--ig);margin-left:auto;display:flex">' + I('instagram-logo') + '</span></div>' +
+    '<div class="panel"><div class="panel__h"><img src="../assets/img/mavluda/avatar-hq.jpg" alt="">Mavluda · Instagram<span style="color:var(--ig);margin-left:auto;display:flex">' + I('instagram-logo') + '</span></div>' +
       '<div class="big">' + (U ? '785 ming' : '785K') + '<small>' + lab.mFoll + '</small></div>' +
       '<dl class="kv"><dt>' + lab.posts + '</dt><dd>577</dd></dl>' +
       '<span class="verified">' + I('seal-check-fill') + lab.ver + '</span>' +
@@ -411,7 +411,7 @@
     '<div class="hosts">' + hostHtml + '</div>' +
     '<div class="sec">' + secHead(p2.rEyebrow, p2.rTitle, p2.rLead) +
       '<div class="kband">' +
-        '<div class="ktile ktile--total"><span class="ava"><img src="../assets/img/noir/avatar.jpg" alt=""><img src="../assets/img/mavluda/avatar.jpg" alt=""></span><b>' + (U ? '1,5 mln+' : '1.5M+') + '</b><small>' + (U ? 'umumiy auditoriya: YouTube va Instagram' : 'combined audience on YouTube and Instagram') + '</small></div>' +
+        '<div class="ktile ktile--total"><span class="ava"><img src="../assets/img/noir/avatar.jpg" alt=""><img src="../assets/img/mavluda/avatar-hq.jpg" alt=""></span><b>' + (U ? '1,5 mln+' : '1.5M+') + '</b><small>' + (U ? 'umumiy auditoriya: YouTube va Instagram' : 'combined audience on YouTube and Instagram') + '</small></div>' +
         '<div class="ktile"><b>' + (U ? '22,3 mln' : '22.3M') + '</b><small>' + (U ? 'YouTube kanalidagi ko‘rishlar' : 'views on the YouTube channel') + '</small></div>' +
         '<div class="ktile"><b>' + (U ? '270,1 mln' : '270.1M') + '</b><small>' + (U ? 'YouTube taassurotlari (ko‘rsatishlar)' : 'impressions on YouTube') + '</small></div>' +
         '<div class="ktile"><b>' + (U ? '16,1 mln' : '16.1M') + '</b><small>' + (U ? 'top-5 Reels ko‘rishlari, oxirgi 30 kunda' : 'views of the top 5 Reels in the last 30 days') + '</small></div>' +
