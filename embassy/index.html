@@ -432,7 +432,7 @@
     ['trophy', { en: 'Viewers choose the winner', uz: 'G‘olibni tomoshabinlar tanlaydi' }]
   ];
   var shots = [
-    { img: 'interview-1', city: 'NEW YORK, NY', cap: { en: 'A student’s day on campus', uz: 'Talabaning kampusdagi kuni' } },
+    { img: 'interview-1', pos: '22% 50%', city: 'NEW YORK, NY', cap: { en: 'A student’s day on campus', uz: 'Talabaning kampusdagi kuni' } },
     { img: 'interview-2', city: 'CHICAGO, IL', cap: { en: 'A conversation by the Chicago River', uz: 'Chikago daryosi bo‘yidagi suhbat' } },
     { img: 'interview-3', city: 'LOS ANGELES, CA', cap: { en: 'Advice for future students', uz: 'Bo‘lajak talabalarga maslahatlar' } }
   ];
@@ -452,7 +452,7 @@
     '<ul class="rules">' + rules.map(function (r) { return '<li>' + I(r[0]) + '<span>' + tx(r[1]) + '</span></li>'; }).join('') + '</ul>' +
     '<div class="sec"><div class="students__txt"><div><p class="eyebrow">' + p3.sEyebrow + '</p><h2>' + p3.sTitle + '</h2></div><p>' + p3.sText + '</p></div>' +
       '<div class="shots">' + shots.map(function (s) {
-        return '<figure class="shot"><div class="shot__img"><span class="ph-empty">' + p3.missing + '</span><img src="img/' + s.img + '.jpg" alt="" onerror="this.remove()"><span class="shot__tag">' + p3.concept + '</span></div>' +
+        return '<figure class="shot"><div class="shot__img"><span class="ph-empty">' + p3.missing + '</span><img src="img/' + s.img + '.jpg" alt="" style="object-position:' + (s.pos || '50% 50%') + '" onerror="this.remove()"><span class="shot__tag">' + p3.concept + '</span></div>' +
                '<figcaption><span>' + s.city + '</span>' + tx(s.cap) + '</figcaption></figure>';
       }).join('') + '</div></div>' +
     '<div class="season"><div class="season__h"><b>' + p3.seasonT + '</b><small>' + p3.seasonS + '</small></div>' +
