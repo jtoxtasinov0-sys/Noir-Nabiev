@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Travel Across America</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+  :root {
+    --ink: #131B35; --muted: #5E6378; --soft: #8A8E9E;
+    --line: #E3DCCB; --line2: #D3CAB4;
+    --cream: #F7F2E5; --cream2: #EFE7D3;
+    --accent: #C8432C; --accent-soft: #EE8A68; --sky: #2198C5; --navy: #0E1630;
+    --yt: #E62117; --ig: #C13584;
+    --f-display: "Playfair Display", Georgia, serif;
+    --f-sans: "Manrope", system-ui, sans-serif;
+    --f-mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  @page { size: A4; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: var(--f-sans); color: var(--ink); font-size: 9pt; line-height: 1.45; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-variant-numeric: lining-nums; }
+  .page > * { flex-shrink: 0; }
+  @media screen { body { background: #9A9AA2; padding: 8mm 0; } .page { margin: 0 auto 8mm; box-shadow: 0 2mm 8mm rgba(0,0,0,.25); } }
+  img { display: block; max-width: 100%; }
+  .i { width: 1em; height: 1em; fill: currentColor; flex: none; }
+  .mono { font-family: var(--f-mono); }
+  em { font-style: italic; }
+
+  .page { width: 210mm; height: 297mm; padding: 11mm 14mm 9mm; position: relative; overflow: hidden; background: #fff; display: flex; flex-direction: column; break-after: page; page-break-after: always; }
+  .page:last-child { break-after: auto; page-break-after: auto; }
+
+  /* header / footer */
+  .ph { display: flex; justify-content: space-between; align-items: center; font: 500 6.6pt/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); padding-bottom: 2.6mm; border-bottom: .25mm solid var(--line2); margin-bottom: 5mm; }
+  .ph__l { display: flex; align-items: center; gap: 2.2mm; }
+  .ph__r b { color: var(--ink); font-weight: 500; }
+  .flag { display: inline-block; width: 5.6mm; height: 3.4mm; border-radius: .5mm; background: url(../assets/img/us-flag.svg) center/100% 100% no-repeat; box-shadow: 0 0 0 .2mm rgba(19,27,53,.18); flex: none; }
+  .pf { margin-top: auto; display: flex; justify-content: space-between; gap: 6mm; padding-top: 2.6mm; border-top: .25mm solid var(--line); font: 400 6.4pt/1.3 var(--f-mono); letter-spacing: .04em; color: var(--soft); }
+
+  /* type */
+  .eyebrow { margin: 0 0 1.6mm; font: 500 6.8pt/1 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; color: var(--accent); display: flex; align-items: center; gap: 2mm; }
+  h1, h2, h3 { margin: 0; font-family: var(--f-display); font-weight: 800; letter-spacing: -.01em; }
+  h1 { font-size: 42pt; line-height: .95; }
+  h1 em, h2 em { color: var(--accent); font-weight: 700; }
+  h2 { font-size: 19pt; line-height: 1.08; }
+  .lead { margin: 2.6mm 0 0; font-size: 10pt; line-height: 1.5; color: #2F3650; }
+  .sec { margin-top: 5.5mm; }
+  .page--tight .sec { margin-top: 4.5mm; }
+  .sec__head { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; align-items: end; margin-bottom: 4mm; }
+  .sec__head .lead { margin: 0; font-size: 9pt; color: var(--muted); }
+
+  /* ===== page 1 ===== */
+  .hero { display: grid; grid-template-columns: 1fr 66mm; gap: 7mm; align-items: end; }
+  .hero h1 { margin-top: 1mm; }
+  .hero .lead { margin-top: 0; font-size: 9.6pt; }
+  .facts { margin-top: 6mm; display: grid; grid-template-columns: repeat(4, 1fr); border-top: .3mm solid var(--ink); border-bottom: .25mm solid var(--line2); }
+  .fact { padding: 3mm 3mm 3mm 0; display: flex; flex-direction: column; gap: .6mm; }
+  .fact + .fact { padding-left: 4mm; border-left: .25mm solid var(--line); }
+  .fact b { font: 800 19pt/1 var(--f-display); }
+  .fact small { font-size: 7.6pt; color: var(--muted); }
+
+  .route { display: grid; grid-template-columns: 1fr 58mm; gap: 6mm; align-items: center; }
+  .map { width: 100%; height: auto; display: block; }
+  .map .st { fill: #ECE5D3; stroke: #fff; stroke-width: 1; }
+  .map .leg { fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-dasharray: 7 6; stroke-linecap: round; }
+  .map .dot { fill: var(--accent); stroke: #fff; stroke-width: 3; }
+  .map .num { font: 700 15px/1 var(--f-sans); fill: #fff; text-anchor: middle; dominant-baseline: central; }
+  .map .lbl { font: 700 17px/1 var(--f-sans); fill: var(--ink); paint-order: stroke; stroke: #fff; stroke-width: 5px; stroke-linejoin: round; }
+  .map .inset { fill: none; stroke: var(--line2); stroke-width: 1.2; stroke-dasharray: 3 4; }
+  .steps { list-style: none; margin: 0; padding: 0; }
+  .steps li { display: grid; grid-template-columns: 7mm 1fr; gap: 2.4mm; align-items: center; padding: 2.1mm 0; border-bottom: .25mm solid var(--line); }
+  .steps li:first-child { border-top: .25mm solid var(--line); }
+  .steps .n { width: 6.4mm; height: 6.4mm; border-radius: 50%; background: var(--accent); color: #fff; display: grid; place-items: center; font: 700 7.6pt/1 var(--f-sans); }
+  .steps b { display: block; font-size: 10pt; line-height: 1.15; }
+  .steps small { display: block; font: 400 6.6pt/1.3 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+  .cities { margin-top: 5mm; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3mm; }
+  .city__img { position: relative; aspect-ratio: 3 / 4; border-radius: 2mm; overflow: hidden; background: var(--cream2); }
+  .city__img img { width: 100%; height: 100%; object-fit: cover; }
+  .city__img .n { position: absolute; left: 2mm; top: 2mm; width: 6mm; height: 6mm; border-radius: 50%; background: #fff; color: var(--accent); display: grid; place-items: center; font: 800 7.4pt/1 var(--f-sans); }
+  .city__st { margin: 2mm 0 .6mm; font: 500 6.2pt/1.2 var(--f-mono); letter-spacing: .1em; color: var(--accent); }
+  .city__t { margin: 0; font-size: 7.6pt; line-height: 1.38; color: #2F3650; }
+
+  .watch { margin-top: 5mm; display: grid; grid-template-columns: auto 1fr auto; gap: 4mm; align-items: center; padding: 3.6mm 4.5mm; border-radius: 2.4mm; background: var(--cream); }
+  .watch .yt { width: 9mm; height: 9mm; color: var(--yt); }
+  .watch p { margin: 0; font-size: 8.4pt; line-height: 1.45; color: #2F3650; }
+  .watch .url { font: 500 7.4pt/1 var(--f-mono); color: var(--ink); white-space: nowrap; }
+
+  /* ===== page 2 ===== */
+  .hosts { margin-top: 3.5mm; display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .host { border: .25mm solid var(--line2); border-radius: 3mm; padding: 4mm; display: flex; flex-direction: column; gap: 3.2mm; }
+  .host__top { display: grid; grid-template-columns: 28mm 1fr; gap: 3.6mm; }
+  .host__photo { aspect-ratio: 4 / 5; border-radius: 2mm; overflow: hidden; background: var(--cream2); }
+  .host__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 18%; }
+  .host__name { font: 800 13pt/1.05 var(--f-display); }
+  .host__handle { margin-top: 1.2mm; display: flex; align-items: center; gap: 1mm; font: 500 7pt/1 var(--f-mono); color: var(--muted); }
+  .host__handle .i { width: 3.2mm; height: 3.2mm; color: #3897F0; }
+  .host__role { margin-top: 1.4mm; font-size: 7.8pt; font-weight: 600; color: var(--accent); }
+  .host__stats { margin-top: 2.6mm; display: grid; grid-template-columns: 1fr 1fr; gap: 2mm; }
+  .hstat { display: flex; flex-direction: column; gap: .5mm; padding: 2mm 2.4mm; border-radius: 1.6mm; background: var(--cream); }
+  .hstat b { display: flex; align-items: center; gap: 1.2mm; white-space: nowrap; font: 800 10.4pt/1 var(--f-sans); letter-spacing: -.01em; }
+  .hstat b .i { width: 3.4mm; height: 3.4mm; }
+  .hstat .ig { color: var(--ig); } .hstat .ytc { color: var(--yt); } .hstat .mu { color: var(--muted); }
+  .hstat small { font-size: 6.6pt; color: var(--muted); }
+  .host__hook { margin: 0; font-size: 7.9pt; line-height: 1.45; color: #2F3650; }
+  .host__thumbs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6mm; }
+  .host__thumbs img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 1.4mm; background: var(--cream2); }
+
+  .kband { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.6mm; }
+  .ktile { padding: 3mm 3.2mm; border-radius: 2mm; background: var(--cream); display: flex; flex-direction: column; gap: .8mm; }
+  .ktile b { font: 800 15pt/1 var(--f-display); }
+  .ktile small { font-size: 6.9pt; line-height: 1.3; color: var(--muted); }
+  .ktile--total { background: var(--navy); color: #fff; }
+  .ktile--total small { color: rgba(255,255,255,.72); }
+  .ktile--total b { color: #fff; }
+  .ktile .ava { display: flex; margin-bottom: .6mm; }
+  .ktile .ava img { width: 6mm; height: 6mm; border-radius: 50%; object-fit: cover; border: .4mm solid var(--navy); }
+  .ktile .ava img + img { margin-left: -1.6mm; }
+
+  .panels { margin-top: 3mm; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2.6mm; }
+  .panel { border: .25mm solid var(--line2); border-radius: 2mm; padding: 3mm 3.2mm; display: flex; flex-direction: column; gap: 2.2mm; }
+  .panel__h { display: flex; align-items: center; gap: 1.6mm; font: 700 8pt/1 var(--f-sans); }
+  .panel__h img { width: 5.4mm; height: 5.4mm; border-radius: 50%; object-fit: cover; }
+  .panel__h .i { width: 3.6mm; height: 3.6mm; margin-left: auto; }
+  .kv { display: grid; grid-template-columns: 1fr auto; gap: .8mm 2mm; margin: 0; font-size: 7.3pt; }
+  .kv dt { color: var(--muted); } .kv dd { margin: 0; font-weight: 700; text-align: right; }
+  .sub { font: 500 6pt/1 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--soft); margin-bottom: 1.2mm; }
+  .ages { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1mm; align-items: end; height: 10mm; }
+  .ages i { display: block; background: #D9CFB8; border-radius: .6mm .6mm 0 0; }
+  .ages i.hi { background: var(--accent); }
+  .ages__l { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1mm; margin-top: .8mm; font: 400 4.9pt/1 var(--f-mono); color: var(--soft); text-align: center; letter-spacing: -.02em; }
+  .split { display: flex; height: 2.2mm; border-radius: 1.1mm; overflow: hidden; }
+  .split i:first-child { background: var(--navy); } .split i:last-child { background: var(--accent-soft); }
+  .split__l { display: flex; justify-content: space-between; margin-top: .9mm; font-size: 6.6pt; color: var(--muted); }
+  .split__l b { color: var(--ink); }
+  .chips { display: flex; flex-wrap: wrap; gap: 1.2mm; }
+  .chips span { padding: 1mm 2mm; border-radius: 3mm; background: var(--cream); font-size: 6.8pt; font-weight: 600; }
+  .big { font: 800 22pt/1 var(--f-display); }
+  .big small { display: block; margin-top: 1mm; font: 400 7pt/1.3 var(--f-sans); color: var(--muted); }
+  .verified { display: inline-flex; align-items: center; gap: 1mm; font-size: 7pt; font-weight: 700; color: #2B7BD6; }
+  .verified .i { width: 3.4mm; height: 3.4mm; }
+
+  .vids { margin-top: 3mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.6mm; }
+  .vid img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 1.4mm; }
+  .vid b { display: block; margin-top: 1.2mm; font-size: 7pt; line-height: 1.25; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .vid small { font: 500 6.4pt/1 var(--f-mono); color: var(--accent); }
+  .vids__h { margin-top: 3mm; }
+
+  /* ===== page 3 ===== */
+  .roles { margin-top: 4.5mm; display: grid; grid-template-columns: 1fr 9mm 1fr; align-items: stretch; }
+  .role { border: .25mm solid var(--line2); border-radius: 3mm; padding: 4.5mm; display: grid; grid-template-columns: 41mm 1fr; gap: 4mm; align-items: center; }
+  .role h3 { display: flex; align-items: center; gap: 1.8mm; font-size: 11.5pt; line-height: 1.1; }
+  .role p { margin: 1.6mm 0 0; font-size: 7.9pt; line-height: 1.45; color: #2F3650; }
+  .tag { width: 5mm; height: 5mm; border-radius: 1.2mm; display: grid; place-items: center; font: 800 7pt/1 var(--f-sans); color: #fff; flex: none; }
+  .tag--a { background: var(--navy); } .tag--b { background: var(--accent); }
+  .duel { align-self: center; justify-self: center; font: italic 800 12pt/1 var(--f-display); color: var(--accent); }
+
+  .card { position: relative; aspect-ratio: 1.586; border-radius: 2.4mm; padding: 2.6mm 3mm; display: flex; flex-direction: column; justify-content: space-between; overflow: hidden; font-size: 6.2pt; }
+  .card--a { background: linear-gradient(135deg, #22305A 0%, #0E1630 70%); color: #fff; }
+  .card--b { background: var(--cream); border: .3mm solid var(--line2); color: var(--ink); }
+  .card__top, .card__bot { display: flex; justify-content: space-between; align-items: center; }
+  .card__brand { font: italic 800 7pt/1 var(--f-display); display: flex; align-items: center; gap: 1mm; }
+  .card__brand .flag { width: 4mm; height: 2.4mm; }
+  .card__tier { font: 500 4.8pt/1 var(--f-mono); letter-spacing: .14em; opacity: .75; }
+  .card__chip { width: 6.4mm; height: 4.6mm; border-radius: .9mm; background: linear-gradient(135deg, #E9CF8B, #B48A3E 60%, #E5C77F); }
+  .card__num { font: 500 5pt/1 var(--f-mono); letter-spacing: .12em; opacity: .75; }
+  .card__big { position: absolute; right: 3mm; top: 50%; transform: translateY(-55%); font: 800 21pt/1 var(--f-display); }
+  .card--a .card__big { color: var(--accent-soft); font-size: 26pt; }
+  .card--b .card__big { color: var(--accent); }
+
+  .rules { list-style: none; margin: 4mm 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); border-top: .25mm solid var(--line2); border-bottom: .25mm solid var(--line2); }
+  .rules li { display: flex; align-items: center; gap: 2.2mm; padding: 3mm 2.5mm 3mm 0; font-size: 7.8pt; font-weight: 600; line-height: 1.3; }
+  .rules li + li { padding-left: 3mm; border-left: .25mm solid var(--line); }
+  .rules .i { width: 5mm; height: 5mm; color: var(--accent); }
+
+  .students__txt { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; align-items: end; }
+  .students__txt > p { margin: 0; font-size: 8.8pt; line-height: 1.5; color: #2F3650; }
+  .shots { margin-top: 4mm; display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 3mm; }
+  .shot__img { position: relative; height: 78mm; border-radius: 2mm; overflow: hidden; background: var(--cream2); }
+  .shot__img img { width: 100%; height: 100%; object-fit: cover; }
+  .shot__img .ph-empty { position: absolute; inset: 0; display: grid; place-items: center; font: 500 7pt/1.3 var(--f-mono); color: var(--soft); text-align: center; padding: 4mm; }
+  .shot__tag { position: absolute; left: 2mm; bottom: 2mm; padding: .9mm 1.8mm; border-radius: 1mm; background: rgba(255,255,255,.88); font: 500 5.4pt/1 var(--f-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  .shot figcaption { margin-top: 1.6mm; font-size: 7.4pt; font-weight: 600; }
+  .shot figcaption span { display: block; font: 500 6pt/1.2 var(--f-mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); font-weight: 500; }
+  .shot { margin: 0; }
+
+  .season { margin-top: 6mm; display: grid; grid-template-columns: 38mm repeat(4, 1fr); border-radius: 2.4mm; background: var(--navy); color: #fff; overflow: hidden; }
+  .season__h { padding: 4mm; display: flex; flex-direction: column; justify-content: center; gap: 1.2mm; background: var(--accent); }
+  .season__h b { font: 800 14pt/1 var(--f-display); }
+  .season__h small { font: 500 6.2pt/1.35 var(--f-mono); letter-spacing: .06em; opacity: .9; }
+  .season__i { padding: 4mm 3.4mm; display: flex; flex-direction: column; gap: 1mm; border-left: .25mm solid rgba(255,255,255,.12); }
+  .season__i b { font: 800 16pt/1 var(--f-display); }
+  .season__i small { font-size: 7pt; line-height: 1.3; color: rgba(255,255,255,.74); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><filter id="inkRough" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="7" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.2"/></filter><symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></symbol><symbol id="i-arrow-left" viewBox="0 0 256 256"><path d="M224,128a8,8,0,0,1-8,8H59.31l58.35,58.34a8,8,0,0,1-11.32,11.32l-72-72a8,8,0,0,1,0-11.32l72-72a8,8,0,0,1,11.32,11.32L59.31,120H216A8,8,0,0,1,224,128Z"/></symbol><symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></symbol><symbol id="i-airplane-tilt" viewBox="0 0 256 256"><path d="M185.33,114.21l29.14-27.42.17-.17a32,32,0,0,0-45.26-45.26c0,.06-.11.11-.17.17L141.79,70.67l-83-30.2a8,8,0,0,0-8.39,1.86l-24,24a8,8,0,0,0,1.22,12.31l63.89,42.59L76.69,136H56a8,8,0,0,0-5.65,2.34l-24,24A8,8,0,0,0,29,175.42l36.82,14.73,14.7,36.75.06.16a8,8,0,0,0,13.18,2.47l23.87-23.88A8,8,0,0,0,120,200V179.31l14.76-14.76,42.59,63.89a8,8,0,0,0,12.31,1.22l24-24a8,8,0,0,0,1.86-8.39Zm-.07,97.23-42.59-63.88A8,8,0,0,0,136.8,144c-.27,0-.53,0-.79,0a8,8,0,0,0-5.66,2.35l-24,24A8,8,0,0,0,104,176v20.69L90.93,209.76,79.43,181A8,8,0,0,0,75,176.57l-28.74-11.5L59.32,152H80a8,8,0,0,0,5.66-2.34l24-24a8,8,0,0,0-1.22-12.32L44.56,70.74l13.5-13.49,83.22,30.26a8,8,0,0,0,8.56-2L180.78,52.6A16,16,0,0,1,203.4,75.23l-32.87,30.93a8,8,0,0,0-2,8.56l30.26,83.22Z"/></symbol><symbol id="i-youtube-logo" viewBox="0 0 256 256"><path d="M164.44,121.34l-48-32A8,8,0,0,0,104,96v64a8,8,0,0,0,12.44,6.66l48-32a8,8,0,0,0,0-13.32ZM120,145.05V111l25.58,17ZM234.33,69.52a24,24,0,0,0-14.49-16.4C185.56,39.88,131,40,128,40s-57.56-.12-91.84,13.12a24,24,0,0,0-14.49,16.4C19.08,79.5,16,97.74,16,128s3.08,48.5,5.67,58.48a24,24,0,0,0,14.49,16.41C69,215.56,120.4,216,127.34,216h1.32c6.94,0,58.37-.44,91.18-13.11a24,24,0,0,0,14.49-16.41c2.59-10,5.67-28.22,5.67-58.48S236.92,79.5,234.33,69.52Zm-15.49,113a8,8,0,0,1-4.77,5.49c-31.65,12.22-85.48,12-86,12H128c-.54,0-54.33.2-86-12a8,8,0,0,1-4.77-5.49C34.8,173.39,32,156.57,32,128s2.8-45.39,5.16-54.47A8,8,0,0,1,41.93,68c30.52-11.79,81.66-12,85.85-12h.27c.54,0,54.38-.18,86,12a8,8,0,0,1,4.77,5.49C221.2,82.61,224,99.43,224,128S221.2,173.39,218.84,182.47Z"/></symbol><symbol id="i-instagram-logo" viewBox="0 0 256 256"><path d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160ZM176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24Zm40,152a40,40,0,0,1-40,40H80a40,40,0,0,1-40-40V80A40,40,0,0,1,80,40h96a40,40,0,0,1,40,40ZM192,76a12,12,0,1,1-12-12A12,12,0,0,1,192,76Z"/></symbol><symbol id="i-map-pin" viewBox="0 0 256 256"><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></symbol><symbol id="i-speaker-high" viewBox="0 0 256 256"><path d="M155.51,24.81a8,8,0,0,0-8.42.88L77.25,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H77.25l69.84,54.31A8,8,0,0,0,160,224V32A8,8,0,0,0,155.51,24.81ZM32,96H72v64H32ZM144,207.64,88,164.09V91.91l56-43.55Zm54-106.08a40,40,0,0,1,0,52.88,8,8,0,0,1-12-10.58,24,24,0,0,0,0-31.72,8,8,0,0,1,12-10.58ZM248,128a79.9,79.9,0,0,1-20.37,53.34,8,8,0,0,1-11.92-10.67,64,64,0,0,0,0-85.33,8,8,0,1,1,11.92-10.67A79.83,79.83,0,0,1,248,128Z"/></symbol><symbol id="i-speaker-slash" viewBox="0 0 256 256"><path d="M53.92,34.62A8,8,0,1,0,42.08,45.38L73.55,80H32A16,16,0,0,0,16,96v64a16,16,0,0,0,16,16H77.25l69.84,54.31A8,8,0,0,0,160,224V175.09l42.08,46.29a8,8,0,1,0,11.84-10.76ZM32,96H72v64H32ZM144,207.64,88,164.09V95.89l56,61.6Zm42-63.77a24,24,0,0,0,0-31.72,8,8,0,1,1,12-10.57,40,40,0,0,1,0,52.88,8,8,0,0,1-12-10.59Zm-80.16-76a8,8,0,0,1,1.4-11.23l39.85-31A8,8,0,0,1,160,32v74.83a8,8,0,0,1-16,0V48.36l-26.94,21A8,8,0,0,1,105.84,67.91ZM248,128a79.9,79.9,0,0,1-20.37,53.34,8,8,0,0,1-11.92-10.67,64,64,0,0,0,0-85.33,8,8,0,1,1,11.92-10.67A79.83,79.83,0,0,1,248,128Z"/></symbol><symbol id="i-arrow-counter-clockwise" viewBox="0 0 256 256"><path d="M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.07,3.07,0,0,1-.26.25L44.59,96H72a8,8,0,0,1,0,16H24a8,8,0,0,1-8-8V56a8,8,0,0,1,16,0V85.8L60.25,60A96,96,0,0,1,224,128Z"/></symbol><symbol id="i-play" viewBox="0 0 256 256"><path d="M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.83,88Z"/></symbol><symbol id="i-corners-out" viewBox="0 0 256 256"><path d="M216,48V88a8,8,0,0,1-16,0V56H168a8,8,0,0,1,0-16h40A8,8,0,0,1,216,48ZM88,200H56V168a8,8,0,0,0-16,0v40a8,8,0,0,0,8,8H88a8,8,0,0,0,0-16Zm120-40a8,8,0,0,0-8,8v32H168a8,8,0,0,0,0,16h40a8,8,0,0,0,8-8V168A8,8,0,0,0,208,160ZM88,40H48a8,8,0,0,0-8,8V88a8,8,0,0,0,16,0V56H88a8,8,0,0,0,0-16Z"/></symbol><symbol id="i-corners-in" viewBox="0 0 256 256"><path d="M152,96V48a8,8,0,0,1,16,0V88h40a8,8,0,0,1,0,16H160A8,8,0,0,1,152,96ZM96,152H48a8,8,0,0,0,0,16H88v40a8,8,0,0,0,16,0V160A8,8,0,0,0,96,152Zm112,0H160a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V168h40a8,8,0,0,0,0-16ZM96,40a8,8,0,0,0-8,8V88H48a8,8,0,0,0,0,16H96a8,8,0,0,0,8-8V48A8,8,0,0,0,96,40Z"/></symbol><symbol id="i-seal-check" viewBox="0 0 256 256"><path d="M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-11.55,39.29c-4.79,5-9.75,10.17-12.38,16.52-2.52,6.1-2.63,13.07-2.73,19.82-.1,7-.21,14.33-3.32,17.43s-10.39,3.22-17.43,3.32c-6.75.1-13.72.21-19.82,2.73-6.35,2.63-11.52,7.59-16.52,12.38S132,224,128,224s-9.15-4.92-14.11-9.69-10.17-9.75-16.52-12.38c-6.1-2.52-13.07-2.63-19.82-2.73-7-.1-14.33-.21-17.43-3.32s-3.22-10.39-3.32-17.43c-.1-6.75-.21-13.72-2.73-19.82-2.63-6.35-7.59-11.52-12.38-16.52S32,132,32,128s4.92-9.15,9.69-14.11,9.75-10.17,12.38-16.52c2.52-6.1,2.63-13.07,2.73-19.82.1-7,.21-14.33,3.32-17.43S70.51,56.9,77.55,56.8c6.75-.1,13.72-.21,19.82-2.73,6.35-2.63,11.52-7.59,16.52-12.38S124,32,128,32s9.15,4.92,14.11,9.69,10.17,9.75,16.52,12.38c6.1,2.52,13.07,2.63,19.82,2.73,7,.1,14.33.21,17.43,3.32s3.22,10.39,3.32,17.43c.1,6.75.21,13.72,2.73,19.82,2.63,6.35,7.59,11.52,12.38,16.52S224,124,224,128,219.08,137.15,214.31,142.11ZM173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34Z"/></symbol><symbol id="i-credit-card" viewBox="0 0 256 256"><path d="M224,48H32A16,16,0,0,0,16,64V192a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V64A16,16,0,0,0,224,48Zm0,16V88H32V64Zm0,128H32V104H224v88Zm-16-24a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h32A8,8,0,0,1,208,168Zm-64,0a8,8,0,0,1-8,8H120a8,8,0,0,1,0-16h16A8,8,0,0,1,144,168Z"/></symbol><symbol id="i-wallet" viewBox="0 0 256 256"><path d="M216,64H56a8,8,0,0,1,0-16H192a8,8,0,0,0,0-16H56A24,24,0,0,0,32,56V184a24,24,0,0,0,24,24H216a16,16,0,0,0,16-16V80A16,16,0,0,0,216,64Zm0,128H56a8,8,0,0,1-8-8V78.63A23.84,23.84,0,0,0,56,80H216Zm-48-60a12,12,0,1,1,12,12A12,12,0,0,1,168,132Z"/></symbol><symbol id="i-clock" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216Zm64-88a8,8,0,0,1-8,8H128a8,8,0,0,1-8-8V72a8,8,0,0,1,16,0v48h48A8,8,0,0,1,192,128Z"/></symbol><symbol id="i-calendar-blank" viewBox="0 0 256 256"><path d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"/></symbol><symbol id="i-eye" viewBox="0 0 256 256"><path d="M247.31,124.76c-.35-.79-8.82-19.58-27.65-38.41C194.57,61.26,162.88,48,128,48S61.43,61.26,36.34,86.35C17.51,105.18,9,124,8.69,124.76a8,8,0,0,0,0,6.5c.35.79,8.82,19.57,27.65,38.4C61.43,194.74,93.12,208,128,208s66.57-13.26,91.66-38.34c18.83-18.83,27.3-37.61,27.65-38.4A8,8,0,0,0,247.31,124.76ZM128,192c-30.78,0-57.67-11.19-79.93-33.25A133.47,133.47,0,0,1,25,128,133.33,133.33,0,0,1,48.07,97.25C70.33,75.19,97.22,64,128,64s57.67,11.19,79.93,33.25A133.46,133.46,0,0,1,231.05,128C223.84,141.46,192.43,192,128,192Zm0-112a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Z"/></symbol><symbol id="i-users" viewBox="0 0 256 256"><path d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"/></symbol><symbol id="i-users-three" viewBox="0 0 256 256"><path d="M244.8,150.4a8,8,0,0,1-11.2-1.6A51.6,51.6,0,0,0,192,128a8,8,0,0,1-7.37-4.89,8,8,0,0,1,0-6.22A8,8,0,0,1,192,112a24,24,0,1,0-23.24-30,8,8,0,1,1-15.5-4A40,40,0,1,1,219,117.51a67.94,67.94,0,0,1,27.43,21.68A8,8,0,0,1,244.8,150.4ZM190.92,212a8,8,0,1,1-13.84,8,57,57,0,0,0-98.16,0,8,8,0,1,1-13.84-8,72.06,72.06,0,0,1,33.74-29.92,48,48,0,1,1,58.36,0A72.06,72.06,0,0,1,190.92,212ZM128,176a32,32,0,1,0-32-32A32,32,0,0,0,128,176ZM72,120a8,8,0,0,0-8-8A24,24,0,1,1,87.24,82a8,8,0,1,0,15.5-4A40,40,0,1,0,37,117.51,67.94,67.94,0,0,0,9.6,139.19a8,8,0,1,0,12.8,9.61A51.6,51.6,0,0,1,64,128,8,8,0,0,0,72,120Z"/></symbol><symbol id="i-heart" viewBox="0 0 256 256"><path d="M178,40c-20.65,0-38.73,8.88-50,23.89C116.73,48.88,98.65,40,78,40a62.07,62.07,0,0,0-62,62c0,70,103.79,126.66,108.21,129a8,8,0,0,0,7.58,0C136.21,228.66,240,172,240,102A62.07,62.07,0,0,0,178,40ZM128,214.8C109.74,204.16,32,155.69,32,102A46.06,46.06,0,0,1,78,56c19.45,0,35.78,10.36,42.6,27a8,8,0,0,0,14.8,0c6.82-16.67,23.15-27,42.6-27a46.06,46.06,0,0,1,46,46C224,155.61,146.24,204.15,128,214.8Z"/></symbol><symbol id="i-film-slate" viewBox="0 0 256 256"><path d="M216,104H102.09L210,75.51a8,8,0,0,0,5.68-9.84l-8.16-30a15.93,15.93,0,0,0-19.42-11.13L35.81,64.74a15.75,15.75,0,0,0-9.7,7.4,15.51,15.51,0,0,0-1.55,12L32,111.56c0,.14,0,.29,0,.44v88a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V112A8,8,0,0,0,216,104ZM192.16,40l6,22.07-22.62,6L147.42,51.83Zm-66.69,17.6,28.12,16.24-36.94,9.75L88.53,67.37Zm-79.4,44.62-6-22.08,26.5-7L94.69,89.4ZM208,200H48V120H208v80Z"/></symbol><symbol id="i-video-camera" viewBox="0 0 256 256"><path d="M251.77,73a8,8,0,0,0-8.21.39L208,97.05V72a16,16,0,0,0-16-16H32A16,16,0,0,0,16,72V184a16,16,0,0,0,16,16H192a16,16,0,0,0,16-16V159l35.56,23.71A8,8,0,0,0,248,184a8,8,0,0,0,8-8V80A8,8,0,0,0,251.77,73ZM192,184H32V72H192V184Zm48-22.95-32-21.33V116.28L240,95Z"/></symbol><symbol id="i-globe-hemisphere-west" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm88,104a87.62,87.62,0,0,1-6.4,32.94l-44.7-27.49a15.92,15.92,0,0,0-6.24-2.23l-22.82-3.08a16.11,16.11,0,0,0-16,7.86h-8.72l-3.8-7.86a15.91,15.91,0,0,0-11-8.67l-8-1.73L96.14,104h16.71a16.06,16.06,0,0,0,7.73-2l12.25-6.76a16.62,16.62,0,0,0,3-2.14l26.91-24.34A15.93,15.93,0,0,0,166,49.1l-.36-.65A88.11,88.11,0,0,1,216,128ZM143.31,41.34,152,56.9,125.09,81.24,112.85,88H96.14a16,16,0,0,0-13.88,8l-8.73,15.23L63.38,84.19,74.32,58.32a87.87,87.87,0,0,1,69-17ZM40,128a87.53,87.53,0,0,1,8.54-37.8l11.34,30.27a16,16,0,0,0,11.62,10l21.43,4.61L96.74,143a16.09,16.09,0,0,0,14.4,9h1.48l-7.23,16.23a16,16,0,0,0,2.86,17.37l.14.14L128,205.94l-1.94,10A88.11,88.11,0,0,1,40,128Zm102.58,86.78,1.13-5.81a16.09,16.09,0,0,0-4-13.9,1.85,1.85,0,0,1-.14-.14L120,174.74,133.7,144l22.82,3.08,45.72,28.12A88.18,88.18,0,0,1,142.58,214.78Z"/></symbol><symbol id="i-trophy" viewBox="0 0 256 256"><path d="M232,64H208V48a8,8,0,0,0-8-8H56a8,8,0,0,0-8,8V64H24A16,16,0,0,0,8,80V96a40,40,0,0,0,40,40h3.65A80.13,80.13,0,0,0,120,191.61V216H96a8,8,0,0,0,0,16h64a8,8,0,0,0,0-16H136V191.58c31.94-3.23,58.44-25.64,68.08-55.58H208a40,40,0,0,0,40-40V80A16,16,0,0,0,232,64ZM48,120A24,24,0,0,1,24,96V80H48v32q0,4,.39,8Zm144-8.9c0,35.52-29,64.64-64,64.9a64,64,0,0,1-64-64V56H192ZM232,96a24,24,0,0,1-24,24h-.5a81.81,81.81,0,0,0,.5-8.9V80h24Z"/></symbol><symbol id="i-arrows-clockwise" viewBox="0 0 256 256"><path d="M224,48V96a8,8,0,0,1-8,8H168a8,8,0,0,1,0-16h28.69L182.06,73.37a79.56,79.56,0,0,0-56.13-23.43h-.45A79.52,79.52,0,0,0,69.59,72.71,8,8,0,0,1,58.41,61.27a96,96,0,0,1,135,.79L208,76.69V48a8,8,0,0,1,16,0ZM186.41,183.29a80,80,0,0,1-112.47-.66L59.31,168H88a8,8,0,0,0,0-16H40a8,8,0,0,0-8,8v48a8,8,0,0,0,16,0V179.31l14.63,14.63A95.43,95.43,0,0,0,130,222.06h.53a95.36,95.36,0,0,0,67.07-27.33,8,8,0,0,0-11.18-11.44Z"/></symbol><symbol id="i-shield-check" viewBox="0 0 256 256"><path d="M208,40H48A16,16,0,0,0,32,56v56c0,52.72,25.52,84.67,46.93,102.19,23.06,18.86,46,25.26,47,25.53a8,8,0,0,0,4.2,0c1-.27,23.91-6.67,47-25.53C198.48,196.67,224,164.72,224,112V56A16,16,0,0,0,208,40Zm0,72c0,37.07-13.66,67.16-40.6,89.42A129.3,129.3,0,0,1,128,223.62a128.25,128.25,0,0,1-38.92-21.81C61.82,179.51,48,149.3,48,112l0-56,160,0ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"/></symbol><symbol id="i-timer" viewBox="0 0 256 256"><path d="M128,40a96,96,0,1,0,96,96A96.11,96.11,0,0,0,128,40Zm0,176a80,80,0,1,1,80-80A80.09,80.09,0,0,1,128,216ZM173.66,90.34a8,8,0,0,1,0,11.32l-40,40a8,8,0,0,1-11.32-11.32l40-40A8,8,0,0,1,173.66,90.34ZM96,16a8,8,0,0,1,8-8h48a8,8,0,0,1,0,16H104A8,8,0,0,1,96,16Z"/></symbol><symbol id="i-check" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></symbol><symbol id="i-stamp" viewBox="0 0 256 256"><path d="M224,224a8,8,0,0,1-8,8H40a8,8,0,0,1,0-16H216A8,8,0,0,1,224,224Zm0-80v40a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V144a16,16,0,0,1,16-16h56.43L88.72,54.71A32,32,0,0,1,120,16h16a32,32,0,0,1,31.29,38.71L151.57,128H208A16,16,0,0,1,224,144ZM120.79,128h14.42l16.43-76.65A16,16,0,0,0,136,32H120a16,16,0,0,0-15.65,19.35ZM208,184V144H48v40H208Z"/></symbol><symbol id="i-compass" viewBox="0 0 256 256"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm0,192a88,88,0,1,1,88-88A88.1,88.1,0,0,1,128,216ZM172.42,72.84l-64,32a8.05,8.05,0,0,0-3.58,3.58l-32,64A8,8,0,0,0,80,184a8.1,8.1,0,0,0,3.58-.84l64-32a8.05,8.05,0,0,0,3.58-3.58l32-64a8,8,0,0,0-10.74-10.74ZM138,138,97.89,158.11,118,118l40.15-20.07Z"/></symbol><symbol id="i-currency-dollar" viewBox="0 0 256 256"><path d="M152,120H136V56h8a32,32,0,0,1,32,32,8,8,0,0,0,16,0,48.05,48.05,0,0,0-48-48h-8V24a8,8,0,0,0-16,0V40h-8a48,48,0,0,0,0,96h8v64H104a32,32,0,0,1-32-32,8,8,0,0,0-16,0,48.05,48.05,0,0,0,48,48h16v16a8,8,0,0,0,16,0V216h16a48,48,0,0,0,0-96Zm-40,0a32,32,0,0,1,0-64h8v64Zm40,80H136V136h16a32,32,0,0,1,0,64Z"/></symbol><symbol id="i-car-profile" viewBox="0 0 256 256"><path d="M240,112H211.31L168,68.69A15.86,15.86,0,0,0,156.69,64H44.28A16,16,0,0,0,31,71.12L1.34,115.56A8.07,8.07,0,0,0,0,120v48a16,16,0,0,0,16,16H33a32,32,0,0,0,62,0h66a32,32,0,0,0,62,0h17a16,16,0,0,0,16-16V128A16,16,0,0,0,240,112ZM44.28,80H156.69l32,32H23ZM64,192a16,16,0,1,1,16-16A16,16,0,0,1,64,192Zm128,0a16,16,0,1,1,16-16A16,16,0,0,1,192,192Zm48-24H223a32,32,0,0,0-62,0H95a32,32,0,0,0-62,0H16V128H240Z"/></symbol><symbol id="i-mountains" viewBox="0 0 256 256"><path d="M164,80a28,28,0,1,0-28-28A28,28,0,0,0,164,80Zm0-40a12,12,0,1,1-12,12A12,12,0,0,1,164,40Zm90.88,155.92-54.56-92.08A15.87,15.87,0,0,0,186.55,96h0a15.85,15.85,0,0,0-13.76,7.84L146.63,148l-44.84-76.1a16,16,0,0,0-27.58,0L1.11,195.94A8,8,0,0,0,8,208H248a8,8,0,0,0,6.88-12.08ZM88,80l23.57,40H64.43ZM22,192l33-56h66l18.74,31.8,0,0L154,192Zm150.57,0-16.66-28.28L186.55,112,234,192Z"/></symbol><symbol id="i-chart-line-up" viewBox="0 0 256 256"><path d="M232,208a8,8,0,0,1-8,8H32a8,8,0,0,1-8-8V48a8,8,0,0,1,16,0V156.69l50.34-50.35a8,8,0,0,1,11.32,0L128,132.69,180.69,80H160a8,8,0,0,1,0-16h40a8,8,0,0,1,8,8v40a8,8,0,0,1-16,0V91.31l-58.34,58.35a8,8,0,0,1-11.32,0L96,123.31l-56,56V200H224A8,8,0,0,1,232,208Z"/></symbol><symbol id="i-translate" viewBox="0 0 256 256"><path d="M247.15,212.42l-56-112a8,8,0,0,0-14.31,0l-21.71,43.43A88,88,0,0,1,108,126.93,103.65,103.65,0,0,0,135.69,64H160a8,8,0,0,0,0-16H104V32a8,8,0,0,0-16,0V48H32a8,8,0,0,0,0,16h87.63A87.76,87.76,0,0,1,96,116.35a87.74,87.74,0,0,1-19-31,8,8,0,1,0-15.08,5.34A103.63,103.63,0,0,0,84,127a87.55,87.55,0,0,1-52,17,8,8,0,0,0,0,16,103.46,103.46,0,0,0,64-22.08,104.18,104.18,0,0,0,51.44,21.31l-26.6,53.19a8,8,0,0,0,14.31,7.16L148.94,192h70.11l13.79,27.58A8,8,0,0,0,240,224a8,8,0,0,0,7.15-11.58ZM156.94,176,184,121.89,211.05,176Z"/></symbol><symbol id="i-seal-check-fill" viewBox="0 0 256 256"><path d="M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-52.2,6.84-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z"/></symbol><symbol id="i-play-fill" viewBox="0 0 256 256"><path d="M240,128a15.74,15.74,0,0,1-7.6,13.51L88.32,229.65a16,16,0,0,1-16.2.3A15.86,15.86,0,0,1,64,216.13V39.87a15.86,15.86,0,0,1,8.12-13.82,16,16,0,0,1,16.2.3L232.4,114.49A15.74,15.74,0,0,1,240,128Z"/></symbol><symbol id="i-airplane-tilt-fill" viewBox="0 0 256 256"><path d="M215.52,197.26a8,8,0,0,1-1.86,8.39l-24,24A8,8,0,0,1,184,232a7.09,7.09,0,0,1-.79,0,8,8,0,0,1-5.87-3.52l-44.07-66.12L112,183.59V208a8,8,0,0,1-2.34,5.65s-14,14.06-15.88,15.88A7.91,7.91,0,0,1,91,231.41a8,8,0,0,1-10.41-4.35l-.06-.15-14.7-36.76L29,175.42a8,8,0,0,1-2.69-13.08l16-16A8,8,0,0,1,48,144H72.4l21.27-21.27L27.56,78.65a8,8,0,0,1-1.22-12.32l24-24a8,8,0,0,1,8.39-1.86l85.94,31.25L176.2,40.19a28,28,0,0,1,39.6,39.6l-31.53,31.53Z"/></symbol><symbol id="i-youtube-logo-fill" viewBox="0 0 256 256"><path d="M234.33,69.52a24,24,0,0,0-14.49-16.4C185.56,39.88,131,40,128,40s-57.56-.12-91.84,13.12a24,24,0,0,0-14.49,16.4C19.08,79.5,16,97.74,16,128s3.08,48.5,5.67,58.48a24,24,0,0,0,14.49,16.41C69,215.56,120.4,216,127.34,216h1.32c6.94,0,58.37-.44,91.18-13.11a24,24,0,0,0,14.49-16.41c2.59-10,5.67-28.22,5.67-58.48S236.92,79.5,234.33,69.52Zm-73.74,65-40,28A8,8,0,0,1,108,156V100a8,8,0,0,1,12.59-6.55l40,28a8,8,0,0,1,0,13.1Z"/></symbol><symbol id="i-map-pin-fill" viewBox="0 0 256 256"><path d="M128,16a88.1,88.1,0,0,0-88,88c0,75.3,80,132.17,83.41,134.55a8,8,0,0,0,9.18,0C136,236.17,216,179.3,216,104A88.1,88.1,0,0,0,128,16Zm0,56a32,32,0,1,1-32,32A32,32,0,0,1,128,72Z"/></symbol><symbol id="i-instagram-logo-fill" viewBox="0 0 256 256"><path d="M176,24H80A56.06,56.06,0,0,0,24,80v96a56.06,56.06,0,0,0,56,56h96a56.06,56.06,0,0,0,56-56V80A56.06,56.06,0,0,0,176,24ZM128,176a48,48,0,1,1,48-48A48.05,48.05,0,0,1,128,176Zm60-96a12,12,0,1,1,12-12A12,12,0,0,1,188,80Zm-28,48a32,32,0,1,1-32-32A32,32,0,0,1,160,128Z"/></symbol><symbol id="i-bed" viewBox="0 0 256 256"><path d="M216,72H32V48a8,8,0,0,0-16,0V208a8,8,0,0,0,16,0V176H240v32a8,8,0,0,0,16,0V112A40,40,0,0,0,216,72ZM32,88h72v72H32Zm88,72V88h96a24,24,0,0,1,24,24v48Z"/></symbol><symbol id="i-megaphone" viewBox="0 0 256 256"><path d="M248,120a48.05,48.05,0,0,0-48-48H160.2c-2.91-.17-53.62-3.74-101.91-44.24A16,16,0,0,0,32,40V200a16,16,0,0,0,26.29,12.25c37.77-31.68,77-40.76,93.71-43.3v31.72A16,16,0,0,0,159.12,214l11,7.33A16,16,0,0,0,194.5,212l11.77-44.36A48.07,48.07,0,0,0,248,120ZM48,199.93V40h0c42.81,35.91,86.63,45,104,47.24v65.48C134.65,155,90.84,164.07,48,199.93Zm131,8,0,.11-11-7.33V168h21.6ZM200,152H168V88h32a32,32,0,1,1,0,64Z"/></symbol><symbol id="i-ticket" viewBox="0 0 256 256"><path d="M232,104a8,8,0,0,0,8-8V64a16,16,0,0,0-16-16H32A16,16,0,0,0,16,64V96a8,8,0,0,0,8,8,24,24,0,0,1,0,48,8,8,0,0,0-8,8v32a16,16,0,0,0,16,16H224a16,16,0,0,0,16-16V160a8,8,0,0,0-8-8,24,24,0,0,1,0-48ZM32,167.2a40,40,0,0,0,0-78.4V64H88V192H32Zm192,0V192H104V64H224V88.8a40,40,0,0,0,0,78.4Z"/></symbol><symbol id="i-handshake" viewBox="0 0 256 256"><path d="M254.3,107.91,228.78,56.85a16,16,0,0,0-21.47-7.15L182.44,62.13,130.05,48.27a8.14,8.14,0,0,0-4.1,0L73.56,62.13,48.69,49.7a16,16,0,0,0-21.47,7.15L1.7,107.9a16,16,0,0,0,7.15,21.47l27,13.51,55.49,39.63a8.06,8.06,0,0,0,2.71,1.25l64,16a8,8,0,0,0,7.6-2.1l55.07-55.08,26.42-13.21a16,16,0,0,0,7.15-21.46Zm-54.89,33.37L165,113.72a8,8,0,0,0-10.68.61C136.51,132.27,116.66,130,104,122L147.24,80h31.81l27.21,54.41ZM41.53,64,62,74.22,36.43,125.27,16,115.06Zm116,119.13L99.42,168.61l-49.2-35.14,28-56L128,64.28l9.8,2.59-45,43.68-.08.09a16,16,0,0,0,2.72,24.81c20.56,13.13,45.37,11,64.91-5L188,152.66Zm62-57.87-25.52-51L214.47,64,240,115.06Zm-87.75,92.67a8,8,0,0,1-7.75,6.06,8.13,8.13,0,0,1-1.95-.24L80.41,213.33a7.89,7.89,0,0,1-2.71-1.25L51.35,193.26a8,8,0,0,1,9.3-13l25.11,17.94L126,208.24A8,8,0,0,1,131.82,217.94Z"/></symbol><symbol id="i-suitcase-rolling" viewBox="0 0 256 256"><path d="M104,88v96a8,8,0,0,1-16,0V88a8,8,0,0,1,16,0Zm24-8a8,8,0,0,0-8,8v96a8,8,0,0,0,16,0V88A8,8,0,0,0,128,80Zm32,0a8,8,0,0,0-8,8v96a8,8,0,0,0,16,0V88A8,8,0,0,0,160,80Zm48-16V208a16,16,0,0,1-16,16H176v16a8,8,0,0,1-16,0V224H96v16a8,8,0,0,1-16,0V224H64a16,16,0,0,1-16-16V64A16,16,0,0,1,64,48H88V24A24,24,0,0,1,112,0h32a24,24,0,0,1,24,24V48h24A16,16,0,0,1,208,64ZM104,48h48V24a8,8,0,0,0-8-8H112a8,8,0,0,0-8,8Zm88,160V64H64V208H192Z"/></symbol><symbol id="i-drop" viewBox="0 0 256 256"><path d="M174,47.75a254.19,254.19,0,0,0-41.45-38.3,8,8,0,0,0-9.18,0A254.19,254.19,0,0,0,82,47.75C54.51,79.32,40,112.6,40,144a88,88,0,0,0,176,0C216,112.6,201.49,79.32,174,47.75ZM128,216a72.08,72.08,0,0,1-72-72c0-57.23,55.47-105,72-118,16.53,13,72,60.75,72,118A72.08,72.08,0,0,1,128,216Zm55.89-62.66a57.6,57.6,0,0,1-46.56,46.55A8.75,8.75,0,0,1,136,200a8,8,0,0,1-1.32-15.89c16.57-2.79,30.63-16.85,33.44-33.45a8,8,0,0,1,15.78,2.68Z"/></symbol><symbol id="i-cookie" viewBox="0 0 256 256"><path d="M164.49,163.51a12,12,0,1,1-17,0A12,12,0,0,1,164.49,163.51Zm-81-8a12,12,0,1,0,17,0A12,12,0,0,0,83.51,155.51Zm9-39a12,12,0,1,0-17,0A12,12,0,0,0,92.49,116.49Zm48-1a12,12,0,1,0,0,17A12,12,0,0,0,140.49,115.51ZM232,128A104,104,0,1,1,128,24a8,8,0,0,1,8,8,40,40,0,0,0,40,40,8,8,0,0,1,8,8,40,40,0,0,0,40,40A8,8,0,0,1,232,128Zm-16.31,7.39A56.13,56.13,0,0,1,168.5,87.5a56.13,56.13,0,0,1-47.89-47.19,88,88,0,1,0,95.08,95.08Z"/></symbol></defs></svg>
+<div id="doc"></div>
+
+<script src="../assets/js/map-data.js"></script>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search).get('lang');
+  var L = q === 'uz' ? 'uz' : 'en';
+  document.documentElement.lang = L;
+
+  var T = {
+    en: {
+      docTitle: 'Travel Across America',
+      ph: 'Travel Across America · YouTube travel show',
+      foot: ['Noir Nabiev & Mavluda Hikmatova', 'youtube.com/@noirnabiev · instagram.com/noir_nabiev · instagram.com/mavluda__hikmatova'],
+      p1: {
+        eyebrow: 'YouTube travel show · Season 1',
+        title: 'Travel Across <em>America</em>',
+        lead: 'A YouTube travel show in which two Uzbek creators, blogger Noir Nabiev and actress Mavluda Hikmatova, travel through five of America’s best-known states. Every episode shows one city through two very different budgets and introduces viewers in Uzbekistan to Uzbek students who live and study in the United States.',
+        facts: [['5', 'states on the route'], ['2', 'hosts'], ['1.5M+', 'combined audience'], ['22.3M+', 'views on YouTube']],
+        rEyebrow: 'Route', rTitle: 'Five states, <em>five cities</em>',
+        rLead: 'From New York on the East Coast to the islands of Hawaii: megacities, beaches, Hollywood and the Pacific Ocean.',
+        watch: 'The show premieres on Noir Nabiev’s YouTube channel. Short versions are published as Reels and Shorts on both hosts’ Instagram accounts.'
+      },
+      p2: {
+        eyebrow: 'The hosts', title: 'Two hosts, <em>two points of view</em>',
+        lead: 'Two creators who complement each other: a showman with a large YouTube audience and an actress whose travel content is followed by 785,000 people.',
+        rEyebrow: 'Audience reach', rTitle: 'Audience <em>in numbers</em>',
+        rLead: 'Real data from YouTube Studio and Instagram Insights.',
+        vids: 'Most-watched videos on the channel', views: 'views'
+      },
+      p3: {
+        eyebrow: 'Format', title: 'One city, <em>two budgets</em>',
+        lead: 'Every episode shows one day in one city. A draw decides which host gets the unlimited card and who has to manage the day with $100.',
+        a: ['Unlimited card', 'The whole city is at their disposal: the best hotels, restaurants and transport.'],
+        b: ['$100 card', 'Food, transport and sightseeing for the whole day on $100. The task is to show the city from its affordable but still exciting side.'],
+        sEyebrow: 'More than a challenge', sTitle: 'Interviews with <em>Uzbek students</em> in America',
+        sText: 'In every city the hosts meet Uzbek students at American universities. They talk about how they were admitted, how they study and live, and what advice they would give to young people in Uzbekistan who dream of studying abroad.',
+        concept: 'Concept visual', missing: 'Image in progress',
+        seasonT: 'Season 1', seasonS: 'Premiere on YouTube<br>@noirnabiev'
+      },
+      vs: 'vs'
+    },
+    uz: {
+      docTitle: 'Amerika bo‘ylab sayohat',
+      ph: 'Amerika bo‘ylab sayohat · YouTube sayohat shousi',
+      foot: ['Noir Nabiev va Mavluda Hikmatova', 'youtube.com/@noirnabiev · instagram.com/noir_nabiev · instagram.com/mavluda__hikmatova'],
+      p1: {
+        eyebrow: 'YouTube sayohat shousi · 1-mavsum',
+        title: 'Amerika bo‘ylab <em>sayohat</em>',
+        lead: 'Ikki o‘zbek ijodkori, bloger Noir Nabiev va aktrisa Mavluda Hikmatova, AQShning eng mashhur beshta shtati bo‘ylab sayohat qiladigan YouTube shou. Har bir qism bitta shaharni ikki xil byudjet orqali ko‘rsatadi va O‘zbekistondagi tomoshabinlarni AQShda yashab, o‘qiyotgan o‘zbek talabalari bilan tanishtiradi.',
+        facts: [['5', 'shtat marshrutda'], ['2', 'boshlovchi'], ['1,5 mln+', 'umumiy auditoriya'], ['22,3 mln+', 'YouTube’dagi ko‘rishlar']],
+        rEyebrow: 'Marshrut', rTitle: 'Beshta shtat, <em>beshta shahar</em>',
+        rLead: 'Sharqiy sohildagi Nyu-Yorkdan Gavayi orollarigacha: megapolislar, plyajlar, Gollivud va Tinch okeani.',
+        watch: 'Shou Noir Nabievning YouTube kanalida premyera bo‘ladi. Qisqa versiyalari ikki boshlovchining Instagram sahifalarida Reels va Shorts sifatida chiqadi.'
+      },
+      p2: {
+        eyebrow: 'Boshlovchilar', title: 'Ikki boshlovchi, <em>ikki xil nigoh</em>',
+        lead: 'Bir-birini to‘ldiradigan ikki ijodkor: katta YouTube auditoriyasiga ega shoumen va sayohat kontentini 785 ming kishi kuzatadigan aktrisa.',
+        rEyebrow: 'Auditoriya qamrovi', rTitle: 'Auditoriya <em>raqamlarda</em>',
+        rLead: 'Haqiqiy ma’lumotlar: YouTube Studio va Instagram Insights.',
+        vids: 'Kanalda eng ko‘p ko‘rilgan videolar', views: 'ko‘rish'
+      },
+      p3: {
+        eyebrow: 'Format', title: 'Bir shahar, <em>ikki xil imkoniyat</em>',
+        lead: 'Har bir qism bitta shahardagi bir kunni ko‘rsatadi. Qur’a qaysi boshlovchiga limitsiz karta, qaysi biriga 100 dollarlik karta tushishini hal qiladi.',
+        a: ['Limitsiz karta', 'Butun shahar uning ixtiyorida: eng yaxshi mehmonxona, restoran va transport.'],
+        b: ['100 dollarlik karta', 'Butun kunlik ovqat, transport va sayr 100 dollarga. Vazifa: shaharni arzon, lekin qiziqarli tomondan ko‘rsatish.'],
+        sEyebrow: 'Faqat challenge emas', sTitle: 'Amerikadagi <em>o‘zbek talabalari</em> bilan intervyular',
+        sText: 'Har bir shaharda boshlovchilar Amerika universitetlarida o‘qiyotgan o‘zbek talabalari bilan uchrashadi. Ular qanday o‘qishga kirgani, qanday o‘qib, yashayotgani va chet elda o‘qishni orzu qilgan O‘zbekiston yoshlariga qanday maslahat berishi haqida gaplashadi.',
+        concept: 'Konsept-vizual', missing: 'Rasm tayyorlanmoqda',
+        seasonT: '1-mavsum', seasonS: 'Premyera YouTube’da<br>@noirnabiev'
+      },
+      vs: 'vs'
+    }
+  };
+  var t = T[L];
+  var tx = function (o) { return typeof o === 'string' ? o : o[L]; };
+  document.title = t.docTitle;
+
+  var cities = [
+    { id: 'ny', st: 'NEW YORK, NY', name: { en: 'New York', uz: 'Nyu-York' }, state: { en: 'New York State', uz: 'Nyu-York shtati' },
+      tag: { en: 'Pilot episode: Manhattan, Central Park and the Statue of Liberty.', uz: 'Pilot qism: Manhetten, Markaziy park va Ozodlik haykali.' }, lab: [-14, -16, 'end'] },
+    { id: 'miami', st: 'MIAMI, FL', name: { en: 'Miami', uz: 'Mayami' }, state: { en: 'Florida', uz: 'Florida' },
+      tag: { en: 'Ocean, Art Deco streets and the beaches of Miami Beach.', uz: 'Okean, Art Deco ko‘chalari va Mayami-Bich plyajlari.' }, lab: [-18, 6, 'end'] },
+    { id: 'chicago', st: 'CHICAGO, IL', name: { en: 'Chicago', uz: 'Chikago' }, state: { en: 'Illinois', uz: 'Illinoys' },
+      tag: { en: 'Skyscrapers, Millennium Park and the famous deep-dish pizza.', uz: 'Osmono‘par binolar, Millennium Park va mashhur deep-dish pitsa.' }, lab: [0, -20, 'middle'] },
+    { id: 'la', st: 'LOS ANGELES, CA', name: { en: 'Los Angeles', uz: 'Los-Anjeles' }, state: { en: 'California', uz: 'Kaliforniya' },
+      tag: { en: 'Hollywood, Santa Monica and the world of cinema.', uz: 'Gollivud, Santa-Monika va kino olami.' }, lab: [18, 6, 'start'] },
+    { id: 'hawaii', st: 'HAWAII', name: { en: 'Hawaii', uz: 'Gavayi' }, state: { en: 'Hawaii', uz: 'Gavayi' },
+      tag: { en: 'Season finale: ocean, volcanoes and island nature.', uz: 'Mavsum finali: okean, vulqonlar va orol tabiati.' }, lab: [18, 6, 'start'] }
+  ];
+
+  var I = function (id, cls) { return '<svg class="i' + (cls ? ' ' + cls : '') + '"><use href="#i-' + id + '"/></svg>'; };
+  var head = function (n) {
+    return '<header class="ph"><span class="ph__l"><span class="flag"></span>' + t.ph + '</span><span class="ph__r"><b>0' + n + '</b> / 03</span></header>';
+  };
+  var foot = '<footer class="pf"><span>' + t.foot[0] + '</span><span>' + t.foot[1] + '</span></footer>';
+  var secHead = function (eb, title, lead) {
+    return '<div class="sec__head"><div><p class="eyebrow">' + eb + '</p><h2>' + title + '</h2></div><p class="lead">' + lead + '</p></div>';
+  };
+
+  /* ---------- map ---------- */
+  function mapSvg() {
+    var M = window.US_MAP, P = M.pts;
+    var pts = cities.map(function (c) { return P[c.id]; });
+    var legs = '';
+    for (var k = 0; k < pts.length - 1; k++) {
+      var a = pts[k], b = pts[k + 1];
+      var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+      var dx = b[0] - a[0], dy = b[1] - a[1], len = Math.sqrt(dx * dx + dy * dy);
+      var bend = Math.min(90, len * 0.22);
+      var cx = mx - dy / len * bend, cy = my + dx / len * bend;
+      legs += '<path class="leg" d="M' + a[0] + ',' + a[1] + ' Q' + cx.toFixed(1) + ',' + cy.toFixed(1) + ' ' + b[0] + ',' + b[1] + '"/>';
+    }
+    var dots = cities.map(function (c, k) {
+      var p = P[c.id];
+      return '<circle class="dot" cx="' + p[0] + '" cy="' + p[1] + '" r="13"/><text class="num" x="' + p[0] + '" y="' + (p[1] + 0.5) + '">' + (k + 1) + '</text>' +
+             '<text class="lbl" x="' + (p[0] + c.lab[0]) + '" y="' + (p[1] + c.lab[1]) + '" text-anchor="' + c.lab[2] + '">' + tx(c.name) + '</text>';
+    }).join('');
+    return '<svg class="map" viewBox="0 20 975 580" role="img" aria-label="Route map">' +
+      '<path class="st" d="' + M.states + '"/>' + legs + dots + '</svg>';
+  }
+
+  /* ---------- page 1 ---------- */
+  var p1 = t.p1;
+  var page1 = '<section class="page">' + head(1) +
+    '<div class="hero"><div><p class="eyebrow">' + p1.eyebrow + '</p><h1>' + p1.title + '</h1></div><p class="lead">' + p1.lead + '</p></div>' +
+    '<div class="facts">' + p1.facts.map(function (f) { return '<div class="fact"><b>' + f[0] + '</b><small>' + f[1] + '</small></div>'; }).join('') + '</div>' +
+    '<div class="sec">' + secHead(p1.rEyebrow, p1.rTitle, p1.rLead) +
+      '<div class="route">' + mapSvg() +
+        '<ol class="steps">' + cities.map(function (c, k) {
+          return '<li><span class="n">' + (k + 1) + '</span><span><b>' + tx(c.name) + '</b><small>' + tx(c.state) + '</small></span></li>';
+        }).join('') + '</ol></div>' +
+      '<div class="cities">' + cities.map(function (c, k) {
+        return '<article class="city"><div class="city__img"><img src="../assets/img/cities/' + c.id + '.jpg" alt=""><span class="n">' + (k + 1) + '</span></div>' +
+               '<p class="city__st">' + c.st + '</p><p class="city__t">' + tx(c.tag) + '</p></article>';
+      }).join('') + '</div>' +
+    '</div>' +
+    '<div class="watch">' + I('youtube-logo-fill', 'yt') + '<p>' + p1.watch + '</p><span class="url">youtube.com/@noirnabiev</span></div>' +
+    foot + '</section>';
+
+  /* ---------- page 2 ---------- */
+  var p2 = t.p2;
+  var hosts = [
+    { name: 'Noir Nabiev', handle: '@noir_nabiev', photo: '../assets/img/noir/portrait.jpg',
+      role: { en: 'Blogger, YouTuber · Tashkent', uz: 'Bloger, YouTuber · Toshkent' },
+      stats: [['instagram-logo', 'ig', { en: '557K+', uz: '557 ming+' }, 'Instagram'], ['youtube-logo', 'ytc', { en: '168K+', uz: '168 ming+' }, 'YouTube']],
+      hook: { en: 'Author of the shows «ENG QIMMAT YOKI ENG ARZON» (The most expensive or the cheapest) and «NOIR OSHXONASI» (Noir’s kitchen). His audience already loves the contrast format this show is built on.',
+              uz: '«ENG QIMMAT YOKI ENG ARZON» va «NOIR OSHXONASI» shoularining muallifi. Shou asoslangan kontrastlar formatini uning auditoriyasi allaqachon sevadi.' },
+      thumbs: ['noir/post-1', 'noir/post-2', 'noir/post-4', 'noir/post-3'] },
+    { name: 'Mavluda Hikmatova', handle: '@mavluda__hikmatova', photo: '../assets/img/mavluda/post-3.jpg',
+      role: { en: 'Actress, blogger · Uzbekistan', uz: 'Aktrisa, bloger · O‘zbekiston' },
+      stats: [['instagram-logo', 'ig', { en: '785K', uz: '785 ming' }, 'Instagram'], ['film-slate', 'mu', { en: '577', uz: '577' }, { en: 'publications', uz: 'nashr' }]],
+      hook: { en: 'Actress and Instagram blogger. She shares travel content from Azerbaijan, the UAE, China, Egypt and Issyk-Kul with an audience of 785,000 followers.',
+              uz: 'Aktrisa va Instagram-bloger. Ozarbayjon, BAA, Xitoy, Misr va Issiqko‘ldan sayohat kontentini 785 ming obunachisi bilan baham ko‘radi.' },
+      thumbs: ['mavluda/post-2', 'mavluda/post-5', 'mavluda/post-6', 'mavluda/post-4'] }
+  ];
+  var hostHtml = hosts.map(function (h) {
+    return '<article class="host"><div class="host__top"><div class="host__photo"><img src="' + h.photo + '" alt="' + h.name + '"></div>' +
+      '<div><h3 class="host__name">' + h.name + '</h3>' +
+      '<div class="host__handle">' + h.handle + I('seal-check-fill') + '</div>' +
+      '<div class="host__role">' + tx(h.role) + '</div>' +
+      '<div class="host__stats">' + h.stats.map(function (s) {
+        return '<div class="hstat"><b><span class="' + s[1] + '">' + I(s[0]) + '</span>' + tx(s[2]) + '</b><small>' + tx(s[3]) + '</small></div>';
+      }).join('') + '</div></div></div>' +
+      '<p class="host__hook">' + tx(h.hook) + '</p>' +
+      '<div class="host__thumbs">' + h.thumbs.map(function (p) { return '<img src="../assets/img/' + p + '.jpg" alt="">'; }).join('') + '</div></article>';
+  }).join('');
+
+  var ageLbl = ['13-17', '18-24', '25-34', '35-44', '45-54', '55-64', '65+'];
+  var ages = function (arr) {
+    var mx = Math.max.apply(null, arr);
+    return '<div class="ages">' + arr.map(function (v) { return '<i class="' + (v === mx ? 'hi' : '') + '" style="height:' + (v / mx * 100).toFixed(1) + '%"></i>'; }).join('') + '</div>' +
+           '<div class="ages__l">' + ageLbl.map(function (a) { return '<span>' + a + '</span>'; }).join('') + '</div>';
+  };
+  var nf = function (n) { return L === 'uz' ? String(n).replace('.', ',') : String(n); };
+  var split = function (m, f) {
+    var lm = L === 'uz' ? 'Erkaklar' : 'Men', lf = L === 'uz' ? 'Ayollar' : 'Women';
+    return '<div class="split"><i style="width:' + m + '%"></i><i style="width:' + f + '%"></i></div>' +
+           '<div class="split__l"><span>' + lm + ' <b>' + nf(m) + '%</b></span><span>' + lf + ' <b>' + nf(f) + '%</b></span></div>';
+  };
+  var U = L === 'uz';
+  var lab = {
+    age: U ? 'Yosh' : 'Age', gender: U ? 'Jins' : 'Gender',
+    subs: U ? 'Obunachilar' : 'Subscribers', hours: U ? 'Tomosha soatlari' : 'Watch hours', avd: U ? 'O‘rtacha ko‘rish vaqti' : 'Avg. view duration',
+    uzb: U ? 'O‘zbekistondan' : 'From Uzbekistan', foll: U ? 'Obunachilar' : 'Followers', best: U ? 'Eng yaxshi Reels, 30 kun' : 'Best Reel, 30 days',
+    uzlang: U ? 'O‘zbek tilida' : 'Uzbek-speaking', posts: U ? 'Nashrlar' : 'Publications',
+    mFoll: U ? 'Instagram obunachilari' : 'Instagram followers', ver: U ? 'Tasdiqlangan akkaunt' : 'Verified account',
+    topics: U ? 'Kontent' : 'Content', travels: U ? 'Sayohat kontenti' : 'Travel content'
+  };
+  var panels =
+    '<div class="panel"><div class="panel__h"><img src="../assets/img/noir/avatar.jpg" alt="">Noir · YouTube<span style="color:var(--yt);margin-left:auto;display:flex">' + I('youtube-logo-fill') + '</span></div>' +
+      '<dl class="kv"><dt>' + lab.subs + '</dt><dd>' + (U ? '168 ming+' : '168K+') + '</dd><dt>' + lab.hours + '</dt><dd>' + (U ? '2,5 mln' : '2.5M') + '</dd><dt>' + lab.avd + '</dt><dd>6:55</dd><dt>' + lab.uzb + '</dt><dd>' + nf(93.2) + '%</dd></dl>' +
+      '<div><div class="sub">' + lab.age + '</div>' + ages([15.7, 24.4, 25.4, 24.3, 5.9, 2.6, 1.7]) + '</div>' +
+      '<div><div class="sub">' + lab.gender + '</div>' + split(63.8, 36.2) + '</div></div>' +
+    '<div class="panel"><div class="panel__h"><img src="../assets/img/noir/avatar.jpg" alt="">Noir · Instagram<span style="color:var(--ig);margin-left:auto;display:flex">' + I('instagram-logo') + '</span></div>' +
+      '<dl class="kv"><dt>' + lab.foll + '</dt><dd>' + (U ? '557 ming+' : '557K+') + '</dd><dt>' + lab.best + '</dt><dd>' + (U ? '4,7 mln' : '4.7M') + '</dd><dt>' + lab.uzlang + '</dt><dd>' + nf(75.3) + '%</dd><dt>' + lab.uzb + '</dt><dd>' + nf(84.2) + '%</dd></dl>' +
+      '<div><div class="sub">' + lab.age + '</div>' + ages([4.7, 20.8, 49.8, 19.2, 3.7, 1.1, 0.8]) + '</div>' +
+      '<div><div class="sub">' + lab.gender + '</div>' + split(82.4, 17.6) + '</div></div>' +
+    '<div class="panel"><div class="panel__h"><img src="../assets/img/mavluda/avatar.jpg" alt="">Mavluda · Instagram<span style="color:var(--ig);margin-left:auto;display:flex">' + I('instagram-logo') + '</span></div>' +
+      '<div class="big">' + (U ? '785 ming' : '785K') + '<small>' + lab.mFoll + '</small></div>' +
+      '<dl class="kv"><dt>' + lab.posts + '</dt><dd>577</dd></dl>' +
+      '<span class="verified">' + I('seal-check-fill') + lab.ver + '</span>' +
+      '<div><div class="sub">' + lab.travels + '</div><div class="chips">' +
+        (U ? ['Ozarbayjon', 'BAA', 'Xitoy', 'Misr', 'Issiqko‘l'] : ['Azerbaijan', 'UAE', 'China', 'Egypt', 'Issyk-Kul']).map(function (c) { return '<span>' + c + '</span>'; }).join('') +
+      '</div></div></div>';
+
+  var vids = [['GNjnoOrpymE', 'ENG ACHCHIQ SHOW', 2157771], ['XARJbDIfq8Q', 'Daxshatli yoki Mazali', 2148119], ['ObPlp0EZmnc', 'NOIR OSHXONASI | Dudoshli', 2020320], ['eGiwa7Z8Urs', 'NOIR SANTA', 1786143]];
+  var fmtM = function (v) { var m = (v / 1e6).toFixed(2); return U ? m.replace('.', ',') + ' mln' : m + 'M'; };
+
+  var page2 = '<section class="page page--tight">' + head(2) +
+    secHead(p2.eyebrow, p2.title, p2.lead) +
+    '<div class="hosts">' + hostHtml + '</div>' +
+    '<div class="sec">' + secHead(p2.rEyebrow, p2.rTitle, p2.rLead) +
+      '<div class="kband">' +
+        '<div class="ktile ktile--total"><span class="ava"><img src="../assets/img/noir/avatar.jpg" alt=""><img src="../assets/img/mavluda/avatar.jpg" alt=""></span><b>' + (U ? '1,5 mln+' : '1.5M+') + '</b><small>' + (U ? 'umumiy auditoriya: YouTube va Instagram' : 'combined audience on YouTube and Instagram') + '</small></div>' +
+        '<div class="ktile"><b>' + (U ? '22,3 mln' : '22.3M') + '</b><small>' + (U ? 'YouTube kanalidagi ko‘rishlar' : 'views on the YouTube channel') + '</small></div>' +
+        '<div class="ktile"><b>' + (U ? '270,1 mln' : '270.1M') + '</b><small>' + (U ? 'YouTube taassurotlari (ko‘rsatishlar)' : 'impressions on YouTube') + '</small></div>' +
+        '<div class="ktile"><b>' + (U ? '16,1 mln' : '16.1M') + '</b><small>' + (U ? 'top-5 Reels ko‘rishlari, oxirgi 30 kunda' : 'views of the top 5 Reels in the last 30 days') + '</small></div>' +
+      '</div>' +
+      '<div class="panels">' + panels + '</div>' +
+      '<p class="eyebrow vids__h">' + p2.vids + '</p>' +
+      '<div class="vids" style="margin-top:0">' + vids.map(function (v) {
+        return '<div class="vid"><img src="../assets/img/yt/' + v[0] + '.jpg" alt=""><b>' + v[1] + '</b><small>' + fmtM(v[2]) + ' ' + p2.views + '</small></div>';
+      }).join('') + '</div>' +
+    '</div>' + foot + '</section>';
+
+  /* ---------- page 3 ---------- */
+  var p3 = t.p3;
+  var rules = [
+    ['arrows-clockwise', { en: 'Roles switch in every city', uz: 'Rollar har shaharda almashadi' }],
+    ['wallet', { en: 'Only the money on the card', uz: 'Faqat kartadagi mablag‘' }],
+    ['timer', { en: 'Each challenge lasts 24 hours', uz: 'Har bir sinov 24 soat davom etadi' }],
+    ['trophy', { en: 'Viewers choose the winner', uz: 'G‘olibni tomoshabinlar tanlaydi' }]
+  ];
+  var shots = [
+    { img: 'interview-1', city: 'NEW YORK, NY', cap: { en: 'A student’s day on campus', uz: 'Talabaning kampusdagi kuni' } },
+    { img: 'interview-2', city: 'CHICAGO, IL', cap: { en: 'A conversation in the city', uz: 'Shahar markazidagi suhbat' } },
+    { img: 'interview-3', city: 'LOS ANGELES, CA', cap: { en: 'Advice for future students', uz: 'Bo‘lajak talabalarga maslahatlar' } }
+  ];
+  var season = U
+    ? [['5', 'qism, har shtatga bittadan'], ['20–25', 'daqiqa, har bir qism'], ['Reels', 'va Shorts har bir shahardan'], ['4K', 'kino sifatida suratga olish']]
+    : [['5', 'episodes, one per state'], ['20–25', 'minutes per episode'], ['Reels', 'and Shorts from every city'], ['4K', 'cinema-quality filming']];
+
+  var page3 = '<section class="page">' + head(3) +
+    secHead(p3.eyebrow, p3.title, p3.lead) +
+    '<div class="roles">' +
+      '<div class="role"><div class="card card--a"><div class="card__top"><span class="card__brand">USA <span class="flag"></span></span><span class="card__tier">UNLIMITED</span></div><div class="card__chip"></div><div class="card__big">∞</div><div class="card__bot"><span class="card__num">A · 0000 0000 0000</span></div></div>' +
+        '<div><h3><span class="tag tag--a">A</span>' + p3.a[0] + '</h3><p>' + p3.a[1] + '</p></div></div>' +
+      '<span class="duel">' + t.vs + '</span>' +
+      '<div class="role"><div class="card card--b"><div class="card__top"><span class="card__brand">USA <span class="flag"></span></span><span class="card__tier">DAILY BUDGET</span></div><div class="card__chip"></div><div class="card__big">$100</div><div class="card__bot"><span class="card__num">B · 0000 0000 0100</span></div></div>' +
+        '<div><h3><span class="tag tag--b">B</span>' + p3.b[0] + '</h3><p>' + p3.b[1] + '</p></div></div>' +
+    '</div>' +
+    '<ul class="rules">' + rules.map(function (r) { return '<li>' + I(r[0]) + '<span>' + tx(r[1]) + '</span></li>'; }).join('') + '</ul>' +
+    '<div class="sec"><div class="students__txt"><div><p class="eyebrow">' + p3.sEyebrow + '</p><h2>' + p3.sTitle + '</h2></div><p>' + p3.sText + '</p></div>' +
+      '<div class="shots">' + shots.map(function (s) {
+        return '<figure class="shot"><div class="shot__img"><span class="ph-empty">' + p3.missing + '</span><img src="img/' + s.img + '.jpg" alt="" onerror="this.remove()"><span class="shot__tag">' + p3.concept + '</span></div>' +
+               '<figcaption><span>' + s.city + '</span>' + tx(s.cap) + '</figcaption></figure>';
+      }).join('') + '</div></div>' +
+    '<div class="season"><div class="season__h"><b>' + p3.seasonT + '</b><small>' + p3.seasonS + '</small></div>' +
+      season.map(function (s) { return '<div class="season__i"><b>' + s[0] + '</b><small>' + s[1] + '</small></div>'; }).join('') + '</div>' +
+    foot + '</section>';
+
+  document.getElementById('doc').innerHTML = page1 + page2 + page3;
+  window.__ready = true;
+})();
+</script>
+</body>
+</html>
